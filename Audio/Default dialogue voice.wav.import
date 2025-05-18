@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dqbbvhixff2kk"
+path="res://.godot/imported/Default dialogue voice.wav-f559c327b946ffd2b05f0cab848509a3.sample"
+
+[deps]
+
+source_file="res://Audio/Default dialogue voice.wav"
+dest_files=["res://.godot/imported/Default dialogue voice.wav-f559c327b946ffd2b05f0cab848509a3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

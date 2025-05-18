@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://0agsfsvc4o6b"]
+
+[ext_resource type="Script" uid="uid://b4n7k762wnwxb" path="res://scripts/Components/npc_body.gd" id="1_5svfr"]
+
+[node name="NPC Body" type="CharacterBody2D"]
+position = Vector2(200, 0)
+scale = Vector2(2, 2)
+script = ExtResource("1_5svfr")

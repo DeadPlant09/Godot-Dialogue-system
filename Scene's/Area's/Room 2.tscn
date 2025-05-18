@@ -1,0 +1,166 @@
+[gd_scene load_steps=15 format=3 uid="uid://dx1x8r5ttsexf"]
+
+[ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="1_lkf2h"]
+[ext_resource type="Texture2D" uid="uid://df330aa2o24j4" path="res://Sprites/Character's/Godot icon.svg" id="4_rd6ku"]
+[ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scene's/Objects/dialougue_area.tscn" id="5_fv6mw"]
+[ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="6_4bisx"]
+[ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="6_7860w"]
+[ext_resource type="Texture2D" uid="uid://ccohqyqkn7xu0" path="res://Sprites/Character's/Prisoner.png" id="7_l53xt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sim8i"]
+size = Vector2(130, 128)
+
+[sub_resource type="Animation" id="Animation_wb2vx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Prisoner:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Prisoner:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.00001, -12)]
+}
+
+[sub_resource type="Animation" id="Animation_6df37"]
+resource_name = "Standing"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Prisoner:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.15, 0.15)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Prisoner:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, -12)]
+}
+
+[sub_resource type="Animation" id="Animation_857w5"]
+resource_name = "Talk"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Prisoner:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.15, 0.1), Vector2(0.1, 0.15), Vector2(0.15, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Prisoner:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, -11), Vector2(1, -12), Vector2(1, -11)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ta6ol"]
+_data = {
+&"RESET": SubResource("Animation_wb2vx"),
+&"Standing": SubResource("Animation_6df37"),
+&"Talk": SubResource("Animation_857w5")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vqit6"]
+radius = 23.1948
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0nj8r"]
+size = Vector2(29, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7860w"]
+size = Vector2(69, 676)
+
+[node name="Room 2" type="Node2D"]
+
+[node name="Dezzy" parent="." instance=ExtResource("1_lkf2h")]
+position = Vector2(97, 282)
+
+[node name="Godot Icon" type="Sprite2D" parent="."]
+position = Vector2(290, 480)
+texture = ExtResource("4_rd6ku")
+
+[node name="dialougue_area" parent="Godot Icon" instance=ExtResource("5_fv6mw")]
+Custom_Json_file_0 = "res://Resourses/Objects.json"
+starting_conversation_id = 6
+ending_conversation = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Godot Icon/dialougue_area"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_sim8i")
+
+[node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area") instance=ExtResource("6_4bisx")]
+position = Vector2(468, 274)
+dialogue_area = NodePath("dialougue_area")
+
+[node name="Standing" type="AnimationPlayer" parent="Prisoner"]
+libraries = {
+&"": SubResource("AnimationLibrary_ta6ol")
+}
+autoplay = "Standing"
+
+[node name="Prisoner" type="Sprite2D" parent="Prisoner"]
+position = Vector2(1.00001, -12)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_l53xt")
+
+[node name="dialougue_area" parent="Prisoner" instance=ExtResource("5_fv6mw")]
+Custom_Json_file_0 = "res://Resourses/NPC.json"
+ending_conversation = 2
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
+position = Vector2(1, -12)
+shape = SubResource("CircleShape2D_vqit6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Prisoner"]
+position = Vector2(0.5, 2.5)
+shape = SubResource("RectangleShape2D_0nj8r")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_7860w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-33, 331)
+shape = SubResource("RectangleShape2D_7860w")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

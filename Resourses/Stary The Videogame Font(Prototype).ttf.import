@@ -1,0 +1,35 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://coi4hcxiepqpn"
+path="res://.godot/imported/Stary The Videogame Font(Prototype).ttf-15f4ff25e6ea4d8fb3f05ce7d051aabc.fontdata"
+
+[deps]
+
+source_file="res://Resourses/Stary The Videogame Font(Prototype).ttf"
+dest_files=["res://.godot/imported/Stary The Videogame Font(Prototype).ttf-15f4ff25e6ea4d8fb3f05ce7d051aabc.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+disable_embedded_bitmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+keep_rounding_remainders=true
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[]
+language_support={}
+script_support={}
+opentype_features={}
