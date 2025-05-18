@@ -100,7 +100,7 @@ position = Vector2(704, 18)
 scale = Vector2(3, 0.25)
 
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
-position = Vector2(1053, 374)
+position = Vector2(73, 354)
 
 [node name="smillingEmoji (interactable)" type="Sprite2D" parent="."]
 position = Vector2(323, 168)
