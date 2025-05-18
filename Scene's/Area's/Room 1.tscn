@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://p1pnnpu08ldg"]
+[gd_scene load_steps=16 format=3 uid="uid://p1pnnpu08ldg"]
 
 [ext_resource type="PackedScene" uid="uid://cweipt7fbx2dk" path="res://Scene's/Objects/colision's.tscn" id="1_viga2"]
 [ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="2_uh20n"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="5_pj32d"]
 [ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Character's/Worker.png" id="6_nd3kt"]
 [ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="7_ea5ev"]
-[ext_resource type="PackedScene" uid="uid://dx1x8r5ttsexf" path="res://Scene's/Area's/Room 2.tscn" id="8_drkqx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ui07i"]
 radius = 270.74
@@ -147,7 +146,7 @@ shape = SubResource("RectangleShape2D_f3hld")
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("7_ea5ev")
-Scene = ExtResource("8_drkqx")
+Scene = "res://Scene's/Area's/Room 2.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Switch Sceane"]
 position = Vector2(1184, 326)
