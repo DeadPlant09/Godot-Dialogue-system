@@ -1,0 +1,20 @@
+Hello! and thak you for testing my dialouge system.
+I know its seem not impressive (especaily the json) but this is a project 
+where I didnt strictly follow a spisifc tutorial, so im sharing this with you
+in case you wanted to a) use a prexisting dialouge system that you can change the code of
+or b) take insperation from this dialouge system to build your own, etiher or is great!
+
+well anyway heres how it works:
+	all dialouge are held in a converstion array
+	given a string number, these conversation being 
+	held in a giant dictanary making the json itself 
+	the every dialouge line is in the form of a 
+	dictionary, each line has at least 2 keys the name
+	and a text (self exsplanatory), there are more
+	optional keys that i call options there is     
+	Skipable:bool if turned off doent allow you to skip the text
+	Sound: bool if turned off the dialouge sound wont be played
+	auto_skip: bool if turned on then when the dialouge line has fully ran it will automaticly skip to the next one
+	pause_at_ending_of_sentence:bool if on for then it wont stop a puntuions 
+	just_show_text:bool if true then the character profile/icon wont show up jus there voice
+	Reaction:String if you type a string into a Reaction key then it will slide in as a tiny blub on the dialogue box
