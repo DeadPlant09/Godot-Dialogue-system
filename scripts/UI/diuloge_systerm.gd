@@ -1,4 +1,4 @@
-@icon("res://Sprites/Objects/Dezzy dialogue system Icon.png") # the icon for the node in the editor
+@icon("res://Sprites/Objects/dialogue system Icon.png") # the icon for the node in the editor
 class_name dialoguesystemnode extends CanvasLayer
 
 # signal

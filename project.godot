@@ -14,7 +14,7 @@ config/name="Dialogue System"
 config/tags=PackedStringArray("might_be_updated", "tutorial\'s")
 run/main_scene="uid://p1pnnpu08ldg"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://Sprites/Objects/Dezzy dialogue system Icon.png"
+config/icon="res://Sprites/Objects/dialogue system Icon.png"
 
 [autoload]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://de1bo3sinnxr8"
-path="res://.godot/imported/Dezzy dialogue system Icon.png-2d5e35ec6d6b6da927155fa646ef836e.ctex"
+path="res://.godot/imported/dialogue system Icon.png-5ad284efbd0cc14bb8d0387666da8d8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Objects/Dezzy dialogue system Icon.png"
-dest_files=["res://.godot/imported/Dezzy dialogue system Icon.png-2d5e35ec6d6b6da927155fa646ef836e.ctex"]
+source_file="res://Sprites/Objects/dialogue system Icon.png"
+dest_files=["res://.godot/imported/dialogue system Icon.png-5ad284efbd0cc14bb8d0387666da8d8d.ctex"]
 
 [params]
 
