@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://brw7h3l8kq28v"]
+[gd_scene load_steps=12 format=3 uid="uid://brw7h3l8kq28v"]
 
 [ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/diuloge_systerm.gd" id="1_ii7p6"]
 [ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://Sprites/Objects/Stary 9-slice.png" id="2_taeu3"]
 [ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://Audio/Default dialogue voice.wav" id="3_8r266"]
+[ext_resource type="FontFile" uid="uid://b2aieyjkerx8h" path="res://Resourses/Stary Font.ttf" id="3_60k30"]
 [ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://Resourses/invisable button theme.tres" id="4_3aq4e"]
 [ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://Sprites/Objects/slider graber blue.png" id="4_hac6l"]
 [ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/Components/Button Scelect.gd" id="4_nnv7x"]
@@ -127,7 +128,7 @@ offset_left = 320.0
 offset_top = 519.0
 offset_right = 944.0
 offset_bottom = 623.0
-theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("3_60k30")
 bbcode_enabled = true
 scroll_active = false
 autowrap_mode = 2
