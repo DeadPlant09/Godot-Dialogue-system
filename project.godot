@@ -26,7 +26,7 @@ window/size/resizable=false
 
 [gui]
 
-theme/custom_font="res://Resourses/Stary The Videogame Font(Prototype).ttf"
+theme/custom_font="uid://6dc2hmmbierx"
 
 [input]
 
