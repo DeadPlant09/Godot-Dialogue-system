@@ -1,6 +1,6 @@
 {
 	"1":[ 
-		{"Name": "Emoji", "Text": "* Hello Dezzy"},
+		{"Name": "Emoji", "Text": "* Hello Dezzy!"},
 		{"Name": "Emoji", "Text": "* Did you know the earth is [wave]flat?", "Choices": ["Sure","Your crazy","",""], "Responses": [2,4,0,0], "Aftermath": [3,5,0,0]} 
 	],
 	"2":[

@@ -1,5 +1,3 @@
-@icon("res://Sprites/Objects/Npc icon.png") # the icon for the node in the editor
-class_name NPC_Body
 extends CharacterBody2D
 
 # @export variables

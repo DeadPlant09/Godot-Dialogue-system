@@ -1,5 +1,5 @@
 extends Area2D
-class_name Switch_Sceane
+
 
 @export var Scene:String
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://p1pnnpu08ldg"]
+[gd_scene load_steps=18 format=3 uid="uid://p1pnnpu08ldg"]
 
 [ext_resource type="PackedScene" uid="uid://cweipt7fbx2dk" path="res://Scene's/Objects/colision's.tscn" id="1_viga2"]
 [ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="2_uh20n"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="5_pj32d"]
 [ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Character's/Worker.png" id="6_nd3kt"]
 [ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="7_ea5ev"]
+[ext_resource type="PackedScene" uid="uid://dwplf7pb50clu" path="res://Scene's/UI/cutscene trigger.tscn" id="8_drkqx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ui07i"]
 radius = 270.74
@@ -75,6 +76,9 @@ size = Vector2(15.75, 4.25)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drkqx"]
 size = Vector2(71, 677)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sckux"]
+size = Vector2(35, 678)
+
 [node name="Room 1" type="Node2D"]
 
 [node name="Colision\'s" parent="." instance=ExtResource("1_viga2")]
@@ -99,7 +103,7 @@ position = Vector2(704, 18)
 scale = Vector2(3, 0.25)
 
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
-position = Vector2(1053, 374)
+position = Vector2(1050, 348)
 
 [node name="smillingEmoji (interactable)" type="Sprite2D" parent="."]
 position = Vector2(323, 168)
@@ -151,5 +155,16 @@ Scene = "res://Scene's/Area's/Room 2.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Switch Sceane"]
 position = Vector2(1184, 326)
 shape = SubResource("RectangleShape2D_drkqx")
+
+[node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
+Run_at_start = true
+
+[node name="Move rooms Cutscene" parent="." instance=ExtResource("8_drkqx")]
+position = Vector2(1121, 319)
+collision_mask = 2
+Conversation = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene"]
+shape = SubResource("RectangleShape2D_sckux")
 
 [connection signal="body_entered" from="Switch Sceane" to="Switch Sceane" method="_on_body_entered"]

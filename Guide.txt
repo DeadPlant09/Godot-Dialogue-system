@@ -18,3 +18,9 @@ well anyway heres how it works:
 	pause_at_ending_of_sentence:bool if on for then it wont stop a puntuions 
 	just_show_text:bool if true then the character profile/icon wont show up jus there voice
 	Reaction:String if you type a string into a Reaction key then it will slide in as a tiny blub on the dialogue box
+
+Necessary files to bring to you projects
+	diauloge systerm.tscn/.gd
+	dialougue_area.tscn/.gd
+	npc_body.tscn/.gd
+	and your own main

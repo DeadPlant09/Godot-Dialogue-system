@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwplf7pb50clu"]
+
+[ext_resource type="Script" uid="uid://yjwsbknsa81r" path="res://scripts/Components/Cutscene trigger.gd" id="1_054bt"]
+
+[node name="Cutscene trigger" type="Area2D"]
+script = ExtResource("1_054bt")

@@ -1,4 +1,3 @@
-class_name Chocies_node
 extends Control
 
 @export var dialoue_choices:bool
