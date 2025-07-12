@@ -21,10 +21,10 @@
 		{"Name": "Dezzy", "Text":"* You know holding a gun that can launch you to space? \n try anything and you see whos right"}
 	],
 	"6":[
-		{"Name":"Godot icon", "Text":"* did you know the earth is-","Speed": 0.03,"pause at ending": false, "Auto Skip": true},
+		{"Name":"Godot icon", "Text":"* did you know the earth is?-","Speed": 0.03,"pause at ending": false, "Auto Skip": true},
 		{"Name":"Dezzy", "Text":"* Im going to stop you right there\n	becuse ive hered this all before from\n	 a talking emoji."}
 	],
 	"7":[
-		{"Name":"Godot icon", "Text":"* Geez all i was going to say was\n	that the earth is round", "reactions": "[color=orange]Dezzy: Oh bullshit!"}
+		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round","pause": [8], "reactions": ["Dezzy",0, "[color=orange] Oh bullshit!"]}
 	]
 }

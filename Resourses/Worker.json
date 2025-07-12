@@ -1,12 +1,12 @@
 { 
 	"1":[
-	{"Name": "Dezzy", "Text": "* Why are you streching?","pause at ending": false},
+	{"Name": "Dezzy", "Face": 1, "Text": "* Why are you streching?","pause at ending": false},
 	{"Name": "Worker", "Text": "* Im just woking out"},
 	{"Name": "Worker", "Text": "* Soon ill be strong enough to threten\n	 my boss for a paycheak"},
-	{"Name": "Dezzy", "Text": "* ...ok"}
+	{"Name": "Dezzy", "Face": 1, "Text": "* ...ok"}
 	],
 	"2":[
-	{"Name": "Dezzy", "Text": "* Wait don't you mean raise?"},
-	{"Name": "Worker", "Text": "* No, I get paid penuts for my 9 to 5 job"}
+	{"Name": "Dezzy", "Text": "* Wait don't you mean higher paycheck?"},
+	{"Name": "Worker", "Text": "* No a paycheak!"}
 	]
 }

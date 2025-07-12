@@ -1,22 +1,110 @@
-[gd_scene load_steps=12 format=3 uid="uid://brw7h3l8kq28v"]
+[gd_scene load_steps=16 format=3 uid="uid://brw7h3l8kq28v"]
 
-[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/diuloge_systerm.gd" id="1_ii7p6"]
+[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/dialogue_systerm.gd" id="1_ii7p6"]
 [ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://Sprites/Objects/Stary 9-slice.png" id="2_taeu3"]
 [ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://Audio/Default dialogue voice.wav" id="3_8r266"]
-[ext_resource type="FontFile" uid="uid://b2aieyjkerx8h" path="res://Resourses/Stary Font.ttf" id="3_60k30"]
 [ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://Resourses/invisable button theme.tres" id="4_3aq4e"]
 [ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://Sprites/Objects/slider graber blue.png" id="4_hac6l"]
 [ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/Components/Button Scelect.gd" id="4_nnv7x"]
+[ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://Sprites/UI/Dezzy Profile.png" id="7_60k30"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t0gi1"]
 size = Vector2(1152, 136)
+
+[sub_resource type="Animation" id="Animation_3xex3"]
+resource_name = "Dezzy0"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dialogue UI/Sprites/Character Profile:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_60k30")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Dialogue UI/Sprites/Character Profile:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_60k30"]
+resource_name = "Dezzy1"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dialogue UI/Sprites/Character Profile:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_60k30")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Dialogue UI/Sprites/Character Profile:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.9)]
+}
+
+[sub_resource type="Animation" id="Animation_ikkwn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dialogue UI/Sprites/Character Profile:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Dialogue UI/Sprites/Character Profile:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eva1e"]
+_data = {
+&"Dezzy0": SubResource("Animation_3xex3"),
+&"Dezzy1": SubResource("Animation_60k30"),
+&"RESET": SubResource("Animation_ikkwn")
+}
 
 [sub_resource type="Animation" id="Animation_g53lw"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Dialogue UI/Response:position")
+tracks/0/path = NodePath("Dialogue UI/Reaction text:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -28,10 +116,34 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Dialogue UI/Response:modulate")
+tracks/1/path = NodePath("Dialogue UI/Reaction text:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Dialogue UI/React Profile:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(880, 585)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Dialogue UI/React Profile:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -43,24 +155,48 @@ resource_name = "slide in"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Dialogue UI/Response:position")
+tracks/0/path = NodePath("Dialogue UI/Reaction text:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(936, 600), Vector2(800, 600)]
+"values": [Vector2(936, 585), Vector2(800, 585)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Dialogue UI/Response:modulate")
+tracks/1/path = NodePath("Dialogue UI/Reaction text:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0.5, 1),
 "transitions": PackedFloat32Array(1, 1.93187),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Dialogue UI/React Profile:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(880, 585), Vector2(744, 585)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Dialogue UI/React Profile:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
@@ -74,6 +210,7 @@ _data = {
 [node name="Diuloge systerm" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_ii7p6")
+Profile_path = "res://Sprites/UI/"
 
 [node name="Overlap Detection" type="Area2D" parent="."]
 show_behind_parent = true
@@ -111,14 +248,10 @@ patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="Icon" type="TextureRect" parent="Dialogue UI/Sprites"]
+[node name="Character Profile" type="Sprite2D" parent="Dialogue UI/Sprites"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 216.0
-offset_top = 520.0
-offset_right = 316.0
-offset_bottom = 620.0
-expand_mode = 1
+position = Vector2(216, 520)
+centered = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Dialogue UI"]
 texture_filter = 1
@@ -128,7 +261,6 @@ offset_left = 320.0
 offset_top = 512.0
 offset_right = 944.0
 offset_bottom = 632.0
-theme_override_fonts/normal_font = ExtResource("3_60k30")
 bbcode_enabled = true
 scroll_active = false
 autowrap_mode = 2
@@ -207,7 +339,20 @@ texture_filter = 1
 position = Vector2(376, 72)
 texture = ExtResource("4_hac6l")
 
-[node name="Response" type="RichTextLabel" parent="Dialogue UI"]
+[node name="Control" type="Control" parent="Dialogue UI"]
+anchors_preset = 0
+offset_left = 880.0
+offset_top = 584.0
+offset_right = 1064.0
+offset_bottom = 640.0
+
+[node name="React Profile" type="Sprite2D" parent="Dialogue UI"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(880, 585)
+scale = Vector2(0.5, 0.5)
+centered = false
+
+[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI"]
 modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 clip_contents = false
@@ -215,12 +360,17 @@ layout_mode = 0
 offset_left = 936.0
 offset_top = 600.0
 offset_right = 1152.0
-offset_bottom = 648.0
+offset_bottom = 666.0
 scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 text = "[Inset litraly 
 any respone]"
 scroll_active = false
+
+[node name="Profile animations" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_eva1e")
+}
 
 [node name="Show Responce" type="AnimationPlayer" parent="."]
 libraries = {

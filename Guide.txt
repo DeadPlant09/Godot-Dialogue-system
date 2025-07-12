@@ -23,4 +23,12 @@ Necessary files to bring to you projects
 	diauloge systerm.tscn/.gd
 	dialougue_area.tscn/.gd
 	npc_body.tscn/.gd
-	and your own main
+	and your own main.json in the same format as mines
+	lastly if you dont have your own font you can bing the stary font
+
+Before you run
+	make the Diauloge_Systerm scene a singleton (global)
+	set the Icon path to the folder where your dialogue icons are
+	set the voice path to the folder where your dialogue voices are
+	if your game already has a script that saves make it global, try and add the cutscene_ran vaue to it
+	
