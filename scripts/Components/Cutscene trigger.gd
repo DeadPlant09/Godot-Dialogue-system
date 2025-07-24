@@ -6,7 +6,7 @@ extends Area2D
 @export var Conversation:int = 1
 var Cutscene_ran = false
 #constants
-const Save_Path = "res://Resourses/save.cfg"
+const Save_Path = "res://Resourses/save_dialogue.cfg"
 
 # variables
 var config = ConfigFile.new()

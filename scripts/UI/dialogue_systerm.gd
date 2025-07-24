@@ -2,6 +2,7 @@ class_name dialoguesystemnode extends CanvasLayer
 
 # signal
 signal dialogue_finished
+signal update_godot_dialogue
 #node variables
 @onready var dialogue_ui = $"Dialogue UI"
 @onready var sprites: Control = $"Dialogue UI/Sprites"
@@ -10,10 +11,9 @@ signal dialogue_finished
 @onready var profile_animations: AnimationPlayer = $"Profile animations"
 @onready var Character_Voice: AudioStreamPlayer2D = $"Dialogue UI/Voice"
 @onready var options = $"Dialogue UI/Options"
-@onready var react_profile = $"Dialogue UI/React Profile"
-@onready var reaction_text = $"Dialogue UI/Reaction text"
+@onready var reaction_text = $"Dialogue UI/Reaction 1/Reaction text"
 @onready var show_responce: AnimationPlayer = $"Show Responce"
-
+@onready var Reactions = [$"Dialogue UI/Reaction 1", $"Dialogue UI/Reaction 2", $"Dialogue UI/Reaction 3", $"Dialogue UI/Reaction 4"]
 # variables
 # Nesasary variables
 @export_file("*.json") var Json_file
@@ -36,17 +36,24 @@ var Profile_index = 1
 @export var Voice_path = "res://Audio/"
 # option variables
 @export var Debug_output:bool 
-var In_Cutscene = false
+var in_Cutscene = false
+var emit_custom:Array = [false]:
+	set(new_value):
+		emit_custom = new_value # nessasary
+		if emit_custom.size() == 2 and emit_custom[0] == false: # play_at_end = false
+			print(emit_custom)
+			emit_signal(emit_custom[1])
 var default_volume_db = 0.0
 var skipable = true 
 var play_voice = true
 var auto_skip = false
-var wait_for_chocies = false
+var wait_for_responses = false
 var pause_at_character = [",", "-", ";", ":", ".", "?", "!"]
 var pause_at_ending_of_sentence = true
 var pause_at_index = []
 var silent_characters = [" ","!",",", "-", ".", "?",";", '"', "©", "™", "[", "]"]
 var just_show_text = false
+var hide_profile = false
 
 func _ready() -> void:
 	hide()
@@ -55,7 +62,7 @@ func Run_dialouge(file:String, Conv:int): # To run certin dialouge simpley
 	Json_file = file
 	conversation_id = Conv
 	Ending_Conversation = Conv
-	In_Cutscene = true
+	in_Cutscene = true
 	start_dialogue()
 
 func start_dialogue() -> void: 
@@ -66,7 +73,8 @@ func start_dialogue() -> void:
 		return
 	
 	sprites.visible = not just_show_text
-	show_responce.play("RESET") # so the responce hides when you run the same dialouge
+	sprites.get_child(1).visible = not hide_profile
+	show_responce.play("RESET") # so the responce hides when you run the same dialouge 
 	show()
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
@@ -86,8 +94,8 @@ func load_Json(filepath: String):
 
 
 func _input(event: InputEvent) -> void:
-	if Detect_Player or In_Cutscene and not is_dialogue_runing:
-		if has_dialogue_ran and event.is_action_pressed("Continue") and not wait_for_chocies:
+	if Detect_Player or in_Cutscene and not is_dialogue_runing:
+		if has_dialogue_ran and event.is_action_pressed("Continue") and not wait_for_responses:
 			Next_Dialogue()
 		
 
@@ -120,12 +128,14 @@ func set_up_dialogue_options():
 	skipable = Dialogue[str(conversation_id)][current_diauogue_id].get('skipable', true)
 	play_voice = Dialogue[str(conversation_id)][current_diauogue_id].get('voice', true)
 	auto_skip = Dialogue[str(conversation_id)][current_diauogue_id].get('Auto Skip', false)
-	wait_for_chocies = Dialogue[str(conversation_id)][current_diauogue_id].get('Choices')
+	wait_for_responses = Dialogue[str(conversation_id)][current_diauogue_id].get('Choices') or Dialogue[str(conversation_id)][current_diauogue_id].get('reactions')
 	pause_at_ending_of_sentence =  Dialogue[str(conversation_id)][current_diauogue_id].get('pause at ending', true)
 	just_show_text = Dialogue[str(conversation_id)][current_diauogue_id].get('just text', false)
-	reaction_text.text =  Dialogue[str(conversation_id)][current_diauogue_id].get('reactions', ["",0,""])[2]
+	hide_profile = Dialogue[str(conversation_id)][current_diauogue_id].get('hide profile', false)
 	pause_at_index = Dialogue[str(conversation_id)][current_diauogue_id].get('pause')
+	emit_custom = Dialogue[str(conversation_id)][current_diauogue_id].get('Signal', [false])
 	
+
 
 func Set_Profile(): # runs befor options are set
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
@@ -171,7 +181,6 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		if is_dialogue_runing:
 			profile_animations.stop()
 			
-			
 			if pause_at_index != null:
 				for p in pause_at_index: # for ever value in "pause_at_index"
 					if int(p) == text_node.visible_characters: # if the index is the amount of visab;e characters shown 
@@ -186,7 +195,8 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 				if e == c:
 					play_voice = false
 			
-			if play_voice == true: profile_animations.play(profile_animations.current_animation) 
+			if e != " ":
+				profile_animations.play(profile_animations.current_animation) 
 			
 			if play_voice == true and voice_played <= parsed_text_length: # to make sure the sound doenst play when counting the bbcode text 
 				voice_played += 1
@@ -196,12 +206,12 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		if Debug_output:print(e)
 		await get_tree().create_timer(Speed).timeout #every  0.05 seconds times the length of the text 
 		
-		if text_node.visible_characters >= parsed_text_length or Input.is_action_pressed("Skip_Text") and skipable: # if the text is skiped or all the parse text it shown
+		if text_node.visible_characters >= parsed_text_length or Input.is_action_pressed("Skip_Text") and skipable and not auto_skip: # if the text is skiped or all the parse text it shown
 			text_node.visible_characters = text_node.text.length() # set the visable characters to the full length
 			break # exit out of for loop
 	
 	if text_node.visible_characters == text_node.text.length(): # if all the text is showen.
-		if Debug_output: print("finised")
+		if Debug_output:print("finised")
 		# if that 'Responses' doesnt exist it will return null
 		if not current_diauogue_id  >= len(Dialogue[str(conversation_id)]) and Dialogue[str(conversation_id)][current_diauogue_id].get('Choices'):# when pressing the skip button to fast it crashesx
 			if Debug_output: print(Dialogue[str(conversation_id)][current_diauogue_id]['Choices'])
@@ -209,15 +219,15 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 			Choice_Responces = Dialogue[str(conversation_id)][current_diauogue_id]['Responses']
 			Choice_Aftermath = Dialogue[str(conversation_id)][current_diauogue_id]['Aftermath']
 			show_choices()
-			
+		
+		if emit_custom[0] == true: # play_at_end = true
+			emit_signal(emit_custom[1])
+		
 		is_dialogue_runing = false
 		has_dialogue_ran = true
 		
-		# options
-		if not reaction_text.text == "":
-			if FileAccess.file_exists(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0]) + " Profile.png"):
-				react_profile.texture = load(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0]) + " Profile.png")
-			show_responce.play("slide in")
+		# after dialouge 
+		if not choices_exsist: show_reactions() #if there are choices there can be any reactions
 		if auto_skip: Next_Dialogue()
 	
 
@@ -237,7 +247,7 @@ func show_choices():
 		var index = b.get_index()
 		if b is Button:
 			options.get_child(index).visible = false
-			if not Choices[index] == "": # Make sure theres a reaction_text
+			if not Choices[index] == "": # Make sure theres a reaction text
 				options.show()
 				options.get_child(index).visible = true
 				options.get_child(index).text = Choices[index]
@@ -252,7 +262,27 @@ func show_choices():
 					if Debug_output: print("choice " + str(b.get_index()) + " exit")
 					dialogue_finished.emit()
 					return # to exit out the function
+
+
+func show_reactions():
+	var react = 0
+	var move_index_up_by = 0
+	if Dialogue[str(conversation_id)][current_diauogue_id].get('reactions'):
+		for R in Reactions:
+			Reactions[react].get_child(1).text = ""
+			if FileAccess.file_exists(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0 + move_index_up_by]) + " Profile.png"):
+				Reactions[react].get_child(0).texture = load(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0 + move_index_up_by]) + " Profile.png")
+				Reactions[react].get_child(0).frame = int(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][1 + move_index_up_by])
+			Reactions[react].get_child(1).text =  Dialogue[str(conversation_id)][current_diauogue_id].get('reactions', ["",0,""])[2 + move_index_up_by]
+			react += 1
+			move_index_up_by += 3
 	
+	if not Reactions[0].get_child(1).text == "[Inset litraly any respone]": 
+		show_responce.play("slide in")
+		await show_responce.animation_finished
+		wait_for_responses = false # to make sure that it only runs after "slide in", in no other animation 
+	
+
 
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
 	if visible == false:

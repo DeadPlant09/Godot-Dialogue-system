@@ -1,14 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dx1x8r5ttsexf"]
+[gd_scene load_steps=20 format=3 uid="uid://dx1x8r5ttsexf"]
 
 [ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="1_lkf2h"]
-[ext_resource type="Texture2D" uid="uid://df330aa2o24j4" path="res://Sprites/Character's/Godot icon.svg" id="4_rd6ku"]
 [ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scene's/Objects/dialougue_area.tscn" id="5_fv6mw"]
 [ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="6_4bisx"]
+[ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Character's/Worker.png" id="6_47yjd"]
 [ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="6_7860w"]
 [ext_resource type="Texture2D" uid="uid://ccohqyqkn7xu0" path="res://Sprites/Character's/Prisoner.png" id="7_l53xt"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sim8i"]
-size = Vector2(130, 128)
 
 [sub_resource type="Animation" id="Animation_wb2vx"]
 length = 0.001
@@ -109,23 +106,71 @@ size = Vector2(29, 7)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7860w"]
 size = Vector2(69, 676)
 
+[sub_resource type="Animation" id="Animation_nlexe"]
+resource_name = "Move Back and fourth"
+length = 2.0
+step = 0.002
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.04, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.1, 0.05), Vector2(0.1, 0.1), Vector2(0.075, 0.1), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_vumjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_omr6p"]
+resource_name = "Talk"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.08, 0.1), Vector2(0.1, 0.1), Vector2(0.1, 0.08), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_brkx7"]
+_data = {
+&"Move Back and fourth": SubResource("Animation_nlexe"),
+&"RESET": SubResource("Animation_vumjn"),
+&"Talk": SubResource("Animation_omr6p")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pl8kn"]
+radius = 20.5973
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xvfdp"]
+size = Vector2(15.75, 4.25)
+
 [node name="Room 2" type="Node2D"]
 
 [node name="Dezzy" parent="." instance=ExtResource("1_lkf2h")]
 position = Vector2(97, 282)
-
-[node name="Godot Icon" type="Sprite2D" parent="."]
-position = Vector2(290, 480)
-texture = ExtResource("4_rd6ku")
-
-[node name="dialougue_area" parent="Godot Icon" instance=ExtResource("5_fv6mw")]
-Custom_Json_file_0 = "res://Resourses/Objects.json"
-starting_conversation_id = 6
-ending_conversation = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Godot Icon/dialougue_area"]
-position = Vector2(0, -1)
-shape = SubResource("RectangleShape2D_sim8i")
 
 [node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area") instance=ExtResource("6_4bisx")]
 position = Vector2(468, 274)
@@ -163,5 +208,35 @@ Scene = "res://Scene's/Area's/Room 1.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-33, 331)
 shape = SubResource("RectangleShape2D_7860w")
+
+[node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "Sprite_animation") instance=ExtResource("6_4bisx")]
+position = Vector2(687, 200)
+collision_layer = 4
+dialogue_area = NodePath("dialougue_area")
+Sprite_animation = NodePath("Move Back and fourth")
+start_from_positon = Vector2(687, 200)
+go_to_positon = Vector2(687, 400)
+
+[node name="Sprite" type="Sprite2D" parent="Worker"]
+position = Vector2(0, -12.5)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("6_47yjd")
+
+[node name="Move Back and fourth" type="AnimationPlayer" parent="Worker"]
+libraries = {
+&"": SubResource("AnimationLibrary_brkx7")
+}
+
+[node name="dialougue_area" parent="Worker" instance=ExtResource("5_fv6mw")]
+Custom_Json_file_0 = "res://Resourses/Worker.json"
+ending_conversation = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
+position = Vector2(0.5, -12)
+shape = SubResource("CircleShape2D_pl8kn")
+
+[node name="CollisionBox" type="CollisionShape2D" parent="Worker"]
+position = Vector2(0.625, -1.875)
+shape = SubResource("RectangleShape2D_xvfdp")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

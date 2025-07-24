@@ -31,4 +31,4 @@ Before you run
 	set the Icon path to the folder where your dialogue icons are
 	set the voice path to the folder where your dialogue voices are
 	if your game already has a script that saves make it global, try and add the cutscene_ran vaue to it
-	
+	make sure all your animations are between the time intrvals of 0 - 0.05 to be precice 0.025
