@@ -2,7 +2,7 @@ extends Control
 
 @export var dialoue_choices:bool
 @export var scelect_icon: Node2D
-@export var icon_offset: Vector2 = Vector2(10, -25)
+@export var icon_offset: Vector2 = Vector2(10, -20)
 @export var button_0: Button
 @export var button_1: Button
 @export var button_2: Button

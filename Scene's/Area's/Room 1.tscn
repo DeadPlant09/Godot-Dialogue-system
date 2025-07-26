@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=3 uid="uid://p1pnnpu08ldg"]
+[gd_scene load_steps=11 format=3 uid="uid://p1pnnpu08ldg"]
 
-[ext_resource type="PackedScene" uid="uid://cweipt7fbx2dk" path="res://Scene's/Objects/colision's.tscn" id="1_viga2"]
 [ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="2_uh20n"]
 [ext_resource type="Texture2D" uid="uid://cwr76hmlbo16s" path="res://Sprites/Character's/Emoji.svg" id="3_itob3"]
 [ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scene's/Objects/dialougue_area.tscn" id="4_fb8ut"]
@@ -22,39 +21,19 @@ size = Vector2(130, 128)
 
 [node name="Room 1" type="Node2D"]
 
-[node name="Colision\'s" parent="." instance=ExtResource("1_viga2")]
-position = Vector2(196, 15)
-scale = Vector2(3, 0.25)
-
-[node name="Colision\'s2" parent="." instance=ExtResource("1_viga2")]
-position = Vector2(18, 323)
-rotation = 1.5708
-scale = Vector2(3, 0.25)
-
-[node name="Colision\'s3" parent="." instance=ExtResource("1_viga2")]
-position = Vector2(233, 630)
-scale = Vector2(3, 0.25)
-
-[node name="Colision\'s4" parent="." instance=ExtResource("1_viga2")]
-position = Vector2(721, 630)
-scale = Vector2(3, 0.25)
-
-[node name="Colision\'s5" parent="." instance=ExtResource("1_viga2")]
-position = Vector2(704, 18)
-scale = Vector2(3, 0.25)
-
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
 position = Vector2(1050, 348)
 
-[node name="smillingEmoji (interactable)" type="Sprite2D" parent="."]
+[node name="Emoji" type="Sprite2D" parent="."]
 position = Vector2(323, 168)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_itob3")
 
-[node name="dialougue_area" parent="smillingEmoji (interactable)" instance=ExtResource("4_fb8ut")]
+[node name="dialougue_area" parent="Emoji" instance=ExtResource("4_fb8ut")]
 Custom_Json_file_0 = "res://Resourses/Objects.json"
+save_conversation = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="smillingEmoji (interactable)/dialougue_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Emoji/dialougue_area"]
 shape = SubResource("CircleShape2D_ui07i")
 
 [node name="Switch Sceane" type="Area2D" parent="."]
@@ -76,6 +55,7 @@ Conversation = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene"]
 shape = SubResource("RectangleShape2D_sckux")
+disabled = true
 
 [node name="Godot Icon" type="Sprite2D" parent="."]
 position = Vector2(780, 190)
@@ -86,7 +66,7 @@ Custom_Json_file_0 = "res://Resourses/Objects.json"
 starting_conversation = 6
 ending_conversation = 7
 connect_signal = "update_godot_dialogue"
-Debug = true
+save_conversation = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Godot Icon/dialougue_area"]
 position = Vector2(0, -1)

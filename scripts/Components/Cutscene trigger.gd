@@ -1,23 +1,20 @@
 extends Area2D
 
+# variables
 @export var Run_at_start:bool 
 @export var json_path:String = "res://Resourses/MAIN.json"
 @export var Index:int = 1
 @export var Conversation:int = 1
 var Cutscene_ran = false
-#constants
-const Save_Path = "res://Resourses/save_dialogue.cfg"
-
-# variables
 var config = ConfigFile.new()
-# Node variables
 
+# functions
 func Save_cutscene():
 	config.set_value("cutscene","cutscene_ran_" + str(Index), Cutscene_ran)
-	config.save(Save_Path)
+	config.save(Diauloge_Systerm.temp_save_Path)
 
 func Load_load():
-	var error = config.load(Save_Path) # using the save path to load the save file 
+	var error = config.load(Diauloge_Systerm.temp_save_Path) # using the save path to load the save file 
 	if error != OK: return
 	Cutscene_ran = config.get_value("cutscene","cutscene_ran_" + str(Index), false) # find the value of high score from the save file, if it can't find the high score value set it to the game default: 0 
 

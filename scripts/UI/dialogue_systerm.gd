@@ -5,9 +5,9 @@ signal dialogue_finished
 signal update_godot_dialogue
 #node variables
 @onready var dialogue_ui = $"Dialogue UI"
-@onready var sprites: Control = $"Dialogue UI/Sprites"
+@onready var Sprites: Control = $"Dialogue UI/Sprites"
 @onready var overlap_detection: Area2D = $"Overlap Detection"
-@onready var Character_Text = $"Dialogue UI/RichTextLabel"
+@onready var Character_Text = $"Dialogue UI/Character Text"
 @onready var profile_animations: AnimationPlayer = $"Profile animations"
 @onready var Character_Voice: AudioStreamPlayer2D = $"Dialogue UI/Voice"
 @onready var options = $"Dialogue UI/Options"
@@ -17,6 +17,9 @@ signal update_godot_dialogue
 # variables
 # Nesasary variables
 @export_file("*.json") var Json_file
+@export var Profile_path = "res://Sprites/Character's/"
+@export var Voice_path = "res://Audio/"
+const temp_save_Path = "res://save_conv_temp.cfg" # the data is saved across scenes untill the game is closed 
 var Detect_Player:bool = false
 var Dialogue = []
 var Default_Conversation_ID = 1
@@ -25,6 +28,7 @@ var Ending_Conversation = Default_Ending_Conversation
 var conversation_id = Default_Conversation_ID
 var Default_Dialogue_ID = 0
 var current_diauogue_id = Default_Dialogue_ID
+var in_current_dialogue 
 var choices_exsist = false
 var Choice_Responces:Array
 var Choice_Aftermath:Array
@@ -32,8 +36,7 @@ var Deactivated = false
 var is_dialogue_runing = true
 var has_dialogue_ran = false
 var Profile_index = 1
-@export var Profile_path = "res://Sprites/Character's/"
-@export var Voice_path = "res://Audio/"
+
 # option variables
 @export var Debug_output:bool 
 var in_Cutscene = false
@@ -41,7 +44,6 @@ var emit_custom:Array = [false]:
 	set(new_value):
 		emit_custom = new_value # nessasary
 		if emit_custom.size() == 2 and emit_custom[0] == false: # play_at_end = false
-			print(emit_custom)
 			emit_signal(emit_custom[1])
 var default_volume_db = 0.0
 var skipable = true 
@@ -56,6 +58,7 @@ var just_show_text = false
 var hide_profile = false
 
 func _ready() -> void:
+	if FileAccess.file_exists(temp_save_Path): DirAccess.remove_absolute(temp_save_Path)
 	hide()
 
 func Run_dialouge(file:String, Conv:int): # To run certin dialouge simpley
@@ -66,18 +69,16 @@ func Run_dialouge(file:String, Conv:int): # To run certin dialouge simpley
 	start_dialogue()
 
 func start_dialogue() -> void: 
-	if Debug_output: 
-		print("new dialouge")
-		print("Deactivated: "+ str(Deactivated))
-	if Deactivated:
-		return
+	if Debug_output: print("Deactivated: "+ str(Deactivated))
+	if Deactivated: return
 	
-	sprites.visible = not just_show_text
-	sprites.get_child(1).visible = not hide_profile
+	Sprites.visible = not just_show_text
+	Sprites.get_child(3).visible = not hide_profile
 	show_responce.play("RESET") # so the responce hides when you run the same dialouge 
 	show()
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
+	
 	if Ending_Conversation < 1 or Ending_Conversation > len(Dialogue): 
 		Ending_Conversation = len(Dialogue) 
 	 
@@ -99,9 +100,11 @@ func _input(event: InputEvent) -> void:
 			Next_Dialogue()
 		
 
+
 func Next_Dialogue():
 	current_diauogue_id += 1
 	options.hide()
+	
 	if current_diauogue_id  >= len(Dialogue[str(conversation_id)]): # if thers no more dialogue
 		Deactivated = false
 		hide()
@@ -109,11 +112,11 @@ func Next_Dialogue():
 		if conversation_id < Ending_Conversation:  # if there are more conversations
 			conversation_id += 1
 		
-		
 		dialogue_finished.emit()
 		
 		return # to exit out the function
 	
+	in_current_dialogue = Dialogue[str(conversation_id)][current_diauogue_id]
 	is_dialogue_runing = true
 	has_dialogue_ran = false
 	
@@ -122,18 +125,19 @@ func Next_Dialogue():
 	Set_Profile()
 	set_text()
 
+
 func set_up_dialogue_options():
-	Profile_index = int(Dialogue[str(conversation_id)][current_diauogue_id].get('Face', 0)) 
-	Character_Voice.volume_db = Dialogue[str(conversation_id)][current_diauogue_id].get('volume', 0.0)
-	skipable = Dialogue[str(conversation_id)][current_diauogue_id].get('skipable', true)
-	play_voice = Dialogue[str(conversation_id)][current_diauogue_id].get('voice', true)
-	auto_skip = Dialogue[str(conversation_id)][current_diauogue_id].get('Auto Skip', false)
-	wait_for_responses = Dialogue[str(conversation_id)][current_diauogue_id].get('Choices') or Dialogue[str(conversation_id)][current_diauogue_id].get('reactions')
-	pause_at_ending_of_sentence =  Dialogue[str(conversation_id)][current_diauogue_id].get('pause at ending', true)
-	just_show_text = Dialogue[str(conversation_id)][current_diauogue_id].get('just text', false)
-	hide_profile = Dialogue[str(conversation_id)][current_diauogue_id].get('hide profile', false)
-	pause_at_index = Dialogue[str(conversation_id)][current_diauogue_id].get('pause')
-	emit_custom = Dialogue[str(conversation_id)][current_diauogue_id].get('Signal', [false])
+	Profile_index = int(in_current_dialogue.get('Face', 0)) 
+	Character_Voice.volume_db = in_current_dialogue.get('volume', 0.0)
+	skipable = in_current_dialogue.get('skipable', true)
+	play_voice = in_current_dialogue.get('voice', true)
+	auto_skip = in_current_dialogue.get('Auto Skip', false)
+	wait_for_responses = in_current_dialogue.get('Choices') or in_current_dialogue.get('reactions')
+	pause_at_ending_of_sentence =  in_current_dialogue.get('pause at ending', true)
+	just_show_text = in_current_dialogue.get('just text', false)
+	hide_profile = in_current_dialogue.get('hide profile', false)
+	pause_at_index = in_current_dialogue.get('pause')
+	emit_custom = in_current_dialogue.get('Signal', [false])
 	
 
 
@@ -143,11 +147,11 @@ func Set_Profile(): # runs befor options are set
 	Character_Voice.stream = load(Voice_path + "Default dialogue voice.wav")
 	#print("reset")
 	
-	if FileAccess.file_exists(Voice_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['Name']) + " voice.wav"):
-		Character_Voice.stream = load(Voice_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['Name']) + " voice.wav")
+	if FileAccess.file_exists(Voice_path + str(in_current_dialogue['Name']) + " voice.wav"):
+		Character_Voice.stream = load(Voice_path + str(in_current_dialogue['Name']) + " voice.wav")
 	
 	for animation in profile_animations.get_animation_list():
-		var Full_name = Dialogue[str(conversation_id)][current_diauogue_id]['Name'] + str(Profile_index)
+		var Full_name = in_current_dialogue['Name'] + str(Profile_index)
 		if animation.contains(Full_name):
 			#print(Full_name)
 			Character_Text.position.x = 320
@@ -163,13 +167,13 @@ func Set_Profile(): # runs befor options are set
 			
 
 func set_text():
-	if Dialogue[str(conversation_id)][current_diauogue_id].get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
-		dialogue_ui.position.x = Dialogue[str(conversation_id)][current_diauogue_id]['Screen position'][0]
-		dialogue_ui.position.y = Dialogue[str(conversation_id)][current_diauogue_id]['Screen position'][1]
+	if in_current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
+		dialogue_ui.position.x = in_current_dialogue['Screen position'][0]
+		dialogue_ui.position.y = in_current_dialogue['Screen position'][1]
 	
 		
-	Character_Text.text = Dialogue[str(conversation_id)][current_diauogue_id]['Text'] 
-	scrolling_text(Character_Text, Dialogue[str(conversation_id)][current_diauogue_id].get('Speed', 0.05)) # make the charcter text scroll after you set it
+	Character_Text.text = in_current_dialogue['Text'] 
+	scrolling_text(Character_Text, in_current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
 	
 
 
@@ -213,11 +217,11 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 	if text_node.visible_characters == text_node.text.length(): # if all the text is showen.
 		if Debug_output:print("finised")
 		# if that 'Responses' doesnt exist it will return null
-		if not current_diauogue_id  >= len(Dialogue[str(conversation_id)]) and Dialogue[str(conversation_id)][current_diauogue_id].get('Choices'):# when pressing the skip button to fast it crashesx
-			if Debug_output: print(Dialogue[str(conversation_id)][current_diauogue_id]['Choices'])
+		if not current_diauogue_id  >= len(Dialogue[str(conversation_id)]) and in_current_dialogue.get('Choices'):# when pressing the skip button to fast it crashesx
+			if Debug_output: print(in_current_dialogue['Choices'])
 			choices_exsist = true
-			Choice_Responces = Dialogue[str(conversation_id)][current_diauogue_id]['Responses']
-			Choice_Aftermath = Dialogue[str(conversation_id)][current_diauogue_id]['Aftermath']
+			Choice_Responces = in_current_dialogue['Responses']
+			Choice_Aftermath = in_current_dialogue['Aftermath']
 			show_choices()
 		
 		if emit_custom[0] == true: # play_at_end = true
@@ -233,15 +237,15 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 
 func show_choices():
 	# variables
-	var Choices:Array = Dialogue[str(conversation_id)][current_diauogue_id]['Choices']
+	var Choices:Array = in_current_dialogue['Choices']
 	# reset options text
 	for b in options.get_children():
 		if b is Button:
 			b.text = ""
 	
 	options.position = Vector2(200, 504) # default posioton
-	if Character_Text.text == "" and Choices[2] == "" and Choices[3] == "":
-		options.position = Vector2(200, 490)
+	if Choices[2] == "" and Choices[3] == "":
+		options.position = Vector2(200, 536)
 	
 	for b in options.get_children():
 		var index = b.get_index()
@@ -267,13 +271,16 @@ func show_choices():
 func show_reactions():
 	var react = 0
 	var move_index_up_by = 0
-	if Dialogue[str(conversation_id)][current_diauogue_id].get('reactions'):
+	if in_current_dialogue.get('reactions'):
 		for R in Reactions:
+			if move_index_up_by >= in_current_dialogue['reactions'].size(): break
+			
 			Reactions[react].get_child(1).text = ""
-			if FileAccess.file_exists(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0 + move_index_up_by]) + " Profile.png"):
-				Reactions[react].get_child(0).texture = load(Profile_path + str(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][0 + move_index_up_by]) + " Profile.png")
-				Reactions[react].get_child(0).frame = int(Dialogue[str(conversation_id)][current_diauogue_id]['reactions'][1 + move_index_up_by])
-			Reactions[react].get_child(1).text =  Dialogue[str(conversation_id)][current_diauogue_id].get('reactions', ["",0,""])[2 + move_index_up_by]
+			if FileAccess.file_exists(Profile_path + str(in_current_dialogue['reactions'][0 + move_index_up_by]) + " Profile.png"):
+				Reactions[react].get_child(0).texture = load(Profile_path + str(in_current_dialogue['reactions'][0 + move_index_up_by]) + " Profile.png")
+				Reactions[react].get_child(0).frame = int(in_current_dialogue['reactions'][1 + move_index_up_by])
+			
+			Reactions[react].get_child(1).text =  in_current_dialogue.get('reactions', ["",0,""])[2 + move_index_up_by]
 			react += 1
 			move_index_up_by += 3
 	

@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://Sprites/UI/Dezzy Profile.png" id="7_60k30"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t0gi1"]
-size = Vector2(1152, 136)
+size = Vector2(1152, 144)
 
 [sub_resource type="Animation" id="Animation_3xex3"]
 resource_name = "Dezzy0"
@@ -314,7 +314,7 @@ collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Overlap Detection"]
-position = Vector2(576, 572)
+position = Vector2(576, 576)
 shape = SubResource("RectangleShape2D_t0gi1")
 
 [node name="Dialogue UI" type="Control" parent="."]
@@ -328,7 +328,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="NinePatch text backround" type="NinePatchRect" parent="Dialogue UI/Sprites"]
+[node name="NinePatch Dialogue box" type="NinePatchRect" parent="Dialogue UI/Sprites"]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -337,12 +337,42 @@ anchor_bottom = 0.025
 offset_left = 200.0
 offset_top = 504.0
 offset_right = 951.44
-offset_bottom = 639.0
+offset_bottom = 647.0
 texture = ExtResource("2_taeu3")
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
+
+[node name="NinePatch name box" type="NinePatchRect" parent="Dialogue UI/Sprites"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.014
+anchor_bottom = 0.025
+offset_left = 208.0
+offset_top = 456.0
+offset_right = 391.44
+offset_bottom = 503.0
+texture = ExtResource("2_taeu3")
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+
+[node name="Character Name" type="RichTextLabel" parent="Dialogue UI/Sprites"]
+texture_filter = 1
+clip_contents = false
+layout_mode = 0
+offset_left = 216.0
+offset_top = 464.0
+offset_right = 384.0
+offset_bottom = 496.0
+bbcode_enabled = true
+text = "Default "
+scroll_active = false
+autowrap_mode = 2
+tab_size = 5
 
 [node name="Character Profile" type="Sprite2D" parent="Dialogue UI/Sprites"]
 unique_name_in_owner = true
@@ -350,7 +380,7 @@ position = Vector2(216, 520)
 centered = false
 hframes = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue UI"]
+[node name="Character Text" type="RichTextLabel" parent="Dialogue UI"]
 texture_filter = 1
 clip_contents = false
 layout_mode = 2
@@ -392,9 +422,9 @@ button_3 = NodePath("option 3")
 texture_filter = 1
 layout_mode = 2
 offset_left = 184.0
-offset_top = 80.0
+offset_top = 56.0
 offset_right = 376.0
-offset_bottom = 112.0
+offset_bottom = 88.0
 text = "Yes"
 alignment = 0
 
@@ -403,9 +433,9 @@ visible = false
 texture_filter = 1
 layout_mode = 2
 offset_left = 504.0
-offset_top = 80.0
+offset_top = 56.0
 offset_right = 696.0
-offset_bottom = 112.0
+offset_bottom = 88.0
 text = "No"
 alignment = 0
 
@@ -413,10 +443,10 @@ alignment = 0
 visible = false
 texture_filter = 1
 layout_mode = 2
-offset_left = 184.0
-offset_top = 16.0
-offset_right = 376.0
-offset_bottom = 48.0
+offset_left = 304.0
+offset_top = 8.0
+offset_right = 496.0
+offset_bottom = 40.0
 text = "Maybe"
 alignment = 0
 
@@ -424,10 +454,10 @@ alignment = 0
 visible = false
 texture_filter = 1
 layout_mode = 2
-offset_left = 504.0
-offset_top = 16.0
-offset_right = 696.0
-offset_bottom = 48.0
+offset_left = 304.0
+offset_top = 96.0
+offset_right = 496.0
+offset_bottom = 128.0
 text = "IDK"
 alignment = 0
 
