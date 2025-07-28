@@ -9,7 +9,7 @@ class_name Player
 @onready var image = $Image
 # Movement
 func _physics_process(_delta):
-	if Diauloge_Systerm.Deactivated == true: 
+	if Diauloge_Systerm.Deactivated == true and not Diauloge_Systerm.can_move: 
 		SPEED = 0
 	else: 
 		SPEED = 10

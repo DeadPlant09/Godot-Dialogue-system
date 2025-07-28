@@ -21,6 +21,8 @@ size = Vector2(130, 128)
 
 [node name="Room 1" type="Node2D"]
 
+[node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
+
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
 position = Vector2(1050, 348)
 
@@ -46,8 +48,6 @@ Scene = "res://Scene's/Area's/Room 2.tscn"
 position = Vector2(1184, 326)
 shape = SubResource("RectangleShape2D_drkqx")
 
-[node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
-
 [node name="Move rooms Cutscene" parent="." instance=ExtResource("8_drkqx")]
 position = Vector2(1121, 319)
 collision_mask = 2
@@ -55,7 +55,6 @@ Conversation = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene"]
 shape = SubResource("RectangleShape2D_sckux")
-disabled = true
 
 [node name="Godot Icon" type="Sprite2D" parent="."]
 position = Vector2(780, 190)

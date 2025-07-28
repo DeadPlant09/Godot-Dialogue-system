@@ -1,6 +1,6 @@
 {
 	"1":[
-	{"Name": "Deadplant", "Text": "* Hello, and welcome to my [color=green] dialogue system[/color].", "pause":[20]},
+	{"Name": "Deadplant", "Text": "* Hello, and welcome to my [color=green] dialogue system[/color].", "pause":[20], "can move": true},
 	{"Name": "Deadplant", "Text": "* If you need help open my Guide file, the files\n	 you need to move to your own project are in\n	 there."},
 	{"Name": "Deadplant", "Text": "* But if you just want the basic run down then\n	 press \"Z\" to interact which can be changed\n	 from the default input map and \"X\" to skip\n	 dialouge which can be changed from the\n	custom input map in the settings"},
 	{"Name": "Deadplant", "Text": "* To run dialouge easly use the \"Run_dialouge\" method but besides that Enjoy!"}

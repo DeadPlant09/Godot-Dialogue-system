@@ -40,6 +40,7 @@ var Profile_index = 1
 # option variables
 @export var Debug_output:bool 
 var in_Cutscene = false
+var can_move = false
 var emit_custom:Array = [false]:
 	set(new_value):
 		emit_custom = new_value # nessasary
@@ -129,10 +130,11 @@ func Next_Dialogue():
 func set_up_dialogue_options():
 	Profile_index = int(in_current_dialogue.get('Face', 0)) 
 	Character_Voice.volume_db = in_current_dialogue.get('volume', 0.0)
+	can_move = in_current_dialogue.get('can move', false)
 	skipable = in_current_dialogue.get('skipable', true)
 	play_voice = in_current_dialogue.get('voice', true)
 	auto_skip = in_current_dialogue.get('Auto Skip', false)
-	wait_for_responses = in_current_dialogue.get('Choices') or in_current_dialogue.get('reactions')
+	wait_for_responses = in_current_dialogue.get('Choices') or in_current_dialogue.get('Reactions')
 	pause_at_ending_of_sentence =  in_current_dialogue.get('pause at ending', true)
 	just_show_text = in_current_dialogue.get('just text', false)
 	hide_profile = in_current_dialogue.get('hide profile', false)
@@ -145,7 +147,8 @@ func Set_Profile(): # runs befor options are set
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
 	# reset the postion and size to defaults 
 	Character_Voice.stream = load(Voice_path + "Default dialogue voice.wav")
-	#print("reset")
+	
+	Sprites.get_child(2).text = in_current_dialogue["Name"]
 	
 	if FileAccess.file_exists(Voice_path + str(in_current_dialogue['Name']) + " voice.wav"):
 		Character_Voice.stream = load(Voice_path + str(in_current_dialogue['Name']) + " voice.wav")
@@ -171,10 +174,9 @@ func set_text():
 		dialogue_ui.position.x = in_current_dialogue['Screen position'][0]
 		dialogue_ui.position.y = in_current_dialogue['Screen position'][1]
 	
-		
 	Character_Text.text = in_current_dialogue['Text'] 
 	scrolling_text(Character_Text, in_current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
-	
+
 
 
 func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
@@ -208,7 +210,10 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 			
 			play_voice = true
 		if Debug_output:print(e)
+		
 		await get_tree().create_timer(Speed).timeout #every  0.05 seconds times the length of the text 
+		
+		Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24
 		
 		if text_node.visible_characters >= parsed_text_length or Input.is_action_pressed("Skip_Text") and skipable and not auto_skip: # if the text is skiped or all the parse text it shown
 			text_node.visible_characters = text_node.text.length() # set the visable characters to the full length
@@ -231,7 +236,7 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		has_dialogue_ran = true
 		
 		# after dialouge 
-		if not choices_exsist: show_reactions() #if there are choices there can be any reactions
+		if not choices_exsist: show_reactions() #if there are choices there can be any Reactions
 		if auto_skip: Next_Dialogue()
 	
 
@@ -255,9 +260,11 @@ func show_choices():
 				options.show()
 				options.get_child(index).visible = true
 				options.get_child(index).text = Choices[index]
-				if Choices.size() == 1:
-					options.get_child(0).grab_focus()
+				
+				if Choices.size() == 1: options.get_child(0).grab_focus()
+				
 				if Debug_output: print(options.get_child(index).text)
+				
 				if Choice_Responces[index] != 0:
 					options.get_child(index).pressed.connect(func():
 						change_to_choice_dialouge(index)
@@ -271,16 +278,16 @@ func show_choices():
 func show_reactions():
 	var react = 0
 	var move_index_up_by = 0
-	if in_current_dialogue.get('reactions'):
+	if in_current_dialogue.get('Reactions'):
 		for R in Reactions:
-			if move_index_up_by >= in_current_dialogue['reactions'].size(): break
+			if move_index_up_by >= in_current_dialogue['Reactions'].size(): break
 			
 			Reactions[react].get_child(1).text = ""
-			if FileAccess.file_exists(Profile_path + str(in_current_dialogue['reactions'][0 + move_index_up_by]) + " Profile.png"):
-				Reactions[react].get_child(0).texture = load(Profile_path + str(in_current_dialogue['reactions'][0 + move_index_up_by]) + " Profile.png")
-				Reactions[react].get_child(0).frame = int(in_current_dialogue['reactions'][1 + move_index_up_by])
+			if FileAccess.file_exists(Profile_path + str(in_current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png"):
+				Reactions[react].get_child(0).texture = load(Profile_path + str(in_current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png")
+				Reactions[react].get_child(0).frame = int(in_current_dialogue['Reactions'][1 + move_index_up_by])
 			
-			Reactions[react].get_child(1).text =  in_current_dialogue.get('reactions', ["",0,""])[2 + move_index_up_by]
+			Reactions[react].get_child(1).text =  in_current_dialogue.get('Reactions', ["",0,""])[2 + move_index_up_by]
 			react += 1
 			move_index_up_by += 3
 	
@@ -293,7 +300,7 @@ func show_reactions():
 
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
 	if visible == false:
-		dialogue_ui.position.y = -472
+		dialogue_ui.position.y = -456
 
 func _on_overlap_detection_body_exited(body: Node2D) -> void:
 	if visible == false:
@@ -302,7 +309,7 @@ func _on_overlap_detection_body_exited(body: Node2D) -> void:
 
 func _on_overlap_detection_area_entered(area: Area2D) -> void:
 	if  visible == false:
-		dialogue_ui.position.y = -472
+		dialogue_ui.position.y = -456
 
 func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
 	conversation_id = int(Choice_Responces[choice])

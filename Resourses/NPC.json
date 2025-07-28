@@ -3,7 +3,7 @@
 	{"Name": "Prisoner", "Text": "* Sir I need your help!"},
 	{"Name": "Dezzy", "Text": "* ...You need my help?"},
 	{"Name": "Prisoner", "Text": "* Yeah! I accidentally crashed into my prison,\n	 and I don't want to spend another 20 years\n	ther for playing GTA® real life!", "pause at ending": false},
-	{"Name": "Dezzy", "Text": "* I dunno this shit is kind of on you", "reactions": ["Prisoner", 0, "F***K!"]},
+	{"Name": "Dezzy", "Text": "* I dunno this shit is kind of on you", "Reactions": ["Prisoner", 0, "F***K!"]},
 	],
 	"2":[
 		{"Name": "Prisoner", "Text": "* Well fine! I dont need your help anyway \n*	Loser"},

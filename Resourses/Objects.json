@@ -4,7 +4,7 @@
 		{"Name": "Emoji", "Text": "* Did you know the earth is [wave]flat?", "Choices": ["Sure","Your crazy","",""], "Responses": [2,4,0,0], "Aftermath": [3,5,0,0]} 
 	],
 	"2":[
-		{"Name": "Dezzy", "Text": "* \"of course!\"", "Screen position": [0, -472]},
+		{"Name": "Dezzy", "Text": "* \"of course!\"", "Screen position": [0, -456]},
 		{"Name": "Dezzy", "Text": "* kind of how the sky is red!", "Screen position": [0, 0]}
 	],
 	"3":[
@@ -17,7 +17,7 @@
 		{"Name": "Dezzy", "Text": "* No its not you tinfoil hat, no life,\n	  basement dweller"}
 	],
 	"5":[
-		{"Name": "Emoji", "Text":"* Oh dont worry it will be once I run you over", "Skipable": false},
+		{"Name": "Emoji", "Text":"* Oh dont worry it will be once I run you over", "skipable": false},
 		{"Name": "Dezzy", "Text":"* You know holding a gun that can launch you to space? \n try anything and you see whos right"}
 	],
 	"6":[
@@ -28,10 +28,10 @@
 		{"Name":"Godot icon", "Text":"* Pft, spherehead's... wait."}
 	],
 	"8":[
-		{"Name":"Godot icon", "Text":"* did you know the earth is?-","Speed": 0.03,"pause at ending": false, "Auto Skip": true},
+		{"Name":"Godot icon", "Text":"* did you know the earth is?-","Speed": 0.03,"pause at ending": false, "auto skip": true},
 		{"Name":"Dezzy", "Text":"* Im going to stop you right there\n	because ive hered this all before from\n	 a talking emoji."}
 	],
 	"9":[
-		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!", "Emoji", 0, "* I can hear\n	from there and\n	 your wrong!"]}
+		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "Reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!", "Emoji", 0, "* I can hear\n	from there and\n	 your wrong!"]}
 	]
 }
