@@ -14,7 +14,7 @@ extends Control
 
 func _process(_delta: float) -> void:
 	if dialoue_choices == true:
-		if Diauloge_Systerm.choices_exsist == true and Diauloge_Systerm.has_dialogue_ran == true: # fix this moving when a character without chocies is speaking?
+		if Diauloge_Systerm.choices_exsist == true and Diauloge_Systerm.is_dialogue_runing == false: # fix this moving when a character without chocies is speaking?
 			if button_0.text != '' and not button_0.has_focus() and Input.is_action_just_pressed("Left"):
 				button_0.grab_focus()
 			if button_1.text != '' and not button_1.has_focus() and Input.is_action_just_pressed("Right"):

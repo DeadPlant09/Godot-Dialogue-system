@@ -2,6 +2,9 @@ class_name dialoguesystemnode extends CanvasLayer
 
 # signal
 signal dialogue_finished
+signal signal_wait_finshed
+
+# custom signals
 signal update_godot_dialogue
 #node variables
 @onready var dialogue_ui = $"Dialogue UI"
@@ -28,13 +31,12 @@ var Ending_Conversation = Default_Ending_Conversation
 var conversation_id = Default_Conversation_ID
 var Default_Dialogue_ID = 0
 var current_diauogue_id = Default_Dialogue_ID
-var in_current_dialogue 
+var current_dialogue 
 var choices_exsist = false
 var Choice_Responces:Array
 var Choice_Aftermath:Array
 var Deactivated = false
-var is_dialogue_runing = true
-var has_dialogue_ran = false
+var is_dialogue_runing = false
 var Profile_index = 1
 
 # option variables
@@ -45,6 +47,7 @@ var emit_custom:Array = [false]:
 	set(new_value):
 		emit_custom = new_value # nessasary
 		if emit_custom.size() == 2 and emit_custom[0] == false: # play_at_end = false
+			print("emit_custom")
 			emit_signal(emit_custom[1])
 var default_volume_db = 0.0
 var skipable = true 
@@ -57,24 +60,30 @@ var pause_at_index = []
 var silent_characters = [" ","!",",", "-", ".", "?",";", '"', "©", "™", "[", "]"]
 var just_show_text = false
 var hide_profile = false
+var hide_name = false
+var hidden_names = ["Deadplant", "Narrarator"]
+var wait_signal_finshed = false:
+	set(new_value):
+		wait_signal_finshed = new_value # nessasary
+		signal_wait_finshed.emit()
 
 func _ready() -> void:
 	if FileAccess.file_exists(temp_save_Path): DirAccess.remove_absolute(temp_save_Path)
 	hide()
 
-func Run_dialouge(file:String, Conv:int): # To run certin dialouge simpley
+
+func Run_dialouge(file:String, Conv:int): # To run certin dialouge simply
 	Json_file = file
 	conversation_id = Conv
 	Ending_Conversation = Conv
 	in_Cutscene = true
 	start_dialogue()
 
+
 func start_dialogue() -> void: 
 	if Debug_output: print("Deactivated: "+ str(Deactivated))
 	if Deactivated: return
 	
-	Sprites.visible = not just_show_text
-	Sprites.get_child(3).visible = not hide_profile
 	show_responce.play("RESET") # so the responce hides when you run the same dialouge 
 	show()
 	Deactivated = true # so next time it enters the function it wit imeditly exit
@@ -87,6 +96,7 @@ func start_dialogue() -> void:
 	Next_Dialogue()
 	
 
+
 func load_Json(filepath: String):
 	if FileAccess.file_exists(filepath):
 		var data_from_file = FileAccess.open(filepath, FileAccess.READ)
@@ -96,15 +106,16 @@ func load_Json(filepath: String):
 
 
 func _input(event: InputEvent) -> void:
-	if Detect_Player or in_Cutscene and not is_dialogue_runing:
-		if has_dialogue_ran and event.is_action_pressed("Continue") and not wait_for_responses:
-			Next_Dialogue()
+	if not Detect_Player or not in_Cutscene and is_dialogue_runing: return
+	if event.is_action_pressed("Continue") and not wait_for_responses:
+		Next_Dialogue()
 		
 
 
 func Next_Dialogue():
 	current_diauogue_id += 1
 	options.hide()
+	print("done")
 	
 	if current_diauogue_id  >= len(Dialogue[str(conversation_id)]): # if thers no more dialogue
 		Deactivated = false
@@ -117,30 +128,38 @@ func Next_Dialogue():
 		
 		return # to exit out the function
 	
-	in_current_dialogue = Dialogue[str(conversation_id)][current_diauogue_id]
+	current_dialogue = Dialogue[str(conversation_id)][current_diauogue_id]
 	is_dialogue_runing = true
-	has_dialogue_ran = false
 	
 	# seting up dialogue
 	set_up_dialogue_options()
+	
+	if emit_custom[0] == false and wait_signal_finshed:
+		hide()
+		await signal_wait_finshed
+		show()
+	
 	Set_Profile()
 	set_text()
+	print("done waiting")
+
 
 
 func set_up_dialogue_options():
-	Profile_index = int(in_current_dialogue.get('Face', 0)) 
-	Character_Voice.volume_db = in_current_dialogue.get('volume', 0.0)
-	can_move = in_current_dialogue.get('can move', false)
-	skipable = in_current_dialogue.get('skipable', true)
-	play_voice = in_current_dialogue.get('voice', true)
-	auto_skip = in_current_dialogue.get('Auto Skip', false)
-	wait_for_responses = in_current_dialogue.get('Choices') or in_current_dialogue.get('Reactions')
-	pause_at_ending_of_sentence =  in_current_dialogue.get('pause at ending', true)
-	just_show_text = in_current_dialogue.get('just text', false)
-	hide_profile = in_current_dialogue.get('hide profile', false)
-	pause_at_index = in_current_dialogue.get('pause')
-	emit_custom = in_current_dialogue.get('Signal', [false])
-	
+	Profile_index = int(current_dialogue.get('Face', 0)) 
+	Character_Voice.volume_db = current_dialogue.get('volume', 0.0)
+	can_move = current_dialogue.get('can move', false)
+	skipable = current_dialogue.get('skipable', true)
+	play_voice = current_dialogue.get('voice', true)
+	auto_skip = current_dialogue.get('Auto Skip', false)
+	wait_for_responses = current_dialogue.get('Choices') or current_dialogue.get('Reactions')
+	pause_at_ending_of_sentence =  current_dialogue.get('pause at ending', true)
+	just_show_text = current_dialogue.get('just text', false)
+	hide_profile = current_dialogue.get('hide profile', false)
+	pause_at_index = current_dialogue.get('pause')
+	hide_name = current_dialogue.get('hide name', false)
+	emit_custom = current_dialogue.get('Signal', [false])
+	wait_signal_finshed = current_dialogue.get('wait signal', false)
 
 
 func Set_Profile(): # runs befor options are set
@@ -148,34 +167,45 @@ func Set_Profile(): # runs befor options are set
 	# reset the postion and size to defaults 
 	Character_Voice.stream = load(Voice_path + "Default dialogue voice.wav")
 	
-	Sprites.get_child(2).text = in_current_dialogue["Name"]
+	Sprites.visible = not just_show_text
+	Sprites.get_child(3).visible = not hide_profile
 	
-	if FileAccess.file_exists(Voice_path + str(in_current_dialogue['Name']) + " voice.wav"):
-		Character_Voice.stream = load(Voice_path + str(in_current_dialogue['Name']) + " voice.wav")
+	for names in hidden_names:
+		if current_dialogue["Name"] == names: 
+			hide_name = true
+			break
+	
+	Sprites.get_child(1).visible = not hide_name
+	Sprites.get_child(2).visible = not hide_name
+	
+	if FileAccess.file_exists(Voice_path + str(current_dialogue['Name']) + " voice.wav"):
+		Character_Voice.stream = load(Voice_path + str(current_dialogue['Name']) + " voice.wav")
 	
 	for animation in profile_animations.get_animation_list():
-		var Full_name = in_current_dialogue['Name'] + str(Profile_index)
+		var Full_name = current_dialogue['Name'] + str(Profile_index)
 		if animation.contains(Full_name):
-			#print(Full_name)
+			if Debug_output: print("animation: " + Full_name)
 			Character_Text.position.x = 320
 			Character_Text.size.x = 608
 			profile_animations.play(Full_name, -1, 0.0)
 			break # so it donet cheak for other animations after it found the spisific one
 		else:
-			#print("Full_name")
+			if Debug_output: print("animation: "+ "RESET")
 			profile_animations.play("RESET")
 			Character_Text.position.x = 208
 			Character_Text.size.x = 720
-			
-			
+
 
 func set_text():
-	if in_current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
-		dialogue_ui.position.x = in_current_dialogue['Screen position'][0]
-		dialogue_ui.position.y = in_current_dialogue['Screen position'][1]
 	
-	Character_Text.text = in_current_dialogue['Text'] 
-	scrolling_text(Character_Text, in_current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
+	Sprites.get_child(2).text = current_dialogue.get('Name', "")
+	
+	if current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
+		dialogue_ui.position.x = current_dialogue['Screen position'][0]
+		dialogue_ui.position.y = current_dialogue['Screen position'][1]
+	
+	Character_Text.text = current_dialogue.get('Text', "") 
+	scrolling_text(Character_Text, current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
 
 
 
@@ -220,74 +250,77 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 			break # exit out of for loop
 	
 	if text_node.visible_characters == text_node.text.length(): # if all the text is showen.
-		if Debug_output:print("finised")
+		if Debug_output: print("finised dialogue")
 		# if that 'Responses' doesnt exist it will return null
-		if not current_diauogue_id  >= len(Dialogue[str(conversation_id)]) and in_current_dialogue.get('Choices'):# when pressing the skip button to fast it crashesx
-			if Debug_output: print(in_current_dialogue['Choices'])
+		if not current_diauogue_id  >= len(Dialogue[str(conversation_id)]) and current_dialogue.get('Choices'):# when pressing the skip button to fast it crashesx
+			if Debug_output: print(current_dialogue['Choices'])
+			
 			choices_exsist = true
-			Choice_Responces = in_current_dialogue['Responses']
-			Choice_Aftermath = in_current_dialogue['Aftermath']
+			Choice_Responces = current_dialogue['Responses']
+			Choice_Aftermath = current_dialogue['Aftermath']
 			show_choices()
 		
 		if emit_custom[0] == true: # play_at_end = true
 			emit_signal(emit_custom[1])
 		
 		is_dialogue_runing = false
-		has_dialogue_ran = true
 		
 		# after dialouge 
 		if not choices_exsist: show_reactions() #if there are choices there can be any Reactions
 		if auto_skip: Next_Dialogue()
-	
+
 
 func show_choices():
 	# variables
-	var Choices:Array = in_current_dialogue['Choices']
+	var Choices:Array = current_dialogue['Choices']
 	# reset options text
 	for b in options.get_children():
 		if b is Button:
 			b.text = ""
-	
+	# if move_index_up_by >= current_dialogue['Reactions'].size(): break
 	options.position = Vector2(200, 504) # default posioton
-	if Choices[2] == "" and Choices[3] == "":
+	
+	if not Character_Text.text == "":
 		options.position = Vector2(200, 536)
 	
 	for b in options.get_children():
+		
+		if not b is Button: return
 		var index = b.get_index()
-		if b is Button:
-			options.get_child(index).visible = false
-			if not Choices[index] == "": # Make sure theres a reaction text
-				options.show()
-				options.get_child(index).visible = true
-				options.get_child(index).text = Choices[index]
-				
-				if Choices.size() == 1: options.get_child(0).grab_focus()
-				
-				if Debug_output: print(options.get_child(index).text)
-				
-				if Choice_Responces[index] != 0:
-					options.get_child(index).pressed.connect(func():
-						change_to_choice_dialouge(index)
-						) 
-				else: 
-					if Debug_output: print("choice " + str(b.get_index()) + " exit")
-					dialogue_finished.emit()
-					return # to exit out the function
+		options.get_child(index).visible = false
+		
+		if Choices.size() > index and not Choices[index] == "": # Make sure theres a reaction text
+			options.show()
+			options.get_child(index).visible = true
+			options.get_child(index).text = Choices[index]
+			
+			if Choices.size() == 1: options.get_child(0).grab_focus()
+			
+			if Debug_output: print(options.get_child(index).text)
+			
+			if Choice_Responces[index] != 0:
+				options.get_child(index).pressed.connect(func():
+					change_to_choice_dialouge(index)
+					) 
+			else: 
+				if Debug_output: print("choice " + str(b.get_index()) + " exit")
+				dialogue_finished.emit()
+				return # to exit out the function
 
 
 func show_reactions():
 	var react = 0
 	var move_index_up_by = 0
-	if in_current_dialogue.get('Reactions'):
+	if current_dialogue.get('Reactions'):
 		for R in Reactions:
-			if move_index_up_by >= in_current_dialogue['Reactions'].size(): break
+			if move_index_up_by >= current_dialogue['Reactions'].size(): break
 			
 			Reactions[react].get_child(1).text = ""
-			if FileAccess.file_exists(Profile_path + str(in_current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png"):
-				Reactions[react].get_child(0).texture = load(Profile_path + str(in_current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png")
-				Reactions[react].get_child(0).frame = int(in_current_dialogue['Reactions'][1 + move_index_up_by])
+			if FileAccess.file_exists(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png"):
+				Reactions[react].get_child(0).texture = load(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png")
+				Reactions[react].get_child(0).frame = int(current_dialogue['Reactions'][1 + move_index_up_by])
 			
-			Reactions[react].get_child(1).text =  in_current_dialogue.get('Reactions', ["",0,""])[2 + move_index_up_by]
+			Reactions[react].get_child(1).text =  current_dialogue.get('Reactions', ["",0,""])[2 + move_index_up_by]
 			react += 1
 			move_index_up_by += 3
 	
@@ -295,12 +328,12 @@ func show_reactions():
 		show_responce.play("slide in")
 		await show_responce.animation_finished
 		wait_for_responses = false # to make sure that it only runs after "slide in", in no other animation 
-	
 
 
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
 	if visible == false:
 		dialogue_ui.position.y = -456
+
 
 func _on_overlap_detection_body_exited(body: Node2D) -> void:
 	if visible == false:
@@ -311,6 +344,7 @@ func _on_overlap_detection_area_entered(area: Area2D) -> void:
 	if  visible == false:
 		dialogue_ui.position.y = -456
 
+
 func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
 	conversation_id = int(Choice_Responces[choice])
 	if Debug_output: print("choice " + str(choice) + ", conversation id: " + str(conversation_id))
@@ -319,6 +353,7 @@ func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  thi
 	choices_exsist = false
 	Deactivated = false
 	start_dialogue()
+
 
 func _on_overlap_detection_area_exited(area: Area2D) -> void:
 	if visible == false:

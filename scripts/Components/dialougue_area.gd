@@ -5,7 +5,9 @@ class_name DialogueArea
 @export var starting_conversation = 1
 @export var ending_conversation = 0 # has to be an int
 @export var connect_signal:String
-@export var save_conversation:bool
+@export var permennt_path = "res://save_conv_per.cfg"
+enum SAVES {empty, Temporary, Permanent}
+@export var save_conversation:SAVES = SAVES.empty
 @export var Debug = false
  
 var detect_player:bool = false
@@ -13,8 +15,9 @@ var config = ConfigFile.new()
 
 func _ready() -> void:
 	collision_layer = 0
-	if save_conversation: Load_converstion() 
 	if Diauloge_Systerm.has_signal(connect_signal): Diauloge_Systerm.connect(connect_signal, Signal_actions)
+	if save_conversation == SAVES.Temporary: Load_converstion(Diauloge_Systerm.temp_save_Path) 
+	if save_conversation == SAVES.Permanent: Load_converstion(permennt_path)
 	if starting_conversation >= 1 and ending_conversation <= 0: ending_conversation = starting_conversation
 
 
@@ -32,8 +35,8 @@ func _on_body_exited(body: Node2D) -> void: # if the player just exited this bod
 		detect_player = false # turn the player cheack to false
 		collision_layer = 0
 		update_current_dialogue()
-		if save_conversation:
-			Save_converstion()
+		if save_conversation == SAVES.Temporary: Save_converstion(Diauloge_Systerm.temp_save_Path)
+		if save_conversation == SAVES.Permanent: Save_converstion(permennt_path)
 	
 
 
@@ -47,14 +50,14 @@ func _input(event: InputEvent) -> void:
 	
 
 
-func Save_converstion():
-	if FileAccess.file_exists(Diauloge_Systerm.temp_save_Path): config.load(Diauloge_Systerm.temp_save_Path) 
+func Save_converstion(path:String):
+	if FileAccess.file_exists(path): config.load(path) 
 	config.set_value("conversations", get_parent().name, [starting_conversation, ending_conversation])
-	config.save(Diauloge_Systerm.temp_save_Path)
+	config.save(path)
 
 
-func Load_converstion():
-	if config.load(Diauloge_Systerm.temp_save_Path)  != OK: return # using the save path to load the save file 
+func Load_converstion(path:String):
+	if config.load(path) != OK: return # using the save path to load the save file 
 	starting_conversation = config.get_value("conversations", get_parent().name, [1])[0]
 	ending_conversation = config.get_value("conversations", get_parent().name, [1, 0])[1]
 
@@ -80,11 +83,16 @@ func reset_dialogue():
 	# Reset the value of Diauloge_Systerm current Ending_Conversation 
 	Diauloge_Systerm.Ending_Conversation = Diauloge_Systerm.Default_Ending_Conversation 
 
+func run_signal_actions(action: String): # to run a signal action without runing a signal
+	connect_signal = action 
+	Signal_actions()
 
 func Signal_actions():
-	if Debug: print("connected" + get_parent().name)
-	if connect_signal == "update_godot_dialogue":
+	if Debug: print("connected_custom " + get_parent().name)
+	if connect_signal == "update_godot_dialogue" and get_parent().name == "Godot Icon":
 		if starting_conversation == 6:
 			starting_conversation = 8
 			ending_conversation = 9
-	
+	await get_tree().create_timer(3).timeout
+	if Diauloge_Systerm.signal_wait_finshed: Diauloge_Systerm.wait_signal_finshed = false
+	print("done")
