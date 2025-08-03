@@ -63,7 +63,7 @@ func Load_converstion(path:String):
 
 
 func update_current_dialogue():
-	starting_conversation = Diauloge_Systerm.conversation_id # set the current conversation_id to the Diauloge_Systerm current conversation_id
+	starting_conversation = Diauloge_Systerm.Conversation_id # set the current Conversation_id to the Diauloge_Systerm current Conversation_id
 	ending_conversation = Diauloge_Systerm.Ending_Conversation
 	if Debug:print(get_parent().name + " saving_dialouge")
 
@@ -72,14 +72,14 @@ func set_current_dialogue():
 	if not ending_conversation < 0: # the conversation can't end with 0
 		Diauloge_Systerm.Ending_Conversation = ending_conversation
 	if not starting_conversation < 1 and not starting_conversation > ending_conversation:
-		# And set the Diauloge_Systerm.conversation_id to our conversation_id
-		Diauloge_Systerm.conversation_id = starting_conversation
+		# And set the Diauloge_Systerm.Conversation_id to our Conversation_id
+		Diauloge_Systerm.Conversation_id = starting_conversation
 	
 
 
 func reset_dialogue():
-	# Reset the value of Diauloge_Systerm current conversation_id
-	Diauloge_Systerm.conversation_id = Diauloge_Systerm.Default_Conversation_ID
+	# Reset the value of Diauloge_Systerm current Conversation_id
+	Diauloge_Systerm.Conversation_id = Diauloge_Systerm.Default_Conversation_ID
 	# Reset the value of Diauloge_Systerm current Ending_Conversation 
 	Diauloge_Systerm.Ending_Conversation = Diauloge_Systerm.Default_Ending_Conversation 
 
@@ -93,6 +93,5 @@ func Signal_actions():
 		if starting_conversation == 6:
 			starting_conversation = 8
 			ending_conversation = 9
-	await get_tree().create_timer(3).timeout
 	if Diauloge_Systerm.signal_wait_finshed: Diauloge_Systerm.wait_signal_finshed = false
-	print("done")
+	

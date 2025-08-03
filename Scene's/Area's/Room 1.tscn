@@ -24,7 +24,7 @@ size = Vector2(130, 128)
 [node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
 
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
-position = Vector2(1050, 348)
+position = Vector2(1061, 316)
 
 [node name="Emoji" type="Sprite2D" parent="."]
 position = Vector2(323, 168)

@@ -303,7 +303,7 @@ _data = {
 &"slide in": SubResource("Animation_4waeo")
 }
 
-[node name="Diuloge systerm" type="CanvasLayer"]
+[node name="Dialogue systerm" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_ii7p6")
 Profile_path = "res://Sprites/UI/"
@@ -375,7 +375,6 @@ autowrap_mode = 0
 tab_size = 5
 
 [node name="Character Profile" type="Sprite2D" parent="Dialogue UI/Sprites"]
-unique_name_in_owner = true
 position = Vector2(216, 520)
 centered = false
 hframes = 3
@@ -400,7 +399,7 @@ visible_ratio = 0.0
 stream = ExtResource("3_8r266")
 bus = &"SFX"
 
-[node name="Options" type="Control" parent="Dialogue UI" node_paths=PackedStringArray("scelect_icon", "button_0", "button_1", "button_2", "button_3")]
+[node name="Options" type="Control" parent="Dialogue UI" node_paths=PackedStringArray("scelect_icon")]
 visible = false
 layout_mode = 1
 anchor_top = 0.789
@@ -414,10 +413,6 @@ theme = ExtResource("4_3aq4e")
 script = ExtResource("4_nnv7x")
 dialoue_choices = true
 scelect_icon = NodePath("Scelect icon")
-button_0 = NodePath("option 0")
-button_1 = NodePath("option 1")
-button_2 = NodePath("option 2")
-button_3 = NodePath("option 3")
 
 [node name="option 0" type="Button" parent="Dialogue UI/Options"]
 texture_filter = 1
@@ -572,12 +567,14 @@ scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
 
-[node name="Profile animations" type="AnimationPlayer" parent="."]
+[node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_eva1e")
 }
 
-[node name="Show Responce" type="AnimationPlayer" parent="."]
+[node name="Show Responce" type="AnimationPlayer" parent="Dialogue UI"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_i8n3f")
 }

@@ -18,7 +18,7 @@ config/icon="res://Sprites/Objects/dialogue system Icon.png"
 
 [autoload]
 
-Diauloge_Systerm="*res://Scene's/UI/diauloge systerm.tscn"
+Diauloge_Systerm="*res://Scene's/UI/Dialogue Systerm.tscn"
 
 [display]
 

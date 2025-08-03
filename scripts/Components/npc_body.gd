@@ -29,9 +29,7 @@ func npc_animations():
 		Sprite_animation.play(Sprite_animation.name + str(talk_index))
 	else: # if the npc is talking
 		Sprite_animation.play("Talk" + str(talk_index))
-		if Diauloge_Systerm.is_dialogue_runing: # if the npc is currently talking
-			Sprite_animation.play("Talk" + str(talk_index))
-		else: # if the npc is finsished talking
+		if not Diauloge_Systerm.Is_Dialogue_Runing: # if the npc is not currently talking
 			Sprite_animation.pause()
 			Sprite_animation.play("Talk" + str(talk_index))
 
@@ -44,4 +42,4 @@ func run_signal_actions(action: String): # to run a signal action without runing
 func Signal_actions():
 	if connect_signal == "update_godot_dialogue":
 		print("connect")
-	
+	if Diauloge_Systerm.signal_wait_finshed: Diauloge_Systerm.wait_signal_finshed = false
