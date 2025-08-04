@@ -24,7 +24,7 @@ size = Vector2(130, 128)
 [node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
 
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
-position = Vector2(1061, 316)
+position = Vector2(1050, 348)
 
 [node name="Emoji" type="Sprite2D" parent="."]
 position = Vector2(323, 168)
@@ -34,7 +34,6 @@ texture = ExtResource("3_itob3")
 [node name="dialougue_area" parent="Emoji" instance=ExtResource("4_fb8ut")]
 Custom_Json_file_0 = "res://Resourses/Objects.json"
 save_conversation = 1
-Debug = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Emoji/dialougue_area"]
 shape = SubResource("CircleShape2D_ui07i")

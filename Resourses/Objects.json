@@ -28,10 +28,10 @@
 		{"Name":"Godot icon", "Text":"* Pft, spherehead's... wait."}
 	],
 	"8":[
-		{"Name":"Godot icon", "Text":"* did you know the earth is?-", "Speed": 0.03, "pause at ending": false, "auto skip": true},
+		{"Name":"Godot icon", "Text":"* did you know the earth is?-","Speed": 0.03,"pause at ending": false, "auto skip": true},
 		{"Name":"Dezzy", "Text":"* Im going to stop you right there\n	because ive hered this all before from\n	 a talking emoji."}
 	],
 	"9":[
-		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "Reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!", "Emoji", 0, "* I can hear\n	from there and\n	 your wrong!"]}
+		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "name_2": "Emoji", "text_2": "* I can hear you form over there and your wrong!?", "Reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!"]}
 	]
 }

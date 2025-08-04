@@ -66,6 +66,9 @@ var wait_signal_finshed = false:
 	set(new_value):
 		wait_signal_finshed = new_value # nessasary
 		signal_wait_finshed.emit()
+var text_2
+var name_2
+var face_2
 
 func _ready() -> void:
 	if FileAccess.file_exists(temp_save_Path): DirAccess.remove_absolute(temp_save_Path)
@@ -113,6 +116,7 @@ func _input(event: InputEvent) -> void:
 
 func Next_Dialogue():
 	Current_Diauogue_id += 1
+	$"Dialogue UI 2".hide()
 	Options.hide()
 	
 	if Current_Diauogue_id  >= len(Dialogue[str(Conversation_id)]): # if thers no more dialogue
@@ -149,6 +153,9 @@ func set_up_dialogue_Options():
 	hide_name = current_dialogue.get('hide name', false)
 	emit_custom = current_dialogue.get('Signal', [false])
 	wait_signal_finshed = current_dialogue.get('wait signal', false)
+	text_2 = current_dialogue.get('text_2')
+	name_2 = current_dialogue.get('name_2',"")
+	face_2 = current_dialogue.get('face_2')
 
 
 func Set_Profile(): # runs befor Options are set
@@ -196,9 +203,11 @@ func set_text():
 		show()
 	
 	Sprites.get_child(2).text = current_dialogue.get('Name', "")
+	$"Dialogue UI 2".get_child(0).get_child(2).text = name_2
 	await get_tree().process_frame
 	await get_tree().process_frame
-	Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24
+	Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24 # updating the size of the name box
+	$"Dialogue UI 2".get_child(0).get_child(1).size.x = $"Dialogue UI 2".get_child(0).size.x + 24
 	
 	if current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
 		dialogue_ui.position.x = current_dialogue['Screen position'][0]
@@ -206,6 +215,9 @@ func set_text():
 	
 	Character_Text.text = current_dialogue.get('Text', "") 
 	scrolling_text(Character_Text, current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
+	if text_2 != null and dialogue_ui != $"Dialogue UI 2":
+		$"Dialogue UI 2".show()
+		scrolling_text($"Dialogue UI 2".get_child(1), current_dialogue.get('speed 2', 0.05))
 
 
 func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
