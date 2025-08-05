@@ -173,7 +173,7 @@ size = Vector2(15.75, 4.25)
 position = Vector2(97, 282)
 
 [node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area") instance=ExtResource("6_4bisx")]
-position = Vector2(468, 274)
+position = Vector2(231, 525)
 dialogue_area = NodePath("dialougue_area")
 
 [node name="Standing" type="AnimationPlayer" parent="Prisoner"]

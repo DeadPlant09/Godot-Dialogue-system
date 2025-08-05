@@ -55,6 +55,7 @@ Conversation = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene"]
 shape = SubResource("RectangleShape2D_sckux")
+disabled = true
 
 [node name="Godot Icon" type="Sprite2D" parent="."]
 position = Vector2(780, 190)

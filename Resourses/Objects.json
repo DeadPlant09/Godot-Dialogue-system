@@ -32,6 +32,6 @@
 		{"Name":"Dezzy", "Text":"* Im going to stop you right there\n	because ive hered this all before from\n	 a talking emoji."}
 	],
 	"9":[
-		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "name_2": "Emoji", "text_2": "* I can hear you form over there and your wrong!?", "Reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!"]}
+		{"Name":"Godot icon", "Text":"* sheesh all i was going to say was\n	that the earth is round.","pause": [8], "name_2": "Dezzy", "face_2": 1,  "text_2": "* I can hear you form over there and your wrong!?", "Reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!"]}
 	]
 }
