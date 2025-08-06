@@ -10,13 +10,13 @@ signal update_godot_dialogue
 # node variables
 @onready var dialogue_ui = $"Dialogue UI"
 @onready var overlap_detection: Area2D = $"Overlap Detection"
-@onready var Sprites: Control = dialogue_ui.get_child(0)
-@onready var Character_Text = dialogue_ui.get_child(1)
-@onready var Character_Voice: AudioStreamPlayer2D = dialogue_ui.get_child(2)
-@onready var Options = dialogue_ui.get_child(3)
-@onready var Reactions = [dialogue_ui.get_child(4), dialogue_ui.get_child(5), dialogue_ui.get_child(6), dialogue_ui.get_child(7)]
-@onready var profile_animations: AnimationPlayer = dialogue_ui.get_child(8)
-@onready var show_responce: AnimationPlayer = dialogue_ui.get_child(9)
+@onready var Sprites: Control = $"Dialogue UI/Sprites"
+@onready var Character_Text = $"Dialogue UI/Character Text"
+@onready var Character_Voice: AudioStreamPlayer2D = $"Dialogue UI/Voice"
+@onready var Options = $"Dialogue UI/Options"
+@onready var Reactions = [$"Dialogue UI/Reaction 1", $"Dialogue UI/Reaction 2", $"Dialogue UI/Reaction 3", $"Dialogue UI/Reaction 4"]
+@onready var profile_animations: AnimationPlayer = $"Dialogue UI/Profile animations"
+@onready var show_responce: AnimationPlayer = $"Dialogue UI/Show Responce"
 
 
 # variables
@@ -69,10 +69,12 @@ var wait_signal_finshed = false:
 		signal_wait_finshed.emit()
 var text_2
 var name_2
-var face_2
+
 
 func _ready() -> void:
-	if FileAccess.file_exists(temp_save_Path): DirAccess.remove_absolute(temp_save_Path)
+	if FileAccess.file_exists(temp_save_Path):
+		print("delete: " + temp_save_Path)
+		DirAccess.remove_absolute(temp_save_Path)
 	hide()
 
 
@@ -157,8 +159,7 @@ func Set_up_dialogue_Options():
 	wait_signal_finshed = current_dialogue.get('wait signal', false)
 	text_2 = current_dialogue.get('text_2')
 	name_2 = current_dialogue.get('name_2', "")
-	face_2 = current_dialogue.get('face_2', 0)
-	prepare_dialogue_2 = text_2 != null and dialogue_ui != $"Dialogue UI 2"
+	prepare_dialogue_2 = text_2 != null and name_2 != ""
 
 
 
@@ -177,25 +178,25 @@ func Set_Profile(): # runs befor Options are set
 	Sprites.get_child(1).visible = not hide_name
 	Sprites.get_child(2).visible = not hide_name
 	
-	check_if_profile_exsist(dialogue_ui, "Name")
+	check_if_profile_exsist()
 
 
-func check_if_profile_exsist(UI:Control, profile_name:String):
+func check_if_profile_exsist(UI:Control = dialogue_ui, profile_name:String = "Name", profile_face:String = "Face", aniplayer_index:int = 8):
 	if FileAccess.file_exists(Voice_path + str(current_dialogue.get(profile_name)) + " voice.wav"):
 		UI.get_child(2).stream = load(Voice_path + str(current_dialogue[profile_name]) + " voice.wav")
 	
-	for animation in UI.get_child(8).get_animation_list():
-		var Full_name = current_dialogue.get(profile_name, "no animation") + str(int(current_dialogue.get('Face', 0)))
+	for animation in UI.get_child(aniplayer_index).get_animation_list():
+		var Full_name = current_dialogue.get(profile_name, "no animation") + str(int(current_dialogue.get(profile_face, 0)))
 		if animation.contains(Full_name):
 			if Debug_output: print("animation: " + Full_name)
 			UI.get_child(1).position.x = 320
 			UI.get_child(1).size.x = 608
-			UI.get_child(8).play(Full_name, -1, 0.0)
+			UI.get_child(aniplayer_index).play(Full_name, -1, 0.0)
 			break # so it donet cheak for other animations after it found the spisific one
 		
 		else:
 			if Debug_output: print("animation: "+ "RESET")
-			UI.get_child(8).play("RESET")
+			UI.get_child(aniplayer_index).play("RESET")
 			UI.get_child(1).position.x = 208
 			UI.get_child(1).size.x = 720
 
@@ -225,7 +226,7 @@ func Set_text():
 
 func set_text_2():
 	if Debug_output: print("prepare dialogue 2")
-	check_if_profile_exsist($"Dialogue UI 2", 'name_2')
+	check_if_profile_exsist($"Dialogue UI 2", 'name_2', "face_2", 3)
 	$"Dialogue UI 2".get_child(1).visible_ratio = 0
 	$"Dialogue UI 2".get_child(0).get_child(2).text = name_2
 	await get_tree().process_frame
@@ -261,8 +262,11 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		if play_voice == true and voice_played <= parsed_text_length: # to make sure the sound doenst play when counting the bbcode text 
 			voice_played += 1
 			Character_Voice.play()
-			if prepare_dialogue_2: $"Dialogue UI 2".get_child(2).play()
 			profile_animations.play(profile_animations.current_animation) # the talking animation wont play for silent characters
+			if prepare_dialogue_2 and text_node == $"Dialogue UI 2".get_child(1):
+				$"Dialogue UI 2".get_child(2).play()
+				$"Dialogue UI 2".get_child(3).stop()
+				$"Dialogue UI 2".get_child(3).play($"Dialogue UI 2".get_child(3).current_animation)
 		
 		play_voice = true
 		if Debug_output:print(e)
@@ -370,13 +374,14 @@ func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  thi
 	Deactivated = false
 	start_dialogue()
 
+
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
 	if visible == false:
 		dialogue_ui.position.y = -464
 
 func _on_overlap_detection_body_exited(body: Node2D) -> void:
 	if visible == false:
-		dialogue_ui.position = Vector2.ZERO
+		dialogue_ui = Vector2.ZERO
 
 
 func _on_overlap_detection_area_entered(area: Area2D) -> void:

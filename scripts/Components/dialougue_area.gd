@@ -16,8 +16,7 @@ var config = ConfigFile.new()
 func _ready() -> void:
 	collision_layer = 0
 	if Diauloge_Systerm.has_signal(connect_signal): Diauloge_Systerm.connect(connect_signal, Signal_actions)
-	if save_conversation == SAVES.Temporary: Load_converstion(Diauloge_Systerm.temp_save_Path) 
-	if save_conversation == SAVES.Permanent: Load_converstion(permennt_path)
+	chose_load()
 	if starting_conversation >= 1 and ending_conversation <= 0: ending_conversation = starting_conversation
 
 
@@ -35,8 +34,7 @@ func _on_body_exited(body: Node2D) -> void: # if the player just exited this bod
 		detect_player = false # turn the player cheack to false
 		collision_layer = 0
 		update_current_dialogue()
-		if save_conversation == SAVES.Temporary: Save_converstion(Diauloge_Systerm.temp_save_Path)
-		if save_conversation == SAVES.Permanent: Save_converstion(permennt_path)
+		chose_save()
 	
 
 
@@ -49,12 +47,18 @@ func _input(event: InputEvent) -> void:
 		
 	
 
+func chose_save():
+	if save_conversation == SAVES.Temporary: Save_converstion(Diauloge_Systerm.temp_save_Path)
+	if save_conversation == SAVES.Permanent: Save_converstion(permennt_path)
+
+func chose_load():
+	if save_conversation == SAVES.Temporary: Load_converstion(Diauloge_Systerm.temp_save_Path) 
+	if save_conversation == SAVES.Permanent: Load_converstion(permennt_path)
 
 func Save_converstion(path:String):
 	if FileAccess.file_exists(path): config.load(path) 
 	config.set_value("conversations", get_parent().name, [starting_conversation, ending_conversation])
 	config.save(path)
-
 
 func Load_converstion(path:String):
 	if config.load(path) != OK: return # using the save path to load the save file 
@@ -66,7 +70,6 @@ func update_current_dialogue():
 	starting_conversation = Diauloge_Systerm.Conversation_id # set the current Conversation_id to the Diauloge_Systerm current Conversation_id
 	ending_conversation = Diauloge_Systerm.Ending_Conversation
 	if Debug:print(get_parent().name + " saving_dialouge")
-
 
 func set_current_dialogue():
 	if not ending_conversation < 0: # the conversation can't end with 0
@@ -83,15 +86,18 @@ func reset_dialogue():
 	# Reset the value of Diauloge_Systerm current Ending_Conversation 
 	Diauloge_Systerm.Ending_Conversation = Diauloge_Systerm.Default_Ending_Conversation 
 
+
 func run_signal_actions(action: String): # to run a signal action without runing a signal
 	connect_signal = action 
 	Signal_actions()
 
+
 func Signal_actions():
 	if Debug: print("connected_custom " + get_parent().name)
-	if connect_signal == "update_godot_dialogue" and get_parent().name == "Godot Icon":
-		if starting_conversation == 6:
+	if get_parent().name == "Godot Icon":
+		if connect_signal == "update_godot_dialogue" and starting_conversation == 6:
 			starting_conversation = 8
 			ending_conversation = 9
+			chose_save()
 	if Diauloge_Systerm.signal_wait_finshed: Diauloge_Systerm.wait_signal_finshed = false
 	
