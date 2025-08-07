@@ -8,15 +8,19 @@ signal signal_wait_finshed
 signal update_godot_dialogue
 
 # node variables
-@onready var dialogue_ui = $"Dialogue UI"
-@onready var overlap_detection: Area2D = $"Overlap Detection"
+@onready var Dialogue_ui:Control = $"Dialogue UI"
 @onready var Sprites: Control = $"Dialogue UI/Sprites"
 @onready var Character_Text = $"Dialogue UI/Character Text"
 @onready var Character_Voice: AudioStreamPlayer2D = $"Dialogue UI/Voice"
 @onready var Options = $"Dialogue UI/Options"
 @onready var Reactions = [$"Dialogue UI/Reaction 1", $"Dialogue UI/Reaction 2", $"Dialogue UI/Reaction 3", $"Dialogue UI/Reaction 4"]
-@onready var profile_animations: AnimationPlayer = $"Dialogue UI/Profile animations"
-@onready var show_responce: AnimationPlayer = $"Dialogue UI/Show Responce"
+@onready var Profile_animation: AnimationPlayer = $"Dialogue UI/Profile animations"
+@onready var Show_responce: AnimationPlayer = $"Dialogue UI/Show Responce"
+@onready var dialogue_ui_2:Control = $"Dialogue UI 2"
+@onready var sprites_2:Control = $"Dialogue UI 2/Sprites"
+@onready var character_text_2 = $"Dialogue UI 2/Character Text"
+@onready var character_voice_2:AudioStreamPlayer2D = $"Dialogue UI 2/Voice"
+@onready var profile_animation_2:AnimationPlayer = $"Dialogue UI 2/Profile animations"
 
 
 # variables
@@ -73,7 +77,7 @@ var name_2
 
 func _ready() -> void:
 	if FileAccess.file_exists(temp_save_Path):
-		print("delete: " + temp_save_Path)
+		if Debug_output: print("delete: " + temp_save_Path)
 		DirAccess.remove_absolute(temp_save_Path)
 	hide()
 
@@ -90,7 +94,7 @@ func start_dialogue() -> void:
 	if Debug_output: print("Deactivated: "+ str(Deactivated))
 	if Deactivated: return
 	
-	show_responce.play("RESET") # so the responce hides when you run the same dialouge 
+	Show_responce.play("RESET") # so the responce hides when you run the same dialouge 
 	show()
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
@@ -119,7 +123,7 @@ func _input(event: InputEvent) -> void:
 
 func Next_Dialogue():
 	Current_Diauogue_id += 1
-	$"Dialogue UI 2".hide()
+	dialogue_ui_2.hide()
 	Options.hide()
 	
 	if Current_Diauogue_id  >= len(Dialogue[str(Conversation_id)]): # if thers no more dialogue
@@ -181,7 +185,7 @@ func Set_Profile(): # runs befor Options are set
 	check_if_profile_exsist()
 
 
-func check_if_profile_exsist(UI:Control = dialogue_ui, profile_name:String = "Name", profile_face:String = "Face", aniplayer_index:int = 8):
+func check_if_profile_exsist(UI:Control = Dialogue_ui, profile_name:String = "Name", profile_face:String = "Face", aniplayer_index:int = 8):
 	if FileAccess.file_exists(Voice_path + str(current_dialogue.get(profile_name)) + " voice.wav"):
 		UI.get_child(2).stream = load(Voice_path + str(current_dialogue[profile_name]) + " voice.wav")
 	
@@ -202,6 +206,7 @@ func check_if_profile_exsist(UI:Control = dialogue_ui, profile_name:String = "Na
 
 
 func Set_text():
+	var previous_charas = Sprites.get_child(2).get_total_character_count() 
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
 	
 	if emit_custom[0] == false and wait_signal_finshed:
@@ -210,14 +215,13 @@ func Set_text():
 		show()
 	
 	Sprites.get_child(2).text = current_dialogue.get('Name', "")
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if Sprites.get_child(2).get_total_character_count() !=  previous_charas: await Sprites.get_child(2).minimum_size_changed # if theres more or less characters then wait for the resize
 	Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24 # updating the size of the name box
 	
 	
 	if current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
-		dialogue_ui.position.x = current_dialogue['Screen position'][0]
-		dialogue_ui.position.y = current_dialogue['Screen position'][1]
+		Dialogue_ui.position.x = current_dialogue['Screen position'][0]
+		Dialogue_ui.position.y = current_dialogue['Screen position'][1]
 	
 	Character_Text.text = current_dialogue.get('Text', "") 
 	
@@ -226,14 +230,16 @@ func Set_text():
 
 func set_text_2():
 	if Debug_output: print("prepare dialogue 2")
-	check_if_profile_exsist($"Dialogue UI 2", 'name_2', "face_2", 3)
-	$"Dialogue UI 2".get_child(1).visible_ratio = 0
-	$"Dialogue UI 2".get_child(0).get_child(2).text = name_2
-	await get_tree().process_frame
-	$"Dialogue UI 2".get_child(0).get_child(1).size.x = $"Dialogue UI 2".get_child(0).get_child(2).size.x + 24
-	$"Dialogue UI 2".get_child(1).text = text_2
-	$"Dialogue UI 2".show()
-	scrolling_text($"Dialogue UI 2".get_child(1), current_dialogue.get('speed 2', 0.05))
+	var previous_charas_2 = sprites_2.get_child(2).get_total_character_count()
+	if Debug_output: print(previous_charas_2) 
+	check_if_profile_exsist(dialogue_ui_2, 'name_2', "face_2", 3)
+	character_text_2.visible_ratio = 0
+	sprites_2.get_child(2).text = name_2
+	character_text_2.text = text_2
+	dialogue_ui_2.show()
+	if Debug_output: print(sprites_2.get_child(2).size)
+	sprites_2.get_child(1).size.x = sprites_2.get_child(2).size.x + 24 # the ui need to be shown for it to update
+	scrolling_text(character_text_2, current_dialogue.get('speed 2', 0.05))
 
 
 func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
@@ -243,9 +249,9 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 	for e in text_node.get_text(): # scroling text, for every letter in character text
 		text_node.visible_characters += 1 # make one character visable (visable text includes spaces)
 		
-		profile_animations.stop()
+		Profile_animation.stop()
 		
-		if pause_at_index != null and text_node != $"Dialogue UI 2".get_child(1): # If pause_at_index is an array and the scrolling dialogue is not for $"Dialogue UI 2"
+		if pause_at_index != null and text_node != character_text_2: # If pause_at_index is an array and the scrolling dialogue is not for dialogue_ui_2
 			for p in pause_at_index: # for ever value in "pause_at_index"
 				if int(p) == text_node.visible_characters: # if the index is the amount of visabe characters shown 
 					await get_tree().create_timer(0.3).timeout # then wait for 0.3 sec 
@@ -262,11 +268,11 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		if play_voice == true and voice_played <= parsed_text_length: # to make sure the sound doenst play when counting the bbcode text 
 			voice_played += 1
 			Character_Voice.play()
-			profile_animations.play(profile_animations.current_animation) # the talking animation wont play for silent characters
-			if prepare_dialogue_2 and text_node == $"Dialogue UI 2".get_child(1):
-				$"Dialogue UI 2".get_child(2).play()
-				$"Dialogue UI 2".get_child(3).stop()
-				$"Dialogue UI 2".get_child(3).play($"Dialogue UI 2".get_child(3).current_animation)
+			Profile_animation.play(Profile_animation.current_animation) # the talking animation wont play for silent characters
+			if prepare_dialogue_2 and text_node == character_text_2:
+				character_voice_2.play()
+				profile_animation_2.stop()
+				profile_animation_2.play(profile_animation_2.current_animation)
 		
 		play_voice = true
 		if Debug_output:print(e)
@@ -278,7 +284,7 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 			break # exit out of for loop
 	
 	if text_node.visible_characters == text_node.text.length(): # if all the text is shown.
-		if prepare_dialogue_2 and not $"Dialogue UI 2".get_child(1).visible_ratio == 1.0: return
+		if prepare_dialogue_2 and not dialogue_ui_2.get_child(1).visible_ratio == 1.0: return
 		if Debug_output:print("finised dialogue")
 		when_dialogue_finishes()
 
@@ -360,8 +366,8 @@ func show_reactions():
 			move_index_up_by += 3
 	
 	if not Reactions[0].get_child(1).text == "[Inset litraly any respone]": 
-		show_responce.play("slide in")
-		await show_responce.animation_finished
+		Show_responce.play("slide in")
+		await Show_responce.animation_finished
 		wait_for_responses = false # to make sure that it only runs after "slide in", in no other animation 
 
 
@@ -377,17 +383,17 @@ func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  thi
 
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
 	if visible == false:
-		dialogue_ui.position.y = -464
+		Dialogue_ui.position.y = -464
 
 func _on_overlap_detection_body_exited(body: Node2D) -> void:
 	if visible == false:
-		dialogue_ui = Vector2.ZERO
+		Dialogue_ui.position = Vector2.ZERO
 
 
 func _on_overlap_detection_area_entered(area: Area2D) -> void:
 	if  visible == false:
-		dialogue_ui.position.y = -464
+		Dialogue_ui.position.y = -464
 
 func _on_overlap_detection_area_exited(area: Area2D) -> void:
 	if visible == false:
-		dialogue_ui.position = Vector2.ZERO
+		Dialogue_ui.position = Vector2.ZERO

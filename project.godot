@@ -16,6 +16,10 @@ run/main_scene="uid://p1pnnpu08ldg"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://Sprites/Objects/dialogue system Icon.png"
 
+[audio]
+
+buses/default_bus_layout=""
+
 [autoload]
 
 Diauloge_Systerm="*res://Scene's/UI/diauloge systerm.tscn"
