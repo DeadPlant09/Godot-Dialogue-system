@@ -22,7 +22,7 @@ buses/default_bus_layout=""
 
 [autoload]
 
-Diauloge_Systerm="*res://Scene's/UI/diauloge systerm.tscn"
+Dialogue_System="*res://Scene's/UI/diauloge systerm.tscn"
 
 [display]
 

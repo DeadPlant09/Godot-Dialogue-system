@@ -10,15 +10,13 @@
 	"3":[
 		{"Name": "Emoji", "Text":"* FINALIY somone gets it!"},
 		{"Name": "Emoji", "Text":"* Ready to join the flat earth community?"},
-		{"Name": "Emoji", "Text":"* with enough arguing agaist guys in the internet \n	 I can asure you we'll debunk the lies of those globe heads"},
 		{"Name": "Dezzy", "Face": 1, "Text":"* (sigh)"}
 	],
 	"4":[
 		{"Name": "Dezzy", "Text": "* No its not you tinfoil hat, no life,\n	  basement dweller"}
 	],
 	"5":[
-		{"Name": "Emoji", "Text":"* Oh dont worry it will be once I run you over", "skipable": false},
-		{"Name": "Dezzy", "Text":"* You know holding a gun that can launch you to space? \n try anything and you see whos right"}
+		{"Name": "Emoji", "Text":"* Oh dont worry it will be once I run you over", "skipable": false}
 	],
 	"6":[
 		{"Name":"Godot icon", "Text":"* did you know the earth is round?"},

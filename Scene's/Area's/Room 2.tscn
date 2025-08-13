@@ -188,7 +188,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("7_l53xt")
 
 [node name="dialougue_area" parent="Prisoner" instance=ExtResource("5_fv6mw")]
-Custom_Json_file_0 = "res://Resourses/NPC.json"
+Custom_Json = "res://Resourses/NPC.json"
 ending_conversation = 2
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
@@ -228,8 +228,9 @@ libraries = {
 }
 
 [node name="dialougue_area" parent="Worker" instance=ExtResource("5_fv6mw")]
-Custom_Json_file_0 = "res://Resourses/Worker.json"
-ending_conversation = 2
+Custom_Json = "res://Resourses/NPC.json"
+starting_conversation = 3
+ending_conversation = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
 position = Vector2(0.5, -12)

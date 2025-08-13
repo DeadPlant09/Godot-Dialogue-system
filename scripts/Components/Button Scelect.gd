@@ -8,7 +8,7 @@ func _ready() -> void: if not dialoue_choices: get_child(0).grab_focus()
 
 func _process(_delta: float) -> void:
 	if not visible: return
-	if dialoue_choices == true and Diauloge_Systerm.choices_exsist == true and Diauloge_Systerm.Is_Dialogue_Runing == false:
+	if dialoue_choices == true and Dialogue_System.choices_exsist == true and Dialogue_System.Is_Dialogue_Runing == false:
 		if get_child(0).text != '' and not get_child(0).has_focus() and Input.is_action_just_pressed("Left"):
 			get_child(0).grab_focus()
 		if get_child(1).text != '' and not get_child(1).has_focus() and Input.is_action_just_pressed("Right"):

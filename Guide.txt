@@ -5,30 +5,51 @@ in case you wanted to a) use a prexisting dialouge system that you can change th
 or b) take insperation from this dialouge system to build your own, etiher or is great!
 
 well anyway heres how it works:
-	all dialouge are held in a converstion array
-	given a string number, these conversation being 
+	all dialogue is held in a converstion array given a string number, these conversation being 
 	held in a giant dictanary making the json itself 
 	the every dialouge line is in the form of a 
 	dictionary, each line has at least 2 keys the name
-	and a text (self exsplanatory), there are more
-	optional keys that i call options there is     
-	Skipable:bool if turned off doent allow you to skip the text
-	Sound: bool if turned off the dialouge sound wont be played
-	auto_skip: bool if turned on then when the dialouge line has fully ran it will automaticly skip to the next one
-	pause_at_ending_of_sentence:bool if on for then it wont stop a puntuions 
-	just_show_text:bool if true then the character profile/icon wont show up jus there voice
-	Reaction:String if you type a string into a Reaction key then it will slide in as a tiny blub on the dialogue box
+	and a text (self exsplanatory), there are more optional keys that i call options there is:     
+	
+	"Text": string the message you want to display
+	"Name": string the name of the profile
+	"Face": int  the animation for the profile you want to play (only use if the profile has an animation)
+	"volume": float determines the volume 
+	"can move": bool if true allows you to move when dialogues being shown
+	"skipable": bool if false doent allow you to skip the text
+	"voice": bool if false the dialouge sound wont be played
+	"auto skip": bool if true then when when the dialouge line has fully ran it will automaticly skip to the next one
+	"Reactions": array if you type a string into a Reaction key then it will slide in as a tiny blurb on the dialogue box
+	"pause at ending": bool if on for then it wont stop a puntuions 
+	"just text": bool if true then the profile/icon and dialogue box wont show up just the text
+	"hide profile": bool if true then the profile/icon wont show up
+	"pause": array put the index of the character you want to stop at (spaces count to)
+	"hide name": bool if true will hide the name 
+	"emit custom": array put down a true if you want the signal to play when the dialogue is shown and the string of an already existing singal from the dialogue system script
+	"wait signal finshed": bool if true when emitning a signal it will wait for the singal action to be complete before showing the dialogue   
+	"Choices": array a list of stings that wil show up as choices
+	"Responses": array the lists of conversation you can respond to depending on the choice
+	"Aftermath": array the lists of conversation they could say after the responce depending on the choice
+	"text_2": string put down text for the sceond dialogue box 
+	"name_2": string put down the profile name for the sceond dialogue box
+	"face_2": int put down the profile animation for the sceond dialogue box 
+	"Responses 2": array depending on diffrent conditions this is used to give a diffrent responce to the same choice 
+	"Aftermath 2": array depending on diffrent conditions this is used to give a diffrent aftermath to the same choice 
+	
+
 
 Necessary files to bring to you projects
 	diauloge systerm.tscn/.gd
 	dialougue_area.tscn/.gd
 	npc_body.tscn/.gd
+	cutscene trigger.tscn/.gd
+	make sure your player stops moving when Diauloge_Systerm is Deactivated and not Diauloge_Systerm can_move is false
 	and your own main.json in the same format as mines
-	lastly if you dont have your own font you can bing the stary font
+	lastly if you dont have your own font you can bring the stary font
 
 Before you run
 	make the Diauloge_Systerm scene a singleton (global)
-	set the Icon path to the folder where your dialogue icons are
-	set the voice path to the folder where your dialogue voices are
-	if your game already has a script that saves make it global, try and add the cutscene_ran vaue to it
+	set the Diauloge_Systerm Icon path to the folder where your dialogue icons are
+	set the Diauloge_Systerm voice path to the folder where your dialogue voices are
+	if your game already has a script that saves make it global, try and add the cutscene_ran value to it
 	make sure all your animations are between the time intrvals of 0 - 0.05 to be precice 0.025

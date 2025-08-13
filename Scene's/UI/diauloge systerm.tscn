@@ -481,8 +481,6 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 2
 tab_size = 5
-visible_characters = 0
-visible_ratio = 0.0
 
 [node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI"]
 stream = ExtResource("3_8r266")
@@ -667,6 +665,7 @@ libraries = {
 }
 
 [node name="Dialogue UI 2" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_top = -456.0

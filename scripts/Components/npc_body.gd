@@ -11,11 +11,11 @@ var player_in_diulogue_area
 var talk_index = 0
 
 func _ready() -> void: 
-	if Diauloge_Systerm.has_signal(connect_signal): Diauloge_Systerm.connect(connect_signal, Signal_actions)
+	if Dialogue_System.has_signal(connect_signal): Dialogue_System.connect(connect_signal, Signal_actions)
 
 
 func _process(_delta: float) -> void:
-	if dialogue_area.detect_player and Diauloge_Systerm.Sprites.get_child(2).text == name:  # if the player is in the area and the npc is speaking 
+	if dialogue_area.detect_player and Dialogue_System.Sprites.get_child(2).text == name:  # if the player is in the area and the npc is speaking 
 		is_talking = true
 	else: # if the player isnt in the area or the npc isnt speaking 
 		is_talking = false 
@@ -29,7 +29,7 @@ func npc_animations():
 		Sprite_animation.play(Sprite_animation.name + str(talk_index))
 	else: # if the npc is talking
 		Sprite_animation.play("Talk" + str(talk_index))
-		if Diauloge_Systerm.is_dialogue_runing: # if the npc is currently talking
+		if Dialogue_System.is_dialogue_runing: # if the npc is currently talking
 			Sprite_animation.play("Talk" + str(talk_index))
 		else: # if the npc is finsished talking
 			Sprite_animation.pause()

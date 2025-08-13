@@ -1,11 +1,10 @@
 extends Area2D
 class_name DialogueArea
 
-@export_file("*.json") var Custom_Json_file_0
+@export_file("*.json") var Custom_Json
 @export var starting_conversation = 1
 @export var ending_conversation = 0 # has to be an int
 @export var connect_signal:String
-@export var permennt_path = "res://save_conv_per.cfg"
 enum SAVES {empty, Temporary, Permanent}
 @export var save_conversation:SAVES = SAVES.empty
 @export var Debug = false
@@ -15,7 +14,7 @@ var config = ConfigFile.new()
 
 func _ready() -> void:
 	collision_layer = 0
-	if Diauloge_Systerm.has_signal(connect_signal): Diauloge_Systerm.connect(connect_signal, Signal_actions)
+	if Dialogue_System.has_signal(connect_signal): Dialogue_System.connect(connect_signal, Signal_actions)
 	chose_load()
 	if starting_conversation >= 1 and ending_conversation <= 0: ending_conversation = starting_conversation
 
@@ -26,7 +25,8 @@ func _on_body_entered(body: Node2D) -> void: # if the player just entered this b
 		collision_layer = 3
 		reset_dialogue()
 		set_current_dialogue()
-		if Debug: print(ending_conversation)
+		if Debug: print("before " + str(starting_conversation))
+		if Debug: print("before " + str(ending_conversation))
 
 
 func _on_body_exited(body: Node2D) -> void: # if the player just exited this body
@@ -35,25 +35,30 @@ func _on_body_exited(body: Node2D) -> void: # if the player just exited this bod
 		collision_layer = 0
 		update_current_dialogue()
 		chose_save()
+		if Debug: print("after " + str(starting_conversation))
+		if Debug: print("after " + str(ending_conversation))
 	
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Continue") and detect_player:
-		if Diauloge_Systerm.Deactivated == false:
-			Diauloge_Systerm.Detect_Player = detect_player
-			Diauloge_Systerm.Json_file = Custom_Json_file_0
-			Diauloge_Systerm.start_dialogue()
+		if Dialogue_System.Deactivated == false:
+			if Debug: print("talk to " + get_parent().name)
+			Dialogue_System.Detect_Player = detect_player
+			Dialogue_System.Json_file = Custom_Json
+			Dialogue_System.start_dialogue()
 		
 	
 
 func chose_save():
-	if save_conversation == SAVES.Temporary: Save_converstion(Diauloge_Systerm.temp_save_Path)
-	if save_conversation == SAVES.Permanent: Save_converstion(permennt_path)
+	if save_conversation == SAVES.Temporary: Save_converstion(Dialogue_System.temp_save_Path)
+	if save_conversation == SAVES.Permanent: Save_converstion(Dialogue_System.permennt_path)
+
 
 func chose_load():
-	if save_conversation == SAVES.Temporary: Load_converstion(Diauloge_Systerm.temp_save_Path) 
-	if save_conversation == SAVES.Permanent: Load_converstion(permennt_path)
+	if save_conversation == SAVES.Temporary: Load_converstion(Dialogue_System.temp_save_Path) 
+	if save_conversation == SAVES.Permanent: Load_converstion(Dialogue_System.permennt_path)
+
 
 func Save_converstion(path:String):
 	if FileAccess.file_exists(path): config.load(path) 
@@ -67,24 +72,24 @@ func Load_converstion(path:String):
 
 
 func update_current_dialogue():
-	starting_conversation = Diauloge_Systerm.Conversation_id # set the current Conversation_id to the Diauloge_Systerm current Conversation_id
-	ending_conversation = Diauloge_Systerm.Ending_Conversation
+	starting_conversation = Dialogue_System.Conversation_id # set the current Conversation_id to the Dialogue_System current Conversation_id
+	ending_conversation = Dialogue_System.Ending_Conversation
 	if Debug:print(get_parent().name + " saving_dialouge")
 
 func set_current_dialogue():
 	if not ending_conversation < 0: # the conversation can't end with 0
-		Diauloge_Systerm.Ending_Conversation = ending_conversation
+		Dialogue_System.Ending_Conversation = ending_conversation
 	if not starting_conversation < 1 and not starting_conversation > ending_conversation:
-		# And set the Diauloge_Systerm.Conversation_id to our Conversation_id
-		Diauloge_Systerm.Conversation_id = starting_conversation
+		# And set the Dialogue_System.Conversation_id to our Conversation_id
+		Dialogue_System.Conversation_id = starting_conversation
 	
 
 
 func reset_dialogue():
-	# Reset the value of Diauloge_Systerm current Conversation_id
-	Diauloge_Systerm.Conversation_id = Diauloge_Systerm.Default_Conversation_ID
-	# Reset the value of Diauloge_Systerm current Ending_Conversation 
-	Diauloge_Systerm.Ending_Conversation = Diauloge_Systerm.Default_Ending_Conversation 
+	# Reset the value of Dialogue_System current Conversation_id
+	Dialogue_System.Conversation_id = Dialogue_System.Default_Conversation_ID
+	# Reset the value of Dialogue_System current Ending_Conversation 
+	Dialogue_System.Ending_Conversation = Dialogue_System.Default_Ending_Conversation 
 
 
 func run_signal_actions(action: String): # to run a signal action without runing a signal
@@ -99,5 +104,5 @@ func Signal_actions():
 			starting_conversation = 8
 			ending_conversation = 9
 			chose_save()
-	if Diauloge_Systerm.signal_wait_finshed: Diauloge_Systerm.wait_signal_finshed = false
+	if Dialogue_System.signal_wait_finshed: Dialogue_System.wait_signal_finshed = false
 	

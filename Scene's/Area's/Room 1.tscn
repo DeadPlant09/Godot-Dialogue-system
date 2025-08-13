@@ -22,6 +22,8 @@ size = Vector2(130, 128)
 [node name="Room 1" type="Node2D"]
 
 [node name="Startup Cutscene" parent="." instance=ExtResource("8_drkqx")]
+Run_at_start = true
+Debug = true
 
 [node name="Dezzy" parent="." instance=ExtResource("2_uh20n")]
 position = Vector2(1050, 348)
@@ -32,7 +34,7 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_itob3")
 
 [node name="dialougue_area" parent="Emoji" instance=ExtResource("4_fb8ut")]
-Custom_Json_file_0 = "res://Resourses/Objects.json"
+Custom_Json = "res://Resourses/Objects.json"
 save_conversation = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Emoji/dialougue_area"]
@@ -61,7 +63,7 @@ position = Vector2(780, 190)
 texture = ExtResource("7_iq3mt")
 
 [node name="dialougue_area" parent="Godot Icon" instance=ExtResource("4_fb8ut")]
-Custom_Json_file_0 = "res://Resourses/Objects.json"
+Custom_Json = "res://Resourses/Objects.json"
 starting_conversation = 6
 ending_conversation = 7
 connect_signal = "update_godot_dialogue"

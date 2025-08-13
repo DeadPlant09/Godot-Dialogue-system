@@ -28,7 +28,8 @@ signal update_godot_dialogue
 @export_file("*.json") var Json_file
 @export var Profile_path = "res://Sprites/Character's/"
 @export var Voice_path = "res://Audio/"
-@export var Debug_output:bool 
+@export var Debug_output:bool
+const permennt_path = "res://save_conv_per.cfg" 
 const temp_save_Path = "res://save_conv_temp.cfg" # the data is saved across scenes untill the game is closed 
 var Detect_Player:bool = false
 var Dialogue = []
@@ -67,6 +68,7 @@ var just_show_text = false
 var hide_profile = false
 var hide_name = false
 var hidden_names = ["", "Deadplant", "Narrarator"]
+var use_2nd_responce = false
 var wait_signal_finshed = false:
 	set(new_value):
 		wait_signal_finshed = new_value # nessasary
@@ -98,6 +100,7 @@ func start_dialogue() -> void:
 	show()
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
+	if Debug_output: print("start " + str(Json_file))
 	
 	if Ending_Conversation < 1 or Ending_Conversation > len(Dialogue): 
 		Ending_Conversation = len(Dialogue) 
@@ -206,16 +209,15 @@ func check_if_profile_exsist(UI:Control = Dialogue_ui, profile_name:String = "Na
 
 
 func Set_text():
-	var previous_charas = Sprites.get_child(2).get_total_character_count() 
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
+	Sprites.get_child(2).text = current_dialogue.get('Name', "")
 	
 	if emit_custom[0] == false and wait_signal_finshed:
 		hide()
 		await signal_wait_finshed
 		show()
 	
-	Sprites.get_child(2).text = current_dialogue.get('Name', "")
-	if Sprites.get_child(2).get_total_character_count() !=  previous_charas: await Sprites.get_child(2).minimum_size_changed # if theres more or less characters then wait for the resize
+	await get_tree().process_frame # wait for the game for the game to register resize
 	Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24 # updating the size of the name box
 	
 	
@@ -245,10 +247,10 @@ func set_text_2():
 func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 	var voice_played = 0
 	var parsed_text_length = text_node.get_parsed_text().length()
-	
+	var should_you_play_voice  = play_voice
 	for e in text_node.get_text(): # scroling text, for every letter in character text
 		text_node.visible_characters += 1 # make one character visable (visable text includes spaces)
-		
+		play_voice = should_you_play_voice
 		Profile_animation.stop()
 		
 		if pause_at_index != null and text_node != character_text_2: # If pause_at_index is an array and the scrolling dialogue is not for dialogue_ui_2
@@ -296,7 +298,11 @@ func when_dialogue_finishes():
 		
 		choices_exsist = true
 		Choice_Responces = current_dialogue['Responses']
-		Choice_Aftermath = current_dialogue['Aftermath']
+		Choice_Aftermath = current_dialogue.get('Aftermath')
+		# you can have a diffrent responce depening on certin situations
+		if not current_dialogue.get('Aftermath'): Choice_Aftermath = [Ending_Conversation, Ending_Conversation, Ending_Conversation, Ending_Conversation] # set them to the origanl ending conversation
+		if current_dialogue.get('Responses 2') and use_2nd_responce: Choice_Responces = current_dialogue['Responses 2']
+		if current_dialogue.get('Aftermath 2') and use_2nd_responce: Choice_Aftermath = current_dialogue['Aftermath 2']
 		show_choices()
 	
 	if emit_custom[0] == true: # play_at_end = true
@@ -308,7 +314,9 @@ func when_dialogue_finishes():
 	if not choices_exsist and wait_for_responses: #if there are no choices yet you wait for responses there the're are Reactions
 		if Debug_output: print("wait for reactions")
 		show_reactions() 
-	if auto_skip: Next_Dialogue()
+	if auto_skip:
+		await get_tree().create_timer(current_dialogue.get("wait auto", 0))
+		Next_Dialogue()
 
 
 func show_choices():
@@ -348,6 +356,15 @@ func show_choices():
 				dialogue_finished.emit()
 				return # to exit out the function
 
+func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
+	Conversation_id = int(Choice_Responces[choice])
+	if Debug_output: print("choice " + str(choice) + ", conversation id: " + str(Conversation_id))
+	Ending_Conversation = int(Choice_Aftermath[choice])
+	if Debug_output: print("choice " + str(choice) + ", ending_conversation id: " + str(Ending_Conversation))
+	choices_exsist = false
+	Deactivated = false
+	start_dialogue()
+
 
 func show_reactions():
 	var react = 0
@@ -369,16 +386,6 @@ func show_reactions():
 		Show_responce.play("slide in")
 		await Show_responce.animation_finished
 		wait_for_responses = false # to make sure that it only runs after "slide in", in no other animation 
-
-
-func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
-	Conversation_id = int(Choice_Responces[choice])
-	if Debug_output: print("choice " + str(choice) + ", conversation id: " + str(Conversation_id))
-	Ending_Conversation = int(Choice_Aftermath[choice])
-	if Debug_output: print("choice " + str(choice) + ", ending_conversation id: " + str(Ending_Conversation))
-	choices_exsist = false
-	Deactivated = false
-	start_dialogue()
 
 
 func _on_overlap_detection_body_entered(body: Node2D) -> void:
