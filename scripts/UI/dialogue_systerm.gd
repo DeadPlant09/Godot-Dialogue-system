@@ -5,7 +5,10 @@ signal dialogue_finished
 signal signal_wait_finshed
 
 # custom signals
-signal update_godot_dialogue
+signal update_godot_dialogue # default
+signal turn_on_robo_7
+signal robo_7_look_back
+signal turn_off_screen
 
 # node variables
 @onready var Dialogue_ui:Control = $"Dialogue UI"
@@ -68,6 +71,7 @@ var just_show_text = false
 var hide_profile = false
 var hide_name = false
 var hidden_names = ["", "Deadplant", "Narrarator"]
+var Default_inputs: Dictionary 
 var use_2nd_responce = false
 var wait_signal_finshed = false:
 	set(new_value):
@@ -96,8 +100,8 @@ func start_dialogue() -> void:
 	if Debug_output: print("Deactivated: "+ str(Deactivated))
 	if Deactivated: return
 	
-	Show_responce.play("RESET") # so the responce hides when you run the same dialouge 
 	show()
+	
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
 	if Debug_output: print("start " + str(Json_file))
@@ -126,6 +130,7 @@ func _input(event: InputEvent) -> void:
 
 func Next_Dialogue():
 	Current_Diauogue_id += 1
+	Show_responce.play("RESET") # so the responce hides when you run the same dialouge
 	dialogue_ui_2.hide()
 	Options.hide()
 	
@@ -172,7 +177,7 @@ func Set_up_dialogue_Options():
 
 func Set_Profile(): # runs befor Options are set
 	# reset the postion and size to defaults 
-	Character_Voice.stream = load(Voice_path + "Default dialogue voice.wav")
+	Character_Voice.stream = load(Voice_path + "Default Voice (S.T.V).wav")
 	
 	Sprites.visible = not just_show_text
 	Sprites.get_child(3).visible = not hide_profile
@@ -212,14 +217,14 @@ func Set_text():
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
 	Sprites.get_child(2).text = current_dialogue.get('Name', "")
 	
-	if emit_custom[0] == false and wait_signal_finshed:
+	if emit_custom[0] == false and wait_signal_finshed: # if your playing the isgnal at the start and your waitng for the signal to finish
 		hide()
 		await signal_wait_finshed
 		show()
 	
-	await get_tree().process_frame # wait for the game for the game to register resize
+	await get_tree().process_frame # wait 2x for the game for the game to register resize
+	await get_tree().process_frame # wait 2x for the game for the game to register resize
 	Sprites.get_child(1).size.x = Sprites.get_child(2).size.x + 24 # updating the size of the name box
-	
 	
 	if current_dialogue.get('Screen position', []):# if that 'Screen_position' doesnt exist it will return null
 		Dialogue_ui.position.x = current_dialogue['Screen position'][0]
@@ -404,3 +409,14 @@ func _on_overlap_detection_area_entered(area: Area2D) -> void:
 func _on_overlap_detection_area_exited(area: Area2D) -> void:
 	if visible == false:
 		Dialogue_ui.position = Vector2.ZERO
+
+
+func remove_player_input(): # used to remove player input during cutscenece animations 
+	for A in InputMap.get_actions():
+		Default_inputs[A] = InputMap.action_get_events(A) # create a key witht he name of the action and add the intupst as a value
+		InputMap.action_erase_events(A) # erease the inputs in the current action
+
+func add_player_input():
+	for A in InputMap.get_actions():
+		for e in Default_inputs[A]: # for every event in the current action add it back
+			InputMap.action_add_event(A, e) 

@@ -19,7 +19,7 @@
 		{"Name": "Emoji", "Text":"* Oh dont worry it will be once I run you over", "skipable": false}
 	],
 	"6":[
-		{"Name":"Godot icon", "Text":"* did you know the earth is round?"},
+		{"Name":"Godot icon", "Text":"* did you know the earth is round?", "Reactions": ["Dezzy", 2, "[color=orange]* No"]},
 		{"Name":"Dezzy", "Face": 1, "Text":"* No I thought the earth was sphere."}
 	],
 	"7":[

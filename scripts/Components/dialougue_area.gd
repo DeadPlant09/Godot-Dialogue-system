@@ -14,7 +14,6 @@ var config = ConfigFile.new()
 
 func _ready() -> void:
 	collision_layer = 0
-	if Dialogue_System.has_signal(connect_signal): Dialogue_System.connect(connect_signal, Signal_actions)
 	chose_load()
 	if starting_conversation >= 1 and ending_conversation <= 0: ending_conversation = starting_conversation
 
