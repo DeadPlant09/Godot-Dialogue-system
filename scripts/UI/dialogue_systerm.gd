@@ -199,7 +199,7 @@ func check_if_profile_exsist(UI:Control = Dialogue_ui, profile_name:String = "Na
 	
 	for animation in UI.get_child(aniplayer_index).get_animation_list():
 		var Full_name = current_dialogue.get(profile_name, "no animation") + str(int(current_dialogue.get(profile_face, 0)))
-		if animation.contains(Full_name):
+		if animation.contains(Full_name) and not hide_profile:
 			if Debug_output: print("animation: " + Full_name)
 			UI.get_child(1).position.x = 320
 			UI.get_child(1).size.x = 608

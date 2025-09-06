@@ -4,6 +4,9 @@ class_name Cutscene_trigger
 # variables
 @export var Run_at_start:bool 
 @export var json_path:String = "res://Resourses/MAIN.json"
+@export var Cutscene_Animation:AnimationPlayer
+enum MODES {dialogue, animation}
+@export var Mode = MODES.dialogue
 @export var Index:int = 1
 @export var Conversation:int = 1
 @export var Debug = false
@@ -25,8 +28,11 @@ func Load_load():
 	if Debug: print(name + " loaded")
 
 func _ready() -> void:
-	Load_load()
-	if Run_at_start and not Cutscene_ran: run_dialouge()
+	if Mode == MODES.dialogue: 
+		Load_load()
+		if Run_at_start and not Cutscene_ran: run_dialouge()
+	elif Mode == MODES.animation:
+		Cutscene_Animation.play("cutscene " + str(Index))
 
 func run_dialouge():
 	Dialogue_System.Run_dialouge(json_path, Conversation)
@@ -37,4 +43,11 @@ func run_dialouge():
 
 func _process(delta: float) -> void:
 	for body in get_overlapping_bodies():
-		if body.has_method("player") and not Cutscene_ran: run_dialouge()
+		if body.has_method("player") and not Cutscene_ran:
+			if Mode == MODES.dialogue: run_dialouge()
+			if Mode == MODES.animation:
+				Dialogue_System.remove_player_input()
+				Cutscene_Animation.play("cutscene")
+				await Cutscene_Animation.animation_finished
+				Cutscene_ran = true
+				Dialogue_System.add_player_input()
