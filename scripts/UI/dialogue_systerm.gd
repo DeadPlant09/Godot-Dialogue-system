@@ -177,7 +177,7 @@ func Set_up_dialogue_Options():
 
 func Set_Profile(): # runs befor Options are set
 	# reset the postion and size to defaults 
-	Character_Voice.stream = load(Voice_path + "Default Voice (S.T.V).wav")
+	Character_Voice.stream = load(Voice_path + "Default dialogue voice.wav")
 	
 	Sprites.visible = not just_show_text
 	Sprites.get_child(3).visible = not hide_profile

@@ -231,6 +231,7 @@ libraries = {
 Custom_Json = "res://Resourses/NPC.json"
 starting_conversation = 3
 ending_conversation = 4
+save_conversation = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
 position = Vector2(0.5, -12)

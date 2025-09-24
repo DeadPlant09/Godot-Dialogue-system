@@ -1,26 +1,35 @@
 extends CharacterBody2D
 
 # @export variables
-@export var JUST_RECIVE_SIGNALS:bool
-@export var Move_NPC_after_talk:bool
+@export var JUST_RECIVE_SIGNALS: bool # used for nodes you just want to recive dialogue signals 
+@export var Move_NPC_after_talk:bool # use it for a node you want to delete after talking with it and exitsing the scene
+@export var Remember_temp:bool
 @export var dialogue_area:DialogueArea
 @export var Sprite_animation:AnimationPlayer
-@export var connect_signal:String:
+@export var connect_signal:String: # change to "connect_to_signals"
 	set(new_value):
 		connect_signal = new_value
-		if not Dialogue_System.is_connected(connect_signal, Signal_actions):
-			Dialogue_System.connect(connect_signal, Signal_actions)# so the signal constantly updates
+		var dialogue_signals = Dialogue_System.get_signal_list()
+		for S in dialogue_signals:
+			if S["name"] in connect_signal and not Dialogue_System.is_connected(S["name"], Callable(self, S["name"])):
+				#print(S["name"])
+				Dialogue_System.connect(S["name"], Callable(self, S["name"]))
 
 # variables
 var is_talking:bool
 var player_in_diulogue_area
 var talk_index = 0
 
-func _ready() -> void: # remember to transfer save data ovrt to a personal one
+func _ready() -> void: # remember to transfer save data over to a global one
+	print("ready")
 	var config = ConfigFile.new()
-	if not Move_NPC_after_talk or config.load(Dialogue_System.temp_save_Path) != OK: return # if you can load a save with the npc's name
-	if config.get_value("conversations", name)[0] >= dialogue_area.starting_conversation: # and the saves starting conve index is lest than or equal to the current convo index
-		queue_free()  
+	if not Move_NPC_after_talk and not Remember_temp or config.load(Dialogue_System.temp_save_Path) != OK: return # if you can load a save with the npc's name
+	
+	if Move_NPC_after_talk and config.get_value("conversations", name)[0] >= dialogue_area.starting_conversation: # and the saves starting conve index is lest than or equal to the current convo index
+		print("delete")
+		queue_free()
+	elif Remember_temp and config.get_value("conversations", name)[0] >= dialogue_area.starting_conversation: # and the saves starting conve index is lest than or equal to the current convo index
+		dialogue_area.starting_conversation = config.get_value("conversations", name)[0]
 
 
 func _process(_delta: float) -> void:
@@ -39,7 +48,7 @@ func npc_animations():
 		Sprite_animation.play(Sprite_animation.name + str(talk_index))
 	else: # if the npc is talking
 		Sprite_animation.play("Talk" + str(talk_index))
-		if Dialogue_System.is_dialogue_runing: # if the npc is currently talking
+		if Dialogue_System.Is_Dialogue_Runing: # if the npc is currently talking
 			Sprite_animation.play("Talk" + str(talk_index))
 		else: # if the npc is finsished talking
 			Sprite_animation.pause()
@@ -48,7 +57,7 @@ func npc_animations():
 
 func run_signal_actions(action: String): # to run a signal action without runing a signal
 	connect_signal = action 
-	Signal_actions()
+	call(action)
 
 
 func Signal_actions():

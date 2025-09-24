@@ -4,7 +4,14 @@ class_name DialogueArea
 @export_file("*.json") var Custom_Json
 @export var starting_conversation = 1
 @export var ending_conversation = 0 # has to be an int
-@export var connect_signal:String
+@export var connect_signal:String:
+	set(new_value):
+		connect_signal = new_value
+		var dialogue_signals = Dialogue_System.get_signal_list()
+		for S in dialogue_signals:
+			if S["name"] in connect_signal and not Dialogue_System.is_connected(S["name"], Callable(self, S["name"])):
+				print(S["name"])
+				Dialogue_System.connect(S["name"], Callable(self, S["name"]))
 enum SAVES {empty, Temporary, Permanent}
 @export var save_conversation:SAVES = SAVES.empty
 @export var Debug = false
@@ -93,15 +100,13 @@ func reset_dialogue():
 
 func run_signal_actions(action: String): # to run a signal action without runing a signal
 	connect_signal = action 
-	Signal_actions()
+	call(action)
 
 
-func Signal_actions():
+func update_godot_dialogue():
 	if Debug: print("connected_custom " + get_parent().name)
-	if get_parent().name == "Godot Icon":
-		if connect_signal == "update_godot_dialogue" and starting_conversation == 6:
-			starting_conversation = 8
-			ending_conversation = 9
-			chose_save()
+	if get_parent().name == "Godot Icon" and starting_conversation == 6:
+		starting_conversation = 8
+		ending_conversation = 9
+		chose_save()
 	if Dialogue_System.signal_wait_finshed: Dialogue_System.wait_signal_finshed = false
-	
