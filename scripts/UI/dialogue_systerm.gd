@@ -25,6 +25,8 @@ signal turn_off_screen
 @onready var character_voice_2:AudioStreamPlayer2D = $"Dialogue UI 2/Voice"
 @onready var profile_animation_2:AnimationPlayer = $"Dialogue UI 2/Profile animations"
 
+# dictionary
+var Save_Data = {"cutscene":{}, "conversations":{}, "animations":{}}
 
 # variables
 # Nesasary variables
@@ -33,7 +35,6 @@ signal turn_off_screen
 @export var Voice_path = "res://Audio/"
 @export var Debug_output:bool
 const permennt_path = "res://save_conv_per.cfg" 
-const temp_save_Path = "res://save_conv_temp.cfg" # the data is saved across scenes untill the game is closed 
 var Detect_Player:bool = false
 var Dialogue = []
 var Default_Conversation_ID = 1
@@ -49,6 +50,7 @@ var Is_Dialogue_Runing = false
 var choices_exsist = false
 var prepare_dialogue_2
 var current_dialogue 
+var config = ConfigFile.new()
 
 # option variables
 var in_Cutscene = false
@@ -82,9 +84,7 @@ var name_2
 
 
 func _ready() -> void:
-	if FileAccess.file_exists(temp_save_Path):
-		if Debug_output: print("delete: " + temp_save_Path)
-		DirAccess.remove_absolute(temp_save_Path)
+	Load_Permanent_Data()
 	hide()
 
 
@@ -409,6 +409,37 @@ func _on_overlap_detection_area_entered(area: Area2D) -> void:
 func _on_overlap_detection_area_exited(area: Area2D) -> void:
 	if visible == false:
 		Dialogue_ui.position = Vector2.ZERO
+
+func Load_Permanent_Data():
+	if not FileAccess.file_exists(permennt_path): return
+	
+	config.load(permennt_path) 
+	if config.has_section("cutscene"):
+		for Key in config.get_section_keys("cutscene"): # load if cutscene ran
+			Save_Data["cutscene"][Key] = config.get_value("cutscene", Key)
+	
+	if config.has_section("conversations"):
+		for Key in config.get_section_keys("conversations"): # load what conversations your on
+			Save_Data["conversations"][Key] = config.get_value("conversations", Key)
+	
+	if config.has_section("animations"):
+		for Key in config.get_section_keys("animations"): # load what animations your on
+			Save_Data["animations"][Key] = config.get_value("animations", Key)
+
+func Permenently_Save_Data():
+	if FileAccess.file_exists(permennt_path): config.load(permennt_path) 
+	
+	for Key in Save_Data["cutscene"]:# save if cutscene ran
+		print(Key)
+		config.set_value("cutscene", Key, Save_Data["cutscene"][Key])
+	
+	for Key in Save_Data["conversations"]:# save what conversations your on
+		config.set_value("conversations", Key, Save_Data["conversations"][Key])
+	
+	for Key in Save_Data["animations"]:# save what animations your on
+		config.set_value("animations", Key, Save_Data["animations"][Key])
+	
+	config.save(permennt_path)
 
 
 func remove_player_input(): # used to remove player input during cutscenece animations 

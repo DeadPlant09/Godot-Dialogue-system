@@ -172,9 +172,11 @@ size = Vector2(15.75, 4.25)
 [node name="Dezzy" parent="." instance=ExtResource("1_lkf2h")]
 position = Vector2(97, 282)
 
-[node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area") instance=ExtResource("6_4bisx")]
+[node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
 position = Vector2(231, 525)
+remember_temp = true
 dialogue_area = NodePath("dialougue_area")
+sprite_animation = NodePath("Standing")
 
 [node name="Standing" type="AnimationPlayer" parent="Prisoner"]
 libraries = {
@@ -190,6 +192,7 @@ texture = ExtResource("7_l53xt")
 [node name="dialougue_area" parent="Prisoner" instance=ExtResource("5_fv6mw")]
 Custom_Json = "res://Resourses/NPC.json"
 ending_conversation = 2
+save = true
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
 position = Vector2(1, -12)
@@ -209,11 +212,12 @@ Scene = "res://Scene's/Area's/Room 1.tscn"
 position = Vector2(-33, 331)
 shape = SubResource("RectangleShape2D_7860w")
 
-[node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "Sprite_animation") instance=ExtResource("6_4bisx")]
+[node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
 position = Vector2(687, 200)
-collision_layer = 4
+remember_temp = true
 dialogue_area = NodePath("dialougue_area")
-Sprite_animation = NodePath("Streach")
+sprite_animation = NodePath("Streach")
+debug = true
 
 [node name="Sprite" type="Sprite2D" parent="Worker"]
 position = Vector2(-11, 0.999998)
@@ -231,7 +235,7 @@ libraries = {
 Custom_Json = "res://Resourses/NPC.json"
 starting_conversation = 3
 ending_conversation = 4
-save_conversation = 1
+save = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
 position = Vector2(0.5, -12)
