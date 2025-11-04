@@ -9,12 +9,17 @@
 		{"Name": "Prisoner", "Text": "* Well fine! I dont need your help anyway \n*	Loser"},
 	],
 	"3":[
+		{"Name": "Worker", "Text": "* Testing, testing Moving."},
+		{"Name": "Dezzy", "Text": "* What are you doing?"},
+		{"Name": "Worker", "Text": "* huh? dont worry about it."}
+	],
+	"4":[
 	{"Name": "Dezzy", "Face": 1, "Text": "* Why are you streching?","pause at ending": false},
 	{"Name": "Worker", "Text": "* Im just woking out"},
 	{"Name": "Worker", "Text": "* Soon ill be strong enough to threten\n	 my boss for a paycheak"},
 	{"Name": "Dezzy", "Face": 1, "Text": "* ...ok"}
 	],
-	"4":[
+	"5":[
 	{"Name": "Dezzy", "Text": "* Wait don't you mean higher paycheck?"},
 	{"Name": "Worker", "Text": "* No I dont get paid!"}
 	]

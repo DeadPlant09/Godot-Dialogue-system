@@ -19,7 +19,6 @@ var config = ConfigFile.new()
 
 # functions
 func _ready() -> void:
-	print(name + " ran_" + str(Index))
 	if Mode == MODES.dialogue: 
 		Load_cutscene_state()
 		if Run_at_start and not Cutscene_ran: run_dialouge()
@@ -29,7 +28,7 @@ func _ready() -> void:
 func run_dialouge():
 	Dialogue_System.Run_dialouge(json_path, Conversation)
 	await Dialogue_System.dialogue_finished
-	if debug: print(name + " ran")
+	if debug: (name + " ran_" + str(Index))
 	Cutscene_ran = true # run once in the same scene, you can change on variable in a save file without editing the rest which is what you can do in this instance with your save system in your own projects
 	Save_cutscene_state()
 

@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://p1pnnpu08ldg"]
+[gd_scene load_steps=19 format=3 uid="uid://p1pnnpu08ldg"]
 
 [ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="2_uh20n"]
 [ext_resource type="Texture2D" uid="uid://cwr76hmlbo16s" path="res://Sprites/Character's/Emoji.svg" id="3_itob3"]
 [ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scene's/Objects/dialougue_area.tscn" id="4_fb8ut"]
+[ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="7_drkqx"]
 [ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="7_ea5ev"]
 [ext_resource type="Texture2D" uid="uid://df330aa2o24j4" path="res://Sprites/Character's/Godot icon.svg" id="7_iq3mt"]
 [ext_resource type="PackedScene" uid="uid://dwplf7pb50clu" path="res://Scene's/UI/cutscene trigger.tscn" id="8_drkqx"]
+[ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Character's/Worker.png" id="8_sckux"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ui07i"]
 radius = 270.74
@@ -18,6 +20,67 @@ size = Vector2(35, 678)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_upb33"]
 size = Vector2(130, 128)
+
+[sub_resource type="Animation" id="Animation_vumjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_nlexe"]
+resource_name = "Streach0"
+length = 2.0
+step = 0.002
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.04, 0.5, 1.01),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.1, 0.05), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_omr6p"]
+resource_name = "Talk0"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.08, 0.1), Vector2(0.1, 0.1), Vector2(0.1, 0.08), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_brkx7"]
+_data = {
+&"RESET": SubResource("Animation_vumjn"),
+&"Streach0": SubResource("Animation_nlexe"),
+&"Talk0": SubResource("Animation_omr6p")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_upb33"]
+radius = 20.5973
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugjdl"]
+size = Vector2(15.75, 4.25)
 
 [node name="Room 1" type="Node2D"]
 
@@ -33,6 +96,9 @@ texture = ExtResource("3_itob3")
 
 [node name="dialougue_area" parent="Emoji" instance=ExtResource("4_fb8ut")]
 Custom_Json = "res://Resourses/Objects.json"
+convo = {
+0: [1, 0]
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Emoji/dialougue_area"]
 shape = SubResource("CircleShape2D_ui07i")
@@ -54,6 +120,7 @@ Conversation = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene"]
 shape = SubResource("RectangleShape2D_sckux")
+disabled = true
 
 [node name="Godot Icon" type="Sprite2D" parent="."]
 position = Vector2(780, 190)
@@ -61,12 +128,51 @@ texture = ExtResource("7_iq3mt")
 
 [node name="dialougue_area" parent="Godot Icon" instance=ExtResource("4_fb8ut")]
 Custom_Json = "res://Resourses/Objects.json"
-starting_conversation = 6
-ending_conversation = 7
+convo = {
+0: [6, 7]
+}
 connect_signal = "update_godot_dialogue"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Godot Icon/dialougue_area"]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_upb33")
+
+[node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("7_drkqx")]
+position = Vector2(820, 489)
+instances = {
+0: Vector2(820, 489),
+2: Vector2(410, 489)
+}
+move_after_talk = true
+dialogue_area = NodePath("dialougue_area")
+sprite_animation = NodePath("Streach")
+
+[node name="Sprite" type="Sprite2D" parent="Worker"]
+position = Vector2(-11, 0.999998)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("8_sckux")
+centered = false
+offset = Vector2(0, -260)
+
+[node name="Streach" type="AnimationPlayer" parent="Worker"]
+libraries = {
+&"": SubResource("AnimationLibrary_brkx7")
+}
+
+[node name="dialougue_area" parent="Worker" instance=ExtResource("4_fb8ut")]
+Custom_Json = "res://Resourses/NPC.json"
+convo = {
+0: [3, 3],
+2: [4, 5]
+}
+save = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
+position = Vector2(0.5, -12)
+shape = SubResource("CircleShape2D_upb33")
+
+[node name="CollisionBox" type="CollisionShape2D" parent="Worker"]
+position = Vector2(0.625, -1.875)
+shape = SubResource("RectangleShape2D_ugjdl")
 
 [connection signal="body_entered" from="Switch Sceane" to="Switch Sceane" method="_on_body_entered"]

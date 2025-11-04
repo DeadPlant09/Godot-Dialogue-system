@@ -191,7 +191,9 @@ texture = ExtResource("7_l53xt")
 
 [node name="dialougue_area" parent="Prisoner" instance=ExtResource("5_fv6mw")]
 Custom_Json = "res://Resourses/NPC.json"
-ending_conversation = 2
+convo = {
+0: [1, 2]
+}
 save = true
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
@@ -214,10 +216,14 @@ shape = SubResource("RectangleShape2D_7860w")
 
 [node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
 position = Vector2(687, 200)
+instances = {
+1: Vector2(687, 200),
+3: Vector2(687, 600)
+}
+move_after_talk = true
 remember_temp = true
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Streach")
-debug = true
 
 [node name="Sprite" type="Sprite2D" parent="Worker"]
 position = Vector2(-11, 0.999998)
@@ -233,8 +239,10 @@ libraries = {
 
 [node name="dialougue_area" parent="Worker" instance=ExtResource("5_fv6mw")]
 Custom_Json = "res://Resourses/NPC.json"
-starting_conversation = 3
-ending_conversation = 4
+convo = {
+1: [4, 5],
+3: [3, 3]
+}
 save = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]

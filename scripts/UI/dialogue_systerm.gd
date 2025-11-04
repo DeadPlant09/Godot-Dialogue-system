@@ -26,13 +26,13 @@ signal turn_off_screen
 @onready var profile_animation_2:AnimationPlayer = $"Dialogue UI 2/Profile animations"
 
 # dictionary
-var Save_Data = {"cutscene":{}, "conversations":{}, "animations":{}}
+var Save_Data = {"cutscene":{}, "conversations":{}, "animations":{}, "npc_instance":{}}
 
 # variables
 # Nesasary variables
 @export_file("*.json") var Json_file
-@export var Profile_path = "res://Sprites/Character's/"
-@export var Voice_path = "res://Audio/"
+@export_file("*.png") var Profile_path = "res://Sprites/Character's/"
+@export_file("*.wav") var Voice_path = "res://Audio/"
 @export var Debug_output:bool
 const permennt_path = "res://save_conv_per.cfg" 
 var Detect_Player:bool = false
@@ -84,7 +84,7 @@ var name_2
 
 
 func _ready() -> void:
-	Load_Permanent_Data()
+	Load_Permanent_Data() # remove when using another save this is just an exsample save
 	hide()
 
 
@@ -295,7 +295,6 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 		if Debug_output:print("finised dialogue")
 		when_dialogue_finishes()
 
-
 func when_dialogue_finishes():
 	# if that 'Responses' doesnt exist it will return null
 	if not Current_Diauogue_id  >= len(Dialogue[str(Conversation_id)]) and current_dialogue.get('Choices'):# when pressing the skip button to fast it crashesx
@@ -411,33 +410,21 @@ func _on_overlap_detection_area_exited(area: Area2D) -> void:
 		Dialogue_ui.position = Vector2.ZERO
 
 func Load_Permanent_Data():
-	if not FileAccess.file_exists(permennt_path): return
+	if config.load(permennt_path) != OK: return
 	
-	config.load(permennt_path) 
-	if config.has_section("cutscene"):
-		for Key in config.get_section_keys("cutscene"): # load if cutscene ran
-			Save_Data["cutscene"][Key] = config.get_value("cutscene", Key)
-	
-	if config.has_section("conversations"):
-		for Key in config.get_section_keys("conversations"): # load what conversations your on
-			Save_Data["conversations"][Key] = config.get_value("conversations", Key)
-	
-	if config.has_section("animations"):
-		for Key in config.get_section_keys("animations"): # load what animations your on
-			Save_Data["animations"][Key] = config.get_value("animations", Key)
+	for section in Save_Data:
+		if Debug_output: print("load " + section)
+		if config.has_section(section):
+			for Key in config.get_section_keys(section): # load if cutscene ran
+				Save_Data[section][Key] = config.get_value(section, Key)
 
 func Permenently_Save_Data():
 	if FileAccess.file_exists(permennt_path): config.load(permennt_path) 
 	
-	for Key in Save_Data["cutscene"]:# save if cutscene ran
-		print(Key)
-		config.set_value("cutscene", Key, Save_Data["cutscene"][Key])
-	
-	for Key in Save_Data["conversations"]:# save what conversations your on
-		config.set_value("conversations", Key, Save_Data["conversations"][Key])
-	
-	for Key in Save_Data["animations"]:# save what animations your on
-		config.set_value("animations", Key, Save_Data["animations"][Key])
+	for section in Save_Data:
+		if Debug_output: print("save " + section)
+		for Key in Save_Data[section]:# save if cutscene ran
+			config.set_value(section, Key, Save_Data[section][Key])
 	
 	config.save(permennt_path)
 
