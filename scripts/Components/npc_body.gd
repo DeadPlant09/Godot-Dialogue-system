@@ -4,12 +4,10 @@ class_name NPC
 # @export variables
 @export var instances:Dictionary
 @export var turn_off_animations: bool # used for nodes you just want to recive dialogue signals 
-@export var move_after_talk:bool # use it for a node you want to delete after talking with it and exitsing the scene
-@export var remember_temp:bool
 @export var dialogue_area:DialogueArea
 @export var sprite_animation:AnimationPlayer
 @export var talk_index = 0
-@export var connect_signal:String: # for every signal in the variable connect to each of them
+@export_multiline var connect_signal:String: # for every signal in the variable connect to each of them
 	set(new_value):
 		connect_signal = new_value
 		var dialogue_signals = Dialogue_System.get_signal_list()
@@ -23,38 +21,55 @@ class_name NPC
 var save_data = Dialogue_System.Save_Data
 var saved_instances = save_data["npc_instance"]
 var saved_convos = save_data["conversations"]
+var saved_choices = save_data["chocies"]
+
 
 func _ready() -> void:
-	if not move_after_talk and not remember_temp: return # if you chose load a save with the npc's name
-	
-	if not instances.is_empty():
+	if not instances.is_empty(): # if its set to move and can
+		
 		position = instances[instances.keys()[0]]
 		
-		if move_after_talk and saved_instances.has(name): # if its set to move and can
-			for instance in instances: # check every instance
-				var index = instances.keys().find(instance) # in the list of key find the instance and return the name
-				print(index)
-				if instance < saved_instances[name] and not index + 1 < instances.size(): # if this instance is has passed and there are no more instances: delete 
-					if debug: print("delete")
-					queue_free()
-		
-		if move_after_talk:
-			for instance in instances: # check every instance
-				if not saved_instances.has(name) or not instance < saved_instances[name]: # if they dont have the saved instance or its has not passed 
-					var index = instances.keys().find(instance) # in the list of key find the instance and return the name
-					saved_instances[name] = instance 
-					position = instances[instance]
-					if debug: print(saved_instances)
-					break # stop checking instances
+		for instance in instances: # check every instance
+			var index = instances.keys().find(instance) # in the list of key find the instance and return the name
+			if instance_has_passed(instance) and not index + 1 < instances.size(): # if this instance is has passed and there are no more instances: delete 
+				if debug: print(str(index) + " delete")
+				queue_free()
+			
+			if not instance_has_passed(instance): # if if theres an instance that hasnt passed
+				saved_instances[name] = instance # set to current instance
+				position = instances[instance] # set instance positon
+				if debug: print(saved_instances[name])
+				break # stop checking instances
 	
-	if remember_temp and saved_convos.has(name) and saved_convos[name][0] >= dialogue_area.starting_convo and saved_convos[name][0] <= dialogue_area.ending_convo:
-		# if your not past the ending convo for this instance of this npc then remember the convo 
-		dialogue_area.starting_convo = saved_convos[name][0]
-		dialogue_area.ending_convo = saved_convos[name][1]
-		if debug: print("remembered_temp")
+	Dialogue_System.choice_was_made.connect(use_choice_instance)
+	
+	if not can_remember_convo(): return # if you chose remember the npc convo
+	dialogue_area.starting_convo = saved_convos[name][0]
+	dialogue_area.ending_convo = saved_convos[name][1]
+	if debug: print("remembered_temp")
+
+
+func instance_has_passed(instance: int):
+	return saved_instances.has(name) and instance < saved_instances[name]
+
+func can_remember_convo():
+	return saved_convos.has(name) and saved_convos[name][0] >= dialogue_area.starting_convo and saved_convos[name][0] <= dialogue_area.ending_convo
 
 
 func _process(_delta: float) -> void: if sprite_animation != null: npc_animations()
+
+func use_choice_instance():
+	if not saved_choices.has(name):return
+	if not saved_choices[name].has(Dialogue_System.choice_convo):return
+	
+	print("choice convo " + str(saved_choices[name][Dialogue_System.choice_convo]))
+	
+	saved_instances[name] = saved_choices[name][Dialogue_System.choice_convo]
+	dialogue_area.chose_convo()
+	
+	await Dialogue_System.dialogue_finished
+	
+	dialogue_area.set_current_dialogue()
 
 
 func npc_animations():
@@ -76,8 +91,7 @@ func run_signal_actions(action: String): # to run a signal action without runing
 	connect_signal = action 
 	call(action)
 
-
-func Signal_actions():
-	if connect_signal == "update_godot_dialogue":
-		print("connect")
-	if Dialogue_System.signal_wait_finshed: Dialogue_System.wait_signal_finshed = false
+func update_godot_dialogue():
+	saved_instances[name] = 1 # set current_instance to instance 1
+	dialogue_area.chose_convo() # set convo to current_instance
+	if Dialogue_System.wait_for_signal: Dialogue_System.signal_wait_finshed.emit()

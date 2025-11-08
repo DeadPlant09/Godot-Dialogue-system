@@ -3,18 +3,16 @@ class_name dialoguesystemnode extends CanvasLayer
 # signal
 signal dialogue_finished
 signal signal_wait_finshed
+signal choice_was_made
 
 # custom signals
 signal update_godot_dialogue # default
-signal turn_on_robo_7
-signal robo_7_look_back
-signal turn_off_screen
 
 # node variables
 @onready var Dialogue_ui:Control = $"Dialogue UI"
-@onready var Sprites: Control = $"Dialogue UI/Sprites"
+@onready var Sprites:Control = $"Dialogue UI/Sprites"
 @onready var Character_Text = $"Dialogue UI/Character Text"
-@onready var Character_Voice: AudioStreamPlayer2D = $"Dialogue UI/Voice"
+@onready var Character_Voice:AudioStreamPlayer2D = $"Dialogue UI/Voice"
 @onready var Options = $"Dialogue UI/Options"
 @onready var Reactions = [$"Dialogue UI/Reaction 1", $"Dialogue UI/Reaction 2", $"Dialogue UI/Reaction 3", $"Dialogue UI/Reaction 4"]
 @onready var Profile_animation: AnimationPlayer = $"Dialogue UI/Profile animations"
@@ -26,7 +24,13 @@ signal turn_off_screen
 @onready var profile_animation_2:AnimationPlayer = $"Dialogue UI 2/Profile animations"
 
 # dictionary
-var Save_Data = {"cutscene":{}, "conversations":{}, "animations":{}, "npc_instance":{}}
+var Save_Data = {
+	"cutscene":{}, 
+	"conversations":{}, 
+	"animations":{}, 
+	"npc_instance":{}, 
+	"chocies":{}
+	}
 
 # variables
 # Nesasary variables
@@ -43,13 +47,15 @@ var Ending_Conversation = Default_Ending_Conversation
 var Conversation_id = Default_Conversation_ID
 var Default_Dialogue_ID = 0
 var Current_Diauogue_id = Default_Dialogue_ID
-var Choice_Responces:Array
-var Choice_Aftermath:Array
 var Deactivated = false
 var Is_Dialogue_Runing = false
 var choices_exsist = false
 var prepare_dialogue_2
-var current_dialogue 
+var current_dialogue
+var current_npc
+var choice_convo 
+var Choice_Responces:Array
+var Choice_Aftermath:Array
 var config = ConfigFile.new()
 
 # option variables
@@ -75,9 +81,9 @@ var hide_name = false
 var hidden_names = ["", "Deadplant", "Narrarator"]
 var Default_inputs: Dictionary 
 var use_2nd_responce = false
-var wait_signal_finshed = false:
+var wait_for_signal = false:
 	set(new_value):
-		wait_signal_finshed = new_value # nessasary
+		wait_for_signal = new_value # nessasary
 		signal_wait_finshed.emit()
 var text_2
 var name_2
@@ -104,6 +110,7 @@ func start_dialogue() -> void:
 	
 	Deactivated = true # so next time it enters the function it wit imeditly exit
 	Dialogue = load_Json(Json_file)
+	
 	if Debug_output: print("start " + str(Json_file))
 	
 	if Ending_Conversation < 1 or Ending_Conversation > len(Dialogue): 
@@ -119,7 +126,6 @@ func load_Json(filepath: String):
 		var data_from_file = FileAccess.open(filepath, FileAccess.READ)
 		var Result_from_File = JSON.parse_string(data_from_file.get_as_text())
 		return Result_from_File
-	
 
 
 func _input(event: InputEvent) -> void:
@@ -140,6 +146,8 @@ func Next_Dialogue():
 		
 		if Conversation_id < Ending_Conversation:  # if there are more conversations
 			Conversation_id += 1
+		
+		current_npc = null
 		
 		dialogue_finished.emit()
 		
@@ -168,12 +176,10 @@ func Set_up_dialogue_Options():
 	pause_at_index = current_dialogue.get('pause')
 	hide_name = current_dialogue.get('hide name', false)
 	emit_custom = current_dialogue.get('Signal', [false])
-	wait_signal_finshed = current_dialogue.get('wait signal', false)
+	wait_for_signal = current_dialogue.get('wait signal', false)
 	text_2 = current_dialogue.get('text_2')
 	name_2 = current_dialogue.get('name_2', "")
 	prepare_dialogue_2 = text_2 != null and name_2 != ""
-
-
 
 func Set_Profile(): # runs befor Options are set
 	# reset the postion and size to defaults 
@@ -217,7 +223,7 @@ func Set_text():
 	Character_Text.visible_ratio = 0 # when you change your character profile reste the visable text to 0
 	Sprites.get_child(2).text = current_dialogue.get('Name', "")
 	
-	if emit_custom[0] == false and wait_signal_finshed: # if your playing the isgnal at the start and your waitng for the signal to finish
+	if emit_custom[0] == false and wait_for_signal: # if your playing the isgnal at the start and your waitng for the signal to finish
 		hide()
 		await signal_wait_finshed
 		show()
@@ -233,7 +239,6 @@ func Set_text():
 	Character_Text.text = current_dialogue.get('Text', "") 
 	
 	scrolling_text(Character_Text, current_dialogue.get('Speed', 0.05)) # make the charcter text scroll after you set it
-
 
 func set_text_2():
 	if Debug_output: print("prepare dialogue 2")
@@ -253,7 +258,8 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 	var voice_played = 0
 	var parsed_text_length = text_node.get_parsed_text().length()
 	var should_you_play_voice  = play_voice
-	for e in text_node.get_text(): # scroling text, for every letter in character text
+	
+	for chara in text_node.get_text(): # scroling text, for every letter in character text
 		text_node.visible_characters += 1 # make one character visable (visable text includes spaces)
 		play_voice = should_you_play_voice
 		Profile_animation.stop()
@@ -264,12 +270,12 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 					await get_tree().create_timer(0.3).timeout # then wait for 0.3 sec 
 		
 		for s in pause_at_character:
-			if pause_at_ending_of_sentence and e == s: # Long pasues at the End of sentece
+			if pause_at_ending_of_sentence and chara == s: # Long pasues at the End of sentece
 				# if the character is these letter wait a little more
 				await get_tree().create_timer(0.3).timeout
 		
 		for c in silent_characters: # it wont play the sound for certine characters
-			if e == c:
+			if chara == c:
 				play_voice = false 
 		
 		if play_voice == true and voice_played <= parsed_text_length: # to make sure the sound doenst play when counting the bbcode text 
@@ -282,7 +288,7 @@ func scrolling_text(text_node:RichTextLabel, Speed = 0.05):
 				profile_animation_2.play(profile_animation_2.current_animation)
 		
 		play_voice = true
-		if Debug_output:print(e)
+		if Debug_output:print(chara)
 		
 		await get_tree().create_timer(Speed).timeout # wait every 0.05 seconds to repet the loop 
 		
@@ -315,7 +321,7 @@ func when_dialogue_finishes():
 	Is_Dialogue_Runing = false
 	
 	# after dialouge 
-	if not choices_exsist and wait_for_responses: #if there are no choices yet you wait for responses there the're are Reactions
+	if not choices_exsist and wait_for_responses: # if there are no choices yet you wait for responses there the're are Reactions
 		if Debug_output: print("wait for reactions")
 		show_reactions() 
 	if auto_skip:
@@ -330,7 +336,7 @@ func show_choices():
 	for b in Options.get_children():
 		if b is Button:
 			b.text = ""
-	# if move_index_up_by >= current_dialogue['Reactions'].size(): break
+	
 	Options.position = Vector2(168, 500) # default posioton
 	
 	if not Character_Text.text == "":
@@ -353,38 +359,52 @@ func show_choices():
 			
 			if Choice_Responces[index] != 0:
 				Options.get_child(index).pressed.connect(func():
-					change_to_choice_dialouge(index)
+					change_choice_to_dialouge(index)
 					) 
 			else: 
 				if Debug_output: print("choice " + str(b.get_index()) + " exit")
 				dialogue_finished.emit()
 				return # to exit out the function
 
-func change_to_choice_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
+func change_choice_to_dialouge(choice): # cannot get path to 'Responses' in  this function spisificly
+	if Detect_Player and current_npc: # put aftermath into a convo choice
+		choice_convo = Conversation_id
+		if not Save_Data["chocies"].has(current_npc): Save_Data["chocies"][current_npc]  = {} # creating npc group
+		Save_Data["chocies"][current_npc][choice_convo] = int(Choice_Aftermath[choice])
+	
 	Conversation_id = int(Choice_Responces[choice])
-	if Debug_output: print("choice " + str(choice) + ", conversation id: " + str(Conversation_id))
-	Ending_Conversation = int(Choice_Aftermath[choice])
-	if Debug_output: print("choice " + str(choice) + ", ending_conversation id: " + str(Ending_Conversation))
+	if Debug_output:
+		print("choice " + str(choice) + ", conversation id: " + str(Conversation_id))
+	
+	Ending_Conversation = int(Choice_Responces[choice])
+	if Debug_output:
+		print("choice " + str(choice) + ", ending_conversation id: " + str(Ending_Conversation))
+	
 	choices_exsist = false
 	Deactivated = false
 	start_dialogue()
+	choice_was_made.emit()
 
 
 func show_reactions():
 	var react = 0
 	var move_index_up_by = 0
-	if current_dialogue.get('Reactions'):
-		for R in Reactions:
-			if move_index_up_by >= current_dialogue['Reactions'].size(): break
-			
-			Reactions[react].get_child(1).text = ""
-			if FileAccess.file_exists(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png"):
-				Reactions[react].get_child(0).texture = load(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png")
-				Reactions[react].get_child(0).frame = int(current_dialogue['Reactions'][1 + move_index_up_by])
-			
-			Reactions[react].get_child(1).text =  current_dialogue.get('Reactions', ["",0,""])[2 + move_index_up_by]
-			react += 1
-			move_index_up_by += 3
+	
+	for reaction in Reactions:
+		if move_index_up_by >= current_dialogue['Reactions'].size(): break
+		var reaction_image = Reactions[react].get_child(0)
+		var reaction_text = Reactions[react].get_child(1)
+		
+		reaction_image.texture = null
+		reaction_text.text = ""
+		
+		if FileAccess.file_exists(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png"):
+			reaction_image.texture = load(Profile_path + str(current_dialogue['Reactions'][0 + move_index_up_by]) + " Profile.png")
+			reaction_image.frame = int(current_dialogue['Reactions'][1 + move_index_up_by])
+		
+		reaction_text.text =  current_dialogue.get('Reactions', ["",0,""])[2 + move_index_up_by]
+		react += 1
+		move_index_up_by += 3
 	
 	if not Reactions[0].get_child(1).text == "[Inset litraly any respone]": 
 		Show_responce.play("slide in")
@@ -399,7 +419,6 @@ func _on_overlap_detection_body_entered(body: Node2D) -> void:
 func _on_overlap_detection_body_exited(body: Node2D) -> void:
 	if visible == false:
 		Dialogue_ui.position = Vector2.ZERO
-
 
 func _on_overlap_detection_area_entered(area: Area2D) -> void:
 	if  visible == false:
@@ -430,11 +449,11 @@ func Permenently_Save_Data():
 
 
 func remove_player_input(): # used to remove player input during cutscenece animations 
-	for A in InputMap.get_actions():
-		Default_inputs[A] = InputMap.action_get_events(A) # create a key witht he name of the action and add the intupst as a value
-		InputMap.action_erase_events(A) # erease the inputs in the current action
+	for Action in InputMap.get_actions():
+		Default_inputs[Action] = InputMap.action_get_events(Action) # create a key witht he name of the action and add the intupst as a value
+		InputMap.action_erase_events(Action) # erease the inputs in the current action
 
 func add_player_input():
-	for A in InputMap.get_actions():
-		for e in Default_inputs[A]: # for every event in the current action add it back
-			InputMap.action_add_event(A, e) 
+	for Action in InputMap.get_actions():
+		for input in Default_inputs[Action]: # for every event in the current action add it back
+			InputMap.action_add_event(Action, input) 

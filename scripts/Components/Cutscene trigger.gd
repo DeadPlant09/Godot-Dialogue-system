@@ -15,6 +15,7 @@ enum MODES {dialogue, animation}
 # variables
 var Cutscene_ran = false
 var config = ConfigFile.new()
+@onready var save_name = name + " ran_" + str(Index)
 
 
 # functions
@@ -28,7 +29,7 @@ func _ready() -> void:
 func run_dialouge():
 	Dialogue_System.Run_dialouge(json_path, Conversation)
 	await Dialogue_System.dialogue_finished
-	if debug: (name + " ran_" + str(Index))
+	if debug: (save_name)
 	Cutscene_ran = true # run once in the same scene, you can change on variable in a save file without editing the rest which is what you can do in this instance with your save system in your own projects
 	Save_cutscene_state()
 
@@ -46,10 +47,10 @@ func _process(delta: float) -> void:
 
 
 func Save_cutscene_state():
-	Dialogue_System.Save_Data["cutscene"][ name + " ran_" + str(Index)] = Cutscene_ran
-	if debug: print( name + " ran_" + str(Index) + " saved")
+	Dialogue_System.Save_Data["cutscene"][save_name] = Cutscene_ran
+	if debug: print( save_name + " saved")
 
 func Load_cutscene_state():
-	if not Dialogue_System.Save_Data["cutscene"].has( name + " ran_" + str(Index)): return
-	Cutscene_ran = Dialogue_System.Save_Data["cutscene"][ name + " ran_" + str(Index)] # find the value of high score from the save file, if it can't find the high score value set it to the game default: 0 
-	if debug: print( name + " ran_" + str(Index) + " loaded")
+	if not Dialogue_System.Save_Data["cutscene"].has( save_name): return
+	Cutscene_ran = Dialogue_System.Save_Data["cutscene"][ save_name] # find the value of high score from the save file, if it can't find the high score value set it to the game default: 0 
+	if debug: print( save_name + " loaded")

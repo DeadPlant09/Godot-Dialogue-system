@@ -174,7 +174,6 @@ position = Vector2(97, 282)
 
 [node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
 position = Vector2(231, 525)
-remember_temp = true
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Standing")
 
@@ -194,7 +193,6 @@ Custom_Json = "res://Resourses/NPC.json"
 convo = {
 0: [1, 2]
 }
-save = true
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
 position = Vector2(1, -12)
@@ -218,10 +216,8 @@ shape = SubResource("RectangleShape2D_7860w")
 position = Vector2(687, 200)
 instances = {
 1: Vector2(687, 200),
-3: Vector2(687, 600)
+3: Vector2(687, 400)
 }
-move_after_talk = true
-remember_temp = true
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Streach")
 
@@ -243,7 +239,6 @@ convo = {
 1: [4, 5],
 3: [3, 3]
 }
-save = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
 position = Vector2(0.5, -12)

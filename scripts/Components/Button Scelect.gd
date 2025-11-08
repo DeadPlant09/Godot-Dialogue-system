@@ -1,4 +1,5 @@
 extends Control
+class_name Button_Select
 
 @export var dialoue_choices:bool
 @export var scelect_icon: Node2D

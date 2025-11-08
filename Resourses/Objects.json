@@ -1,7 +1,7 @@
 {
 	"1":[ 
 		{"Name": "Emoji", "Text": "* Hello Dezzy!", "Signal": [false, "update_godot_dialogue"]},
-		{"Name": "Emoji", "Text": "* Did you know the earth is [wave]flat?", "Choices": ["Sure","Your crazy"], "Responses": [2,4], "Aftermath": [3,5]} 
+		{"Name": "Emoji", "Text": "* Did you know the earth is [wave]flat?", "Choices": ["Sure","Your crazy"], "Responses": [2,4], "Aftermath": [1,2]} 
 	],
 	"2":[
 		{"Name": "Dezzy", "Text": "* \"of course!\"", "Screen position": [0, -456]},
