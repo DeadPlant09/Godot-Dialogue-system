@@ -1,26 +1,26 @@
 {
 	"1":[
-	{"Name": "Prisoner", "Text": "* Sir I need your help!"},
-	{"Name": "Dezzy", "Text": "* ...You need my help?"},
-	{"Name": "Prisoner", "Text": "* Yeah! I accidentally crashed into my prison,\n	 and I don't want to spend another 20 years\n	ther for playing GTA® real life!", "pause at ending": false},
-	{"Name": "Dezzy", "Text": "* I dunno this shit is kind of on you", "Reactions": ["Prisoner", 0, "F***K!"]},
+		{"name": "Prisoner", "text": "* Sir I need your help!"},
+		{"name": "Dezzy", "text": "* ...You need my help?"},
+		{"name": "Prisoner", "text": "* Yeah! I accidentally crashed into my prison,\n	 and I don't want to spend another 20 years\n	ther for playing GTA® real life!", "pause at ending": false},
+		{"name": "Dezzy", "text": "* I dunno this shit is kind of on you", "reactions": ["Prisoner", 0, "F***K!"]},
 	],
 	"2":[
-		{"Name": "Prisoner", "Text": "* Well fine! I dont need your help anyway \n*	Loser"},
+		{"name": "Prisoner", "text": "* Well fine! I dont need your help anyway \n*	Loser"},
 	],
 	"3":[
-		{"Name": "Worker", "Text": "* Testing, testing Moving."},
-		{"Name": "Dezzy", "Text": "* What are you doing?"},
-		{"Name": "Worker", "Text": "* huh? dont worry about it."}
+		{"name": "Worker", "text": "* Testing, testing Moving."},
+		{"name": "Dezzy", "text": "* What are you doing?"},
+		{"name": "Worker", "text": "* huh? dont worry about it."}
 	],
 	"4":[
-	{"Name": "Dezzy", "Face": 1, "Text": "* Why are you streching?","pause at ending": false},
-	{"Name": "Worker", "Text": "* Im just woking out"},
-	{"Name": "Worker", "Text": "* Soon ill be strong enough to threten\n	 my boss for a paycheak"},
-	{"Name": "Dezzy", "Face": 1, "Text": "* ...ok"}
+		{"name": "Dezzy", "Face": 1, "text": "* Why are you streching?", "pause at ending": false},
+		{"name": "Worker", "text": "* Im just woking out"},
+		{"name": "Worker", "text": "* Soon ill be strong enough to threten\n	 my boss for a paycheak"},
+		{"name": "Dezzy", "Face": 1, "text": "* ...ok"}
 	],
 	"5":[
-	{"Name": "Dezzy", "Text": "* Wait don't you mean higher paycheck?"},
-	{"Name": "Worker", "Text": "* No I dont get paid!"}
+		{"name": "Dezzy", "text": "* Wait don't you mean higher paycheck?"},
+		{"name": "Worker", "text": "* No I dont get paid!"}
 	]
 }

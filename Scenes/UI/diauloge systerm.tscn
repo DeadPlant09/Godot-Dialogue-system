@@ -1,12 +1,12 @@
-[gd_scene load_steps=20 format=3 uid="uid://brw7h3l8kq28v"]
+[gd_scene format=3 uid="uid://brw7h3l8kq28v"]
 
-[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/dialogue_systerm.gd" id="1_ii7p6"]
-[ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://Sprites/Objects/Stary 9-slice.png" id="2_taeu3"]
-[ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://Audio/Default dialogue voice.wav" id="3_8r266"]
-[ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://Resourses/invisable button theme.tres" id="4_3aq4e"]
-[ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://Sprites/Objects/slider graber blue.png" id="4_hac6l"]
-[ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/Components/Button Scelect.gd" id="4_nnv7x"]
-[ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://Sprites/UI/Dezzy Profile.png" id="7_60k30"]
+[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/dialogue_systerm.gd" id="1_3dtkc"]
+[ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://Sprites/Objects/Stary 9-slice.png" id="2_2u6o8"]
+[ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://Audio/Default_dialogue_voice.wav" id="3_4pjiw"]
+[ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://Resourses/invisable button theme.tres" id="4_rbcr1"]
+[ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/Components/Button Scelect.gd" id="5_8hwk3"]
+[ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://Sprites/Objects/slider graber blue.png" id="6_5pjw7"]
+[ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://Sprites/UI/Dezzy Profile.png" id="7_66ybl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t0gi1"]
 size = Vector2(1152, 144)
@@ -23,7 +23,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_60k30")]
+"values": [ExtResource("7_66ybl")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -40,6 +40,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_2v0rx"]
 resource_name = "Dezzy1"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -50,7 +51,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_60k30")]
+"values": [ExtResource("7_66ybl")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -59,7 +60,7 @@ tracks/1/path = NodePath("Sprites/Character Profile:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.025),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [1, 2]
@@ -315,7 +316,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_60k30")]
+"values": [ExtResource("7_66ybl")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -332,6 +333,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_60k30"]
 resource_name = "Dezzy1"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -342,7 +344,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_60k30")]
+"values": [ExtResource("7_66ybl")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -351,7 +353,7 @@ tracks/1/path = NodePath("Dialogue UI 2/Sprites/Character Profile:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.025),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [1, 2]
@@ -391,32 +393,32 @@ _data = {
 &"RESET": SubResource("Animation_ikkwn")
 }
 
-[node name="Diuloge systerm" type="CanvasLayer"]
+[node name="Diauloge systerm" type="CanvasLayer" unique_id=401724744]
 process_mode = 3
-script = ExtResource("1_ii7p6")
-Profile_path = "res://Sprites/UI/"
+script = ExtResource("1_3dtkc")
+profile_path = "res://Sprites/UI/"
 
-[node name="Overlap Detection" type="Area2D" parent="."]
+[node name="Overlap Detection" type="Area2D" parent="." unique_id=1550521251]
 show_behind_parent = true
 collision_layer = 0
 collision_mask = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Overlap Detection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Overlap Detection" unique_id=380966055]
 position = Vector2(576, 576)
 shape = SubResource("RectangleShape2D_t0gi1")
 
-[node name="Dialogue UI" type="Control" parent="."]
+[node name="Dialogue UI" type="Control" parent="." unique_id=479405727]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
-[node name="Sprites" type="Control" parent="Dialogue UI"]
+[node name="Sprites" type="Control" parent="Dialogue UI" unique_id=1992196434]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="NinePatch Dialogue box" type="NinePatchRect" parent="Dialogue UI/Sprites"]
+[node name="NinePatch Dialogue box" type="NinePatchRect" parent="Dialogue UI/Sprites" unique_id=1706584101]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -426,13 +428,13 @@ offset_left = 200.0
 offset_top = 504.0
 offset_right = 951.44
 offset_bottom = 647.0
-texture = ExtResource("2_taeu3")
+texture = ExtResource("2_2u6o8")
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="NinePatch name box" type="NinePatchRect" parent="Dialogue UI/Sprites"]
+[node name="NinePatch name box" type="NinePatchRect" parent="Dialogue UI/Sprites" unique_id=1690936488]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -442,13 +444,13 @@ offset_left = 208.0
 offset_top = 464.0
 offset_right = 223.44
 offset_bottom = 503.0
-texture = ExtResource("2_taeu3")
+texture = ExtResource("2_2u6o8")
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="Character Name" type="RichTextLabel" parent="Dialogue UI/Sprites"]
+[node name="Character Name" type="RichTextLabel" parent="Dialogue UI/Sprites" unique_id=1088090734]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -462,30 +464,31 @@ scroll_active = false
 autowrap_mode = 0
 tab_size = 5
 
-[node name="Character Profile" type="Sprite2D" parent="Dialogue UI/Sprites"]
+[node name="Character Profile" type="Sprite2D" parent="Dialogue UI/Sprites" unique_id=1122243264]
 position = Vector2(216, 520)
 centered = false
 hframes = 3
 frame = 2
 
-[node name="Character Text" type="RichTextLabel" parent="Dialogue UI"]
+[node name="Character Text" type="RichTextLabel" parent="Dialogue UI" unique_id=1951752200]
 texture_filter = 1
 clip_contents = false
-layout_mode = 2
+layout_mode = 0
 offset_left = 320.0
 offset_top = 512.0
 offset_right = 944.0
 offset_bottom = 632.0
 bbcode_enabled = true
+text = "hjhjkhlkjhkj"
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
 tab_size = 5
 
-[node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI"]
-stream = ExtResource("3_8r266")
+[node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI" unique_id=349276585]
+stream = ExtResource("3_4pjiw")
 
-[node name="Options" type="Control" parent="Dialogue UI" node_paths=PackedStringArray("scelect_icon")]
+[node name="Options" type="Control" parent="Dialogue UI" unique_id=1240833789 node_paths=PackedStringArray("scelect_icon")]
 visible = false
 layout_mode = 1
 anchor_top = 0.789
@@ -495,14 +498,14 @@ offset_left = 200.0
 offset_top = -7.27197
 offset_right = -200.0
 offset_bottom = -8.0
-theme = ExtResource("4_3aq4e")
-script = ExtResource("4_nnv7x")
+theme = ExtResource("4_rbcr1")
+script = ExtResource("5_8hwk3")
 dialoue_choices = true
 scelect_icon = NodePath("Scelect icon")
 
-[node name="option 0" type="Button" parent="Dialogue UI/Options"]
+[node name="option 0" type="Button" parent="Dialogue UI/Options" unique_id=811777871]
 texture_filter = 1
-layout_mode = 2
+layout_mode = 0
 offset_left = 184.0
 offset_top = 56.0
 offset_right = 376.0
@@ -510,10 +513,10 @@ offset_bottom = 88.0
 text = "Yes"
 alignment = 0
 
-[node name="option 1" type="Button" parent="Dialogue UI/Options"]
+[node name="option 1" type="Button" parent="Dialogue UI/Options" unique_id=204553034]
 visible = false
 texture_filter = 1
-layout_mode = 2
+layout_mode = 0
 offset_left = 504.0
 offset_top = 56.0
 offset_right = 696.0
@@ -521,10 +524,10 @@ offset_bottom = 88.0
 text = "No"
 alignment = 0
 
-[node name="option 2" type="Button" parent="Dialogue UI/Options"]
+[node name="option 2" type="Button" parent="Dialogue UI/Options" unique_id=290073431]
 visible = false
 texture_filter = 1
-layout_mode = 2
+layout_mode = 0
 offset_left = 304.0
 offset_top = 8.0
 offset_right = 496.0
@@ -532,10 +535,10 @@ offset_bottom = 40.0
 text = "Maybe"
 alignment = 0
 
-[node name="option 3" type="Button" parent="Dialogue UI/Options"]
+[node name="option 3" type="Button" parent="Dialogue UI/Options" unique_id=1732524792]
 visible = false
 texture_filter = 1
-layout_mode = 2
+layout_mode = 0
 offset_left = 304.0
 offset_top = 96.0
 offset_right = 496.0
@@ -543,12 +546,12 @@ offset_bottom = 128.0
 text = "IDK"
 alignment = 0
 
-[node name="Scelect icon" type="Sprite2D" parent="Dialogue UI/Options"]
+[node name="Scelect icon" type="Sprite2D" parent="Dialogue UI/Options" unique_id=28525330]
 texture_filter = 1
 position = Vector2(376, 72)
-texture = ExtResource("4_hac6l")
+texture = ExtResource("6_5pjw7")
 
-[node name="Reaction 1" type="Control" parent="Dialogue UI"]
+[node name="Reaction 1" type="Control" parent="Dialogue UI" unique_id=408215973]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
 offset_left = 880.0
@@ -556,13 +559,13 @@ offset_top = 584.0
 offset_right = 1064.0
 offset_bottom = 640.0
 
-[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 1"]
+[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 1" unique_id=1533916448]
 position = Vector2(0, 1)
 scale = Vector2(0.5, 0.45)
 centered = false
 hframes = 3
 
-[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 1"]
+[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 1" unique_id=1193980045]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -575,7 +578,7 @@ bbcode_enabled = true
 text = "[Inset litraly any respone]"
 scroll_active = false
 
-[node name="Reaction 2" type="Control" parent="Dialogue UI"]
+[node name="Reaction 2" type="Control" parent="Dialogue UI" unique_id=1102074177]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
 offset_left = 880.0
@@ -583,13 +586,13 @@ offset_top = 508.0
 offset_right = 1064.0
 offset_bottom = 564.0
 
-[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 2"]
+[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 2" unique_id=1979521588]
 position = Vector2(0, 1)
 scale = Vector2(0.5, 0.45)
 centered = false
 hframes = 3
 
-[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 2"]
+[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 2" unique_id=1475681198]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -601,21 +604,21 @@ scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
 
-[node name="Reaction 3" type="Control" parent="Dialogue UI"]
+[node name="Reaction 3" type="Control" parent="Dialogue UI" unique_id=1099057292]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
 offset_left = 350.0
 offset_top = 584.0
-offset_right = 534.0
+offset_right = 533.99994
 offset_bottom = 640.0
 
-[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 3"]
+[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 3" unique_id=1222304622]
 position = Vector2(0, 1)
 scale = Vector2(0.5, 0.45)
 centered = false
 hframes = 3
 
-[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 3"]
+[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 3" unique_id=146200784]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -627,21 +630,21 @@ scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
 
-[node name="Reaction 4" type="Control" parent="Dialogue UI"]
+[node name="Reaction 4" type="Control" parent="Dialogue UI" unique_id=525943105]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
 offset_left = 350.0
 offset_top = 508.0
-offset_right = 534.0
+offset_right = 534.00006
 offset_bottom = 564.0
 
-[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 4"]
+[node name="React Profile" type="Sprite2D" parent="Dialogue UI/Reaction 4" unique_id=1646627917]
 position = Vector2(0, 1)
 scale = Vector2(0.5, 0.45)
 centered = false
 hframes = 3
 
-[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 4"]
+[node name="Reaction text" type="RichTextLabel" parent="Dialogue UI/Reaction 4" unique_id=595076482]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -653,18 +656,14 @@ scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
 
-[node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI"]
-libraries = {
-&"": SubResource("AnimationLibrary_v55d3")
-}
+[node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI" unique_id=1791451195]
+libraries/ = SubResource("AnimationLibrary_v55d3")
 
-[node name="Show Responce" type="AnimationPlayer" parent="Dialogue UI"]
+[node name="Show Responce" type="AnimationPlayer" parent="Dialogue UI" unique_id=2087427066]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_i8n3f")
-}
+libraries/ = SubResource("AnimationLibrary_i8n3f")
 
-[node name="Dialogue UI 2" type="Control" parent="."]
+[node name="Dialogue UI 2" type="Control" parent="." unique_id=1012196387]
 visible = false
 layout_mode = 3
 anchors_preset = 0
@@ -672,12 +671,12 @@ offset_top = -456.0
 offset_right = 1152.0
 offset_bottom = 192.0
 
-[node name="Sprites" type="Control" parent="Dialogue UI 2"]
+[node name="Sprites" type="Control" parent="Dialogue UI 2" unique_id=927881564]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="NinePatch Dialogue box" type="NinePatchRect" parent="Dialogue UI 2/Sprites"]
+[node name="NinePatch Dialogue box" type="NinePatchRect" parent="Dialogue UI 2/Sprites" unique_id=1712790992]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -687,13 +686,13 @@ offset_left = 200.0
 offset_top = 504.0
 offset_right = 951.44
 offset_bottom = 647.0
-texture = ExtResource("2_taeu3")
+texture = ExtResource("2_2u6o8")
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="NinePatch name box" type="NinePatchRect" parent="Dialogue UI 2/Sprites"]
+[node name="NinePatch name box" type="NinePatchRect" parent="Dialogue UI 2/Sprites" unique_id=1709580254]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -703,13 +702,13 @@ offset_left = 208.0
 offset_top = 464.0
 offset_right = 223.44
 offset_bottom = 503.0
-texture = ExtResource("2_taeu3")
+texture = ExtResource("2_2u6o8")
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
 patch_margin_bottom = 3
 
-[node name="Character Name" type="RichTextLabel" parent="Dialogue UI 2/Sprites"]
+[node name="Character Name" type="RichTextLabel" parent="Dialogue UI 2/Sprites" unique_id=26746770]
 texture_filter = 1
 clip_contents = false
 layout_mode = 0
@@ -723,15 +722,15 @@ scroll_active = false
 autowrap_mode = 0
 tab_size = 5
 
-[node name="Character Profile" type="Sprite2D" parent="Dialogue UI 2/Sprites"]
+[node name="Character Profile" type="Sprite2D" parent="Dialogue UI 2/Sprites" unique_id=55406476]
 position = Vector2(216, 520)
 centered = false
 hframes = 3
 
-[node name="Character Text" type="RichTextLabel" parent="Dialogue UI 2"]
+[node name="Character Text" type="RichTextLabel" parent="Dialogue UI 2" unique_id=26073009]
 texture_filter = 1
 clip_contents = false
-layout_mode = 2
+layout_mode = 0
 offset_left = 320.0
 offset_top = 512.0
 offset_right = 944.0
@@ -742,14 +741,12 @@ scroll_active = false
 autowrap_mode = 2
 tab_size = 5
 
-[node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI 2"]
-stream = ExtResource("3_8r266")
+[node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI 2" unique_id=1244176782]
+stream = ExtResource("3_4pjiw")
 
-[node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI 2"]
+[node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI 2" unique_id=183211647]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_eva1e")
-}
+libraries/ = SubResource("AnimationLibrary_eva1e")
 
 [connection signal="area_entered" from="Overlap Detection" to="." method="_on_overlap_detection_area_entered"]
 [connection signal="area_exited" from="Overlap Detection" to="." method="_on_overlap_detection_area_exited"]

@@ -9,7 +9,7 @@ class_name Player
 @onready var image = $Image
 # Movement
 func _physics_process(_delta):
-	if Dialogue_System.Deactivated == true and not Dialogue_System.can_move: 
+	if Dialogue_System.deactivated == true and not Dialogue_System.can_move: 
 		SPEED = 0
 	else: 
 		SPEED = 10

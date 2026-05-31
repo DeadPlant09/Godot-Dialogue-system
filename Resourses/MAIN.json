@@ -1,14 +1,24 @@
 {
 	"1":[
-	{"Name": "Deadplant", "Text": "* Hello, and welcome to my [color=green] dialogue system[/color].", "pause":[20], "can move": true},
-	{"Name": "Deadplant", "Text": "* If you need help open my Guide file, the files\n	 you need to move to your own project are in\n	 there."},
-	{"Name": "Deadplant", "Text": "* But if you just want the basic run down then\n	 press \"Z\" to interact which can be changed\n	 from the default input map and \"X\" to skip\n	 dialouge which can be changed from the\n	custom input map in the settings"},
-	{"Name": "Deadplant", "Text": "* To run dialouge easly use the \"Run_dialouge\" method but besides that Enjoy!"}
+	{"name": "Deadplant", "text": "* Hello, and welcome to my [color=green]dialogue system[/color].", "pause":[20], "can move": true},
+	{"name": "Deadplant", "text": "* If you need help open my Guide file, the files\n	 you need to move to your own project are in\n	 there."},
+	{"name": "Deadplant", "text": "* But if you just want the basic run down then\n	 press \"Z\" to interact which can be changed\n	 from the default input map and \"X\" to skip\n	 dialouge which can be changed from the\n	custom input map in the settings"},
+	{"name": "Deadplant", "text": "* To run dialouge easly use the \"Run_dialouge\" method but besides that Enjoy!", "choices": ["Anything else?", "Thank you"], "responses": [3,4]}
 	],
 	"2":[
-	{"Name": "Deadplant", "Text": "* Hello again!"},
-	{"Name": "Deadplant", "Text": "* Over here is the next room with more npcs."},
-	{"Name": "Deadplant", "Text": "* once your over there back to the left and it will bring you right back"},
-	{"Name": "Deadplant", "Text": "* Also this is how you use dialouge for cutscenes... Enjoy!"}
-	]
+	{"name": "Deadplant", "text": "* Hello again!"},
+	{"name": "Deadplant", "text": "* Over here is the next room with more npcs."},
+	{"name": "Deadplant", "text": "* once your over there back to the left and it will bring you right back"},
+	{"name": "Deadplant", "text": "* Also this is how you use dialouge for cutscenes... Enjoy!"}
+	],
+	"3":[
+	{"name": "Deadplant", "text": "* The npc's work of of an instance system."},
+	{"name": "Deadplant", "text": "* It helps with moving between scences\n	and removing npcs depending on your choices."},
+	{"name": "Deadplant", "text": "* The npc always goes to the next availible instance."},
+	{"name": "Deadplant", "text": "* when all of its intances have\n	passed/not availible it's deleted."},
+	{"name": "Deadplant", "text": "* you can also connect dialogue signals\n	to custom methods in the npc to change the instcne or animate cutcene."}
+	],
+	"4":[
+	{"name": "Deadplant", "text": "* Your welcome."}
+	],
 }

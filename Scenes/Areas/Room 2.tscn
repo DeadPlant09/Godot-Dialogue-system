@@ -1,11 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://dx1x8r5ttsexf"]
+[gd_scene format=3 uid="uid://dx1x8r5ttsexf"]
 
-[ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scene's/Chracter's/Dezzy.tscn" id="1_lkf2h"]
-[ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scene's/Objects/dialougue_area.tscn" id="5_fv6mw"]
-[ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scene's/Objects/npc_body.tscn" id="6_4bisx"]
-[ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Character's/Worker.png" id="6_47yjd"]
-[ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="6_7860w"]
-[ext_resource type="Texture2D" uid="uid://ccohqyqkn7xu0" path="res://Sprites/Character's/Prisoner.png" id="7_l53xt"]
+[ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://Scenes/Chracters/Dezzy.tscn" id="1_vrtkm"]
+[ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://Scenes/Objects/npc.tscn" id="2_3hdmx"]
+[ext_resource type="Texture2D" uid="uid://ccohqyqkn7xu0" path="res://Sprites/Characters/Prisoner.png" id="3_sp0uy"]
+[ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://Scenes/Objects/dialougue_area.tscn" id="4_75ri4"]
+[ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/Components/switch_scene.gd" id="5_ak0mx"]
+[ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://Sprites/Characters/Worker.png" id="6_a382o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7860w"]
+size = Vector2(69, 676)
 
 [sub_resource type="Animation" id="Animation_wb2vx"]
 length = 0.001
@@ -35,7 +38,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_6df37"]
-resource_name = "Standing0"
+resource_name = "Standing"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -62,7 +65,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_857w5"]
-resource_name = "Talk0"
+resource_name = "Talk"
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -93,8 +96,8 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ta6ol"]
 _data = {
 &"RESET": SubResource("Animation_wb2vx"),
-&"Standing0": SubResource("Animation_6df37"),
-&"Talk0": SubResource("Animation_857w5")
+&"Standing": SubResource("Animation_6df37"),
+&"Talk": SubResource("Animation_857w5")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vqit6"]
@@ -102,9 +105,6 @@ radius = 23.1948
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0nj8r"]
 size = Vector2(29, 7)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7860w"]
-size = Vector2(69, 676)
 
 [sub_resource type="Animation" id="Animation_vumjn"]
 length = 0.001
@@ -122,7 +122,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_nlexe"]
-resource_name = "Streach0"
+resource_name = "Streach"
 length = 2.0
 step = 0.002
 tracks/0/type = "value"
@@ -139,7 +139,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_omr6p"]
-resource_name = "Talk0"
+resource_name = "Talk"
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -157,8 +157,8 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_brkx7"]
 _data = {
 &"RESET": SubResource("Animation_vumjn"),
-&"Streach0": SubResource("Animation_nlexe"),
-&"Talk0": SubResource("Animation_omr6p")
+&"Streach": SubResource("Animation_nlexe"),
+&"Talk": SubResource("Animation_omr6p")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pl8kn"]
@@ -167,84 +167,80 @@ radius = 20.5973
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xvfdp"]
 size = Vector2(15.75, 4.25)
 
-[node name="Room 2" type="Node2D"]
+[node name="Room 2" type="Node2D" unique_id=412707369]
 
-[node name="Dezzy" parent="." instance=ExtResource("1_lkf2h")]
+[node name="Area2D" type="Area2D" parent="." unique_id=483541063]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_ak0mx")
+scene = "res://Scenes/Areas/Room 1.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=580215678]
+position = Vector2(-33, 331)
+shape = SubResource("RectangleShape2D_7860w")
+
+[node name="Dezzy" parent="." unique_id=1272142059 instance=ExtResource("1_vrtkm")]
 position = Vector2(97, 282)
 
-[node name="Prisoner" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
+[node name="Prisoner" parent="." unique_id=340408819 node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("2_3hdmx")]
 position = Vector2(231, 525)
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Standing")
 
-[node name="Standing" type="AnimationPlayer" parent="Prisoner"]
-libraries = {
-&"": SubResource("AnimationLibrary_ta6ol")
-}
-autoplay = "Standing0"
+[node name="Standing" type="AnimationPlayer" parent="Prisoner" unique_id=1506040512]
+libraries/ = SubResource("AnimationLibrary_ta6ol")
+autoplay = &"Standing"
 
-[node name="Prisoner" type="Sprite2D" parent="Prisoner"]
+[node name="Prisoner" type="Sprite2D" parent="Prisoner" unique_id=1513803866]
 position = Vector2(1.00001, -12)
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("7_l53xt")
+texture = ExtResource("3_sp0uy")
 
-[node name="dialougue_area" parent="Prisoner" instance=ExtResource("5_fv6mw")]
-Custom_Json = "res://Resourses/NPC.json"
+[node name="dialougue_area" parent="Prisoner" unique_id=256976652 instance=ExtResource("4_75ri4")]
+custom_json = "res://Resourses/NPC.json"
 convo = {
 0: [1, 2]
 }
 
-[node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area"]
+[node name="CollisionShape" type="CollisionShape2D" parent="Prisoner/dialougue_area" unique_id=1481904291]
 position = Vector2(1, -12)
 shape = SubResource("CircleShape2D_vqit6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Prisoner"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Prisoner" unique_id=828356642]
 position = Vector2(0.5, 2.5)
 shape = SubResource("RectangleShape2D_0nj8r")
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("6_7860w")
-Scene = "res://Scene's/Area's/Room 1.tscn"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-33, 331)
-shape = SubResource("RectangleShape2D_7860w")
-
-[node name="Worker" parent="." node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("6_4bisx")]
+[node name="Worker" parent="." unique_id=1186009282 node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("2_3hdmx")]
 position = Vector2(687, 200)
 instances = {
-1: Vector2(687, 200),
-3: Vector2(687, 400)
+1: "",
+3: ""
 }
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Streach")
 
-[node name="Sprite" type="Sprite2D" parent="Worker"]
+[node name="Sprite" type="Sprite2D" parent="Worker" unique_id=1639652630]
 position = Vector2(-11, 0.999998)
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("6_47yjd")
+texture = ExtResource("6_a382o")
 centered = false
 offset = Vector2(0, -260)
 
-[node name="Streach" type="AnimationPlayer" parent="Worker"]
-libraries = {
-&"": SubResource("AnimationLibrary_brkx7")
-}
+[node name="Streach" type="AnimationPlayer" parent="Worker" unique_id=1691959863]
+libraries/ = SubResource("AnimationLibrary_brkx7")
 
-[node name="dialougue_area" parent="Worker" instance=ExtResource("5_fv6mw")]
-Custom_Json = "res://Resourses/NPC.json"
+[node name="dialougue_area" parent="Worker" unique_id=413149749 instance=ExtResource("4_75ri4")]
+custom_json = "res://Resourses/NPC.json"
 convo = {
 1: [4, 5],
 3: [3, 3]
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area" unique_id=198781927]
 position = Vector2(0.5, -12)
 shape = SubResource("CircleShape2D_pl8kn")
 
-[node name="CollisionBox" type="CollisionShape2D" parent="Worker"]
+[node name="CollisionBox" type="CollisionShape2D" parent="Worker" unique_id=911144333]
 position = Vector2(0.625, -1.875)
 shape = SubResource("RectangleShape2D_xvfdp")
 

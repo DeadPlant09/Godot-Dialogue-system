@@ -8,12 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Dialogue System"
-config/tags=PackedStringArray("might_be_updated", "tutorial\'s")
+config/tags=PackedStringArray("finished", "will_be_updated")
 run/main_scene="uid://p1pnnpu08ldg"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://Sprites/Objects/dialogue system Icon.png"
 
 [audio]
@@ -22,7 +26,7 @@ buses/default_bus_layout=""
 
 [autoload]
 
-Dialogue_System="*res://Scene's/UI/diauloge systerm.tscn"
+Dialogue_System="*res://Scenes/UI/diauloge systerm.tscn"
 
 [display]
 

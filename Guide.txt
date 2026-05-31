@@ -35,7 +35,6 @@ well anyway heres how it works:
 	"face_2": int put down the profile animation for the sceond dialogue box 
 	"Responses 2": array depending on diffrent conditions this is used to give a diffrent responce to the same choice 
 	"Aftermath 2": array depending on diffrent conditions this is used to give a diffrent aftermath to the same choice 
-	
 
 
 Necessary files to bring to you projects
@@ -46,6 +45,7 @@ Necessary files to bring to you projects
 	make sure your player stops moving when Diauloge_Systerm is Deactivated and not Diauloge_Systerm can_move is false
 	and your own main.json in the same format as mines
 	lastly if you dont have your own font you can bring the stary font
+
 
 Before you run
 	make the Diauloge_Systerm scene a singleton (global)
