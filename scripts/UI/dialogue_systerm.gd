@@ -323,11 +323,11 @@ func set_profile():
 
 
 func check_if_profile_exsist(UI:Control, profile_name:String, profile_face:String, aniplayer_index:int):
-	var voice_name = return_dialogue_key(profile_name).to_lower() + "_voice.wav"
+	var voice_name = return_dialogue_key(profile_name, "") + "_voice.wav"
 	var animation_name = return_dialogue_key(profile_name, "no animation") + str(int(return_dialogue_key(profile_face, 0)))
 	
 	if FileAccess.file_exists(voice_path + voice_name):
-		UI.get_child(2).stream = load(voice_path + voice_name)
+		UI.get_child(2).stream = load(voice_path + voice_name.to_lower())
 	
 	for animation in UI.get_child(aniplayer_index).get_animation_list():
 		# if animation has a profile

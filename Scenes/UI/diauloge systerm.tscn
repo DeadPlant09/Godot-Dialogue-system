@@ -499,7 +499,7 @@ offset_right = -200.0
 offset_bottom = -8.0
 theme = ExtResource("4_rbcr1")
 script = ExtResource("5_8hwk3")
-dialoue_choices = true
+dialoue_choice = true
 scelect_icon = NodePath("Scelect icon")
 
 [node name="option 0" type="Button" parent="Dialogue UI/Options" unique_id=811777871]

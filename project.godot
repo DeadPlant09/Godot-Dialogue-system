@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Dialogue System"
-config/tags=PackedStringArray("finished", "will_be_updated")
+config/tags=PackedStringArray("finished")
 run/main_scene="uid://p1pnnpu08ldg"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://sprites/objects/dialogue system Icon.png"
