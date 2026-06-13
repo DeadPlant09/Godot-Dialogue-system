@@ -1,6 +1,6 @@
 Hello! and thak you for testing my dialouge system.
 I know its seem not impressive (especaily the json) but this is a project 
-where I didnt strictly follow a spisifc tutorial, so im sharing this with you
+where I didnt strictly follow a spesific tutorial, so im sharing this with you
 in case you wanted to a) use a prexisting dialouge system that you can change the code of
 or b) take insperation from this dialouge system to build your own, etiher or is great!
 
@@ -11,30 +11,29 @@ well anyway heres how it works:
 	dictionary, each line has at least 2 keys the name
 	and a text (self exsplanatory), there are more optional keys that i call options there is:     
 	
-	"Text": string the message you want to display
-	"Name": string the name of the profile
-	"Face": int  the animation for the profile you want to play (only use if the profile has an animation)
+	"text": string the message you want to display
+	"name": string the name of the profile
+	"face": int  the animation for the profile you want to play (only use if the profile has an animation)
 	"volume": float determines the volume 
-	"can move": bool if true allows you to move when dialogues being shown
+	"can_move": bool if true allows you to move when dialogues being shown
 	"skipable": bool if false doent allow you to skip the text
 	"voice": bool if false the dialouge sound wont be played
-	"auto skip": bool if true then when when the dialouge line has fully ran it will automaticly skip to the next one
-	"Reactions": array if you type a string into a Reaction key then it will slide in as a tiny blurb on the dialogue box
-	"pause at ending": bool if on for then it wont stop a puntuions 
-	"just text": bool if true then the profile/icon and dialogue box wont show up just the text
-	"hide profile": bool if true then the profile/icon wont show up
-	"pause": array put the index of the character you want to stop at (spaces count to)
-	"hide name": bool if true will hide the name 
-	"emit custom": array put down a true if you want the signal to play when the dialogue is shown and the string of an already existing singal from the dialogue system script
-	"wait signal finshed": bool if true when emitning a signal it will wait for the singal action to be complete before showing the dialogue   
-	"Choices": array a list of stings that wil show up as choices
-	"Responses": array the lists of conversation you can respond to depending on the choice
-	"Aftermath": array the lists of conversation they could say after the responce depending on the choice
-	"text_2": string put down text for the sceond dialogue box 
-	"name_2": string put down the profile name for the sceond dialogue box
-	"face_2": int put down the profile animation for the sceond dialogue box 
-	"Responses 2": array depending on diffrent conditions this is used to give a diffrent responce to the same choice 
-	"Aftermath 2": array depending on diffrent conditions this is used to give a diffrent aftermath to the same choice 
+	"auto_skip": bool if true then when when the dialouge line has fully ran it will automaticly skip to the next one
+	"reactions": array if you type a string into a Reaction key then it will slide in as a tiny blurb on the dialogue box
+	"pause_at_ending": bool if on for then it wont stop a puntuions 
+	"just_ext": bool if true then the profile/icon and dialogue box wont show up just the text
+	"hide_rofile": bool if true then the profile/icon wont show up
+	"hide_ame": bool if true will hide the name 
+	"emit_custom": array put down a true if you want the signal to play when the dialogue is shown and the string of an already existing singal from the dialogue system script
+	"wait_signal finshed": bool if true when emitning a signal it will wait for the singal action to be complete before showing the dialogue   
+	"choices": array a list of stings that wil show up as choices
+	"responses": array the lists of conversation you can respond to depending on the choice
+	"aftermath": array the lists of conversation they could say after the responce depending on the choice
+	"text_two": string put down text for the sceond dialogue box 
+	"name_two": string put down the profile name for the sceond dialogue box
+	"face_two": int put down the profile animation for the sceond dialogue box 
+	"responses_two": array depending on diffrent conditions this is used to give a diffrent responce to the same choice 
+	"aftermath_two": array depending on diffrent conditions this is used to give a diffrent aftermath to the same choice 
 
 
 Necessary files to bring to you projects
@@ -42,7 +41,8 @@ Necessary files to bring to you projects
 	dialougue_area.tscn/.gd
 	npc_body.tscn/.gd
 	cutscene trigger.tscn/.gd
-	make sure your player stops moving when Diauloge_Systerm is Deactivated and not Diauloge_Systerm can_move is false
+	cutscene animation.tscn/.gd
+	make sure your player stops moving when Diauloge_System is Deactivated and not Dialogue_System can_move is false
 	and your own main.json in the same format as mines
 	lastly if you dont have your own font you can bring the stary font
 
@@ -52,4 +52,4 @@ Before you run
 	set the Diauloge_Systerm Icon path to the folder where your dialogue icons are
 	set the Diauloge_Systerm voice path to the folder where your dialogue voices are
 	if your game already has a script that saves make it global, try and add the cutscene_ran value to it
-	make sure all your animations are between the time intrvals of 0 - 0.05 to be precice 0.025
+	make sure to add the cutom actions

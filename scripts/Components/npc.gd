@@ -133,6 +133,16 @@ func your_crazy():
 	signal_function_finished()
 
 
+func leave_scene_right():
+	# play animation
+	pass
+
+
+func leave_scene_left():
+	# play animation
+	pass
+
+
 func signal_function_finished():
 	if Dialogue_System.wait_for_signal:
 		Dialogue_System.signal_wait_finished.emit()

@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://b2aieyjkerx8h"
-path="res://.godot/imported/Stary Font.ttf-8dac45fe3a4e3967b31cc8854e0f1852.fontdata"
+path="res://.godot/imported/stary_font.ttf-fec5382fd90fa87ce7c77c6596aee96a.fontdata"
 
 [deps]
 
-source_file="res://Resourses/Stary Font.ttf"
-dest_files=["res://.godot/imported/Stary Font.ttf-8dac45fe3a4e3967b31cc8854e0f1852.fontdata"]
+source_file="res://resourses/stary_font.ttf"
+dest_files=["res://.godot/imported/stary_font.ttf-fec5382fd90fa87ce7c77c6596aee96a.fontdata"]
 
 [params]
 

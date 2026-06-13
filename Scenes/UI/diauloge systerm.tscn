@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://brw7h3l8kq28v"]
 
-[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/UI/dialogue_systerm.gd" id="1_3dtkc"]
-[ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://Sprites/Objects/Stary 9-slice.png" id="2_2u6o8"]
-[ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://Audio/Default_dialogue_voice.wav" id="3_4pjiw"]
-[ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://Resourses/invisable button theme.tres" id="4_rbcr1"]
-[ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/Components/Button Scelect.gd" id="5_8hwk3"]
-[ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://Sprites/Objects/slider graber blue.png" id="6_5pjw7"]
-[ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://Sprites/UI/Dezzy Profile.png" id="7_66ybl"]
+[ext_resource type="Script" uid="uid://ix1itfapst75" path="res://scripts/ui/dialogue_systerm.gd" id="1_3dtkc"]
+[ext_resource type="Texture2D" uid="uid://bqk4kinvpkdxe" path="res://sprites/objects/Stary 9-slice.png" id="2_2u6o8"]
+[ext_resource type="AudioStream" uid="uid://dqbbvhixff2kk" path="res://audio/default_dialogue_voice.wav" id="3_4pjiw"]
+[ext_resource type="Theme" uid="uid://bjdm6m3qu5yys" path="res://resourses/invisable button theme.tres" id="4_rbcr1"]
+[ext_resource type="Script" uid="uid://64s3fd38gfnr" path="res://scripts/components/button_scelect.gd" id="5_8hwk3"]
+[ext_resource type="Texture2D" uid="uid://cohxdldrv2a3q" path="res://sprites/objects/slider graber blue.png" id="6_5pjw7"]
+[ext_resource type="Texture2D" uid="uid://cupej63xr74uj" path="res://sprites/ui/dezzy_profile.png" id="7_66ybl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t0gi1"]
 size = Vector2(1152, 144)
@@ -396,7 +396,7 @@ _data = {
 [node name="Diauloge systerm" type="CanvasLayer" unique_id=401724744]
 process_mode = 3
 script = ExtResource("1_3dtkc")
-profile_path = "res://Sprites/UI/"
+profile_path = "res://sprites/ui/"
 
 [node name="Overlap Detection" type="Area2D" parent="." unique_id=1550521251]
 show_behind_parent = true
@@ -479,11 +479,10 @@ offset_top = 512.0
 offset_right = 944.0
 offset_bottom = 632.0
 bbcode_enabled = true
-text = "hjhjkhlkjhkj"
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
-tab_size = 5
+tab_size = 2
 
 [node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI" unique_id=349276585]
 stream = ExtResource("3_4pjiw")
@@ -577,6 +576,7 @@ scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 text = "[Inset litraly any respone]"
 scroll_active = false
+tab_size = 2
 
 [node name="Reaction 2" type="Control" parent="Dialogue UI" unique_id=1102074177]
 modulate = Color(1, 1, 1, 0)
@@ -603,6 +603,7 @@ offset_bottom = 79.0
 scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
+tab_size = 2
 
 [node name="Reaction 3" type="Control" parent="Dialogue UI" unique_id=1099057292]
 modulate = Color(1, 1, 1, 0)
@@ -629,6 +630,7 @@ offset_bottom = 79.0
 scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
+tab_size = 2
 
 [node name="Reaction 4" type="Control" parent="Dialogue UI" unique_id=525943105]
 modulate = Color(1, 1, 1, 0)
@@ -655,6 +657,7 @@ offset_bottom = 79.0
 scale = Vector2(0.6, 0.6)
 bbcode_enabled = true
 scroll_active = false
+tab_size = 2
 
 [node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI" unique_id=1791451195]
 libraries/ = SubResource("AnimationLibrary_v55d3")
@@ -664,7 +667,6 @@ root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_i8n3f")
 
 [node name="Dialogue UI 2" type="Control" parent="." unique_id=1012196387]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_top = -456.0
@@ -739,7 +741,7 @@ bbcode_enabled = true
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
-tab_size = 5
+tab_size = 2
 
 [node name="Voice" type="AudioStreamPlayer2D" parent="Dialogue UI 2" unique_id=1244176782]
 stream = ExtResource("3_4pjiw")
@@ -747,6 +749,7 @@ stream = ExtResource("3_4pjiw")
 [node name="Profile animations" type="AnimationPlayer" parent="Dialogue UI 2" unique_id=183211647]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_eva1e")
+autoplay = &"RESET"
 
 [connection signal="area_entered" from="Overlap Detection" to="." method="_on_overlap_detection_area_entered"]
 [connection signal="area_exited" from="Overlap Detection" to="." method="_on_overlap_detection_area_exited"]

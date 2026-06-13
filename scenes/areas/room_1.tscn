@@ -1,0 +1,313 @@
+[gd_scene format=3 uid="uid://p1pnnpu08ldg"]
+
+[ext_resource type="PackedScene" uid="uid://decx2ttkwyk6c" path="res://scenes/characters/dezzy.tscn" id="1_f2cer"]
+[ext_resource type="PackedScene" uid="uid://dwplf7pb50clu" path="res://scenes/ui/cutscene trigger.tscn" id="2_pqah8"]
+[ext_resource type="Script" uid="uid://c6tjkbm4uo5l1" path="res://scripts/components/switch_scene.gd" id="3_sqj0j"]
+[ext_resource type="Script" uid="uid://b4n7k762wnwxb" path="res://scripts/components/npc.gd" id="4_5fqxj"]
+[ext_resource type="Texture2D" uid="uid://cwr76hmlbo16s" path="res://sprites/characters/emoji.svg" id="5_0hxp2"]
+[ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://scenes/objects/dialougue_area.tscn" id="6_icqcl"]
+[ext_resource type="Texture2D" uid="uid://df330aa2o24j4" path="res://sprites/characters/godot_icon.svg" id="7_apyur"]
+[ext_resource type="PackedScene" uid="uid://0agsfsvc4o6b" path="res://scenes/objects/npc.tscn" id="8_veyyn"]
+[ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://sprites/characters/worker.png" id="9_qghu5"]
+[ext_resource type="Script" uid="uid://c4xrgqxfnmev3" path="res://scripts/components/cutscene_animations.gd" id="10_q3a5e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sckux"]
+size = Vector2(35, 678)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drkqx"]
+size = Vector2(71, 677)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ui07i"]
+radius = 340.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_upb33"]
+size = Vector2(166, 163)
+
+[sub_resource type="Animation" id="Animation_vumjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_nlexe"]
+resource_name = "Streach"
+length = 2.0
+loop_mode = 1
+step = 0.002
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.04, 0.5, 1.01),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.1, 0.05), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_omr6p"]
+resource_name = "Talk"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.08, 0.1), Vector2(0.1, 0.1), Vector2(0.1, 0.08), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_brkx7"]
+_data = {
+&"RESET": SubResource("Animation_vumjn"),
+&"Streach": SubResource("Animation_nlexe"),
+&"Talk": SubResource("Animation_omr6p")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_upb33"]
+radius = 20.5973
+
+[sub_resource type="Animation" id="Animation_eplvp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Worker:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(820, 489)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Worker:turn_off_animations")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_18rpu"]
+resource_name = "leave_scene_left"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Worker:turn_off_animations")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Worker:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(820, 489), Vector2(-100, 489)]
+}
+tracks/2/type = "animation"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Worker/Streach")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": PackedStringArray("Streach"),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_eik0d"]
+resource_name = "leave_scene_right"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Worker:turn_off_animations")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Worker:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(820, 489), Vector2(1200, 489)]
+}
+tracks/2/type = "animation"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Worker/Streach")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": PackedStringArray("Streach"),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_18rpu"]
+_data = {
+&"RESET": SubResource("Animation_eplvp"),
+&"leave_scene_left": SubResource("Animation_18rpu"),
+&"leave_scene_right": SubResource("Animation_eik0d")
+}
+
+[node name="Room 1" type="Node2D" unique_id=45768959]
+
+[node name="Dezzy" parent="." unique_id=329515874 instance=ExtResource("1_f2cer")]
+position = Vector2(1076, 305)
+
+[node name="Startup Cutscene" parent="." unique_id=567721498 instance=ExtResource("2_pqah8")]
+position = Vector2(1, 0)
+run_at_start = true
+
+[node name="Move rooms Cutscene" parent="." unique_id=2058429328 instance=ExtResource("2_pqah8")]
+position = Vector2(1121, 319)
+collision_mask = 2
+conversation = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Move rooms Cutscene" unique_id=341016811]
+shape = SubResource("RectangleShape2D_sckux")
+
+[node name="Switch Sceane" type="Area2D" parent="." unique_id=143647232]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_sqj0j")
+scene = "res://scenes/areas/room_2.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Switch Sceane" unique_id=2068919859]
+position = Vector2(1184, 326)
+shape = SubResource("RectangleShape2D_drkqx")
+
+[node name="Emoji" type="Node2D" parent="." unique_id=1384946348 node_paths=PackedStringArray("dialogue_area")]
+position = Vector2(323, 168)
+script = ExtResource("4_5fqxj")
+instances = {
+0: "",
+1: "",
+2: ""
+}
+turn_off_animations = true
+dialogue_area = NodePath("dialougue_area")
+metadata/_custom_type_script = "uid://b4n7k762wnwxb"
+
+[node name="image" type="Sprite2D" parent="Emoji" unique_id=867387857]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_0hxp2")
+
+[node name="dialougue_area" parent="Emoji" unique_id=1814326224 instance=ExtResource("6_icqcl")]
+scale = Vector2(0.2, 0.2)
+custom_json = "res://resourses/objects.json"
+convo = {
+0: [1, 0],
+1: [3, 0],
+2: [5, 0]
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Emoji/dialougue_area" unique_id=1460661775]
+shape = SubResource("CircleShape2D_ui07i")
+
+[node name="Godot Icon" type="Node2D" parent="." unique_id=224559900 node_paths=PackedStringArray("dialogue_area")]
+position = Vector2(780, 190)
+script = ExtResource("4_5fqxj")
+instances = {
+0: "",
+1: "",
+2: ""
+}
+turn_off_animations = true
+dialogue_area = NodePath("dialougue_area")
+connect_signal = ["sure_the_earth_is_flat", "your_crazy"]
+metadata/_custom_type_script = "uid://b4n7k762wnwxb"
+
+[node name="image" type="Sprite2D" parent="Godot Icon" unique_id=2111397555]
+texture = ExtResource("7_apyur")
+
+[node name="dialougue_area" parent="Godot Icon" unique_id=1798674615 instance=ExtResource("6_icqcl")]
+custom_json = "res://resourses/objects.json"
+convo = {
+0: [6, 7],
+1: [8, 9],
+2: [10, 11]
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Godot Icon/dialougue_area" unique_id=1980100756]
+position = Vector2(2, 2.5)
+shape = SubResource("RectangleShape2D_upb33")
+
+[node name="Worker" parent="." unique_id=1466592488 node_paths=PackedStringArray("dialogue_area", "sprite_animation") instance=ExtResource("8_veyyn")]
+position = Vector2(820, 489)
+instances = {
+0: "",
+2: ""
+}
+dialogue_area = NodePath("dialougue_area")
+sprite_animation = NodePath("Streach")
+
+[node name="Sprite" type="Sprite2D" parent="Worker" unique_id=1094025787]
+position = Vector2(-11, 0.999998)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("9_qghu5")
+centered = false
+offset = Vector2(0, -260)
+
+[node name="Streach" type="AnimationPlayer" parent="Worker" unique_id=511138962]
+libraries/ = SubResource("AnimationLibrary_brkx7")
+
+[node name="dialougue_area" parent="Worker" unique_id=1039595496 instance=ExtResource("6_icqcl")]
+custom_json = "res://resourses/npc.json"
+convo = {
+0: [3, 0],
+2: [4, 5]
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Worker/dialougue_area" unique_id=1876548174]
+position = Vector2(0.5, -12)
+shape = SubResource("CircleShape2D_upb33")
+
+[node name="Cutscene_animation" type="AnimationPlayer" parent="." unique_id=2011953023]
+libraries/ = SubResource("AnimationLibrary_18rpu")
+script = ExtResource("10_q3a5e")
+connect_signal = ["leave_scene_right", "leave_scene_left"]
+metadata/_custom_type_script = "uid://c4xrgqxfnmev3"
+
+[connection signal="body_entered" from="Switch Sceane" to="Switch Sceane" method="_on_body_entered"]

@@ -18,7 +18,7 @@ config/name="Dialogue System"
 config/tags=PackedStringArray("finished", "will_be_updated")
 run/main_scene="uid://p1pnnpu08ldg"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://Sprites/Objects/dialogue system Icon.png"
+config/icon="res://sprites/objects/dialogue system Icon.png"
 
 [audio]
 
@@ -26,7 +26,7 @@ buses/default_bus_layout=""
 
 [autoload]
 
-Dialogue_System="*res://Scenes/UI/diauloge systerm.tscn"
+Dialogue_System="*res://scenes/ui/diauloge systerm.tscn"
 
 [display]
 

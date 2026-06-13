@@ -9,36 +9,36 @@
 	],
 	"3":[
 		{"name": "Emoji", "text":"* FINALIY somone gets it!"},
-		{"name": "Emoji", "text":"* Ready to join the flat earth community?"},
+		{"name": "Emoji", "text":"* Ready to join the flat earth\n	community?"},
 		{"name": "Dezzy", "Face": 1, "text":"* (sigh)"}
 	],
 	"4":[
-		{"name": "Dezzy", "text": "* No its not you tinfoil hat, no life,\n	  basement dweller", "signal": [false, "your_crazy"], "choice": "your_crazy"}
+		{"name": "Dezzy", "text": "* No its not you tinfoil hat,\n	no life, basement dweller.", "signal": [false, "your_crazy"], "choice": "your_crazy"}
 	],
 	"5":[
-		{"name": "Emoji", "text":"* Oh dont worry it will be once I run you over", "skipable": false}
+		{"name": "Emoji", "text":"* Oh dont worry it will be once I\n	run you over.", "skipable": false}
 	],
 	"6":[
-		{"name":"Godot icon", "text":"* did you know the earth is round?", "reactions": ["Dezzy", 2, "[color=orange]* No"]},
-		{"name":"Dezzy", "Face": 1, "text":"* No I thought the earth was sphere."}
+		{"name":"Godot icon", "text":"* Did you know the earth is round?", "reactions": ["Dezzy", 2, "[color=orange]* No"]},
+		{"name":"Dezzy", "Face": 1, "text":"* No I thought the earth was\n	a sphere."}
 	],
 	"7":[
 		{"name":"Godot icon", "text":"* Pft, spherehead's... wait."}
 	],
 	"8":[
-		{"name":"Godot icon", "text":"* Did you know the earth is?-","Speed": 0.03,"pause_at_ending": false, "auto_skip": true},
-		{"name":"Dezzy", "Face": 1, "text":"* Im going to stop you right there\n	because ive hered this all before from\n	 a talking emoji."}
+		{"name":"Godot icon", "text":"* Did you know the earth is?-", "Speed": 0.03, "pause_at_ending": false, "auto_skip": true},
+		{"name":"Dezzy", "Face": 1, "text":"* Im going to stop you right\n	there because i've heard this all\n	before from a talking emoji."}
 	],
 	"9":[
-		{"name":"Godot icon", "text":"* Sheesh, all I was going to say was\n	that the earth is round.", "name_two": "Emoji",  "text_two": "* I can hear you from over there and your wrong!", "reactions": ["Dezzy", 2, "[color=orange]* Oh sure you\n	 were!"]}
+		{"name":"Godot icon", "text":"* Sheesh, all I was going to say was\n	that the earth is round.", "name_two": "Emoji",  "text_two": "* I can hear you from over there and\n	your wrong!", "reactions": ["Dezzy", 2, "[color=orange]* Oh sure\n	you were!"]}
 	],
 	"10":[
-		{"name":"Godot icon", "text":"* Did you know the earth is flat?-","Speed": 0.03,"pause_at_ending": false, "auto_skip": true},
+		{"name":"Godot icon", "text":"* Did you know the earth is flat?-", "Speed": 0.03, "pause_at_ending": false, "auto_skip": true},
 		{"name":"Dezzy", "Face": 1, "text":"* (Is everyone here crazy?)"},
 		{"name":"Dezzy", "text":"* Yeah, sure, whatever."}
 	],
 	"11":[
-		{"name":"Godot icon", "text":"* You know I was being sarcastic right?","pause": [8]},
+		{"name":"Godot icon", "text":"* You know I was being sarcastic right?", "pause": [8]},
 		{"name":"Dezzy", "Face": 1, "text":"* Oh thank goodness."}
 	]
 }

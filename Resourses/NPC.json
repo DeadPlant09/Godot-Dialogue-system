@@ -2,8 +2,9 @@
 	"1":[
 		{"name": "Prisoner", "text": "* Sir I need your help!"},
 		{"name": "Dezzy", "text": "* ...You need my help?"},
-		{"name": "Prisoner", "text": "* Yeah! I accidentally crashed into my prison,\n	 and I don't want to spend another 20 years\n	ther for playing GTA® real life!", "pause at ending": false},
-		{"name": "Dezzy", "text": "* I dunno this shit is kind of on you", "reactions": ["Prisoner", 0, "F***K!"]},
+		{"name": "Prisoner", "text": "* Yeah! I accidentally crashed into\n	my prison while escaping,", "pause at ending": false},
+		{"name": "Prisoner", "text": "* and I don't want to spend another 20\n	years there for playing GTA®\n	in real life!", "pause at ending": false},
+		{"name": "Dezzy", "text": "* I dunno this shit is kind of\n	on you", "reactions": ["Prisoner", 0, "F***K!"]}
 	],
 	"2":[
 		{"name": "Prisoner", "text": "* Well fine! I dont need your help anyway \n*	Loser"},
@@ -11,16 +12,16 @@
 	"3":[
 		{"name": "Worker", "text": "* Testing, testing Moving."},
 		{"name": "Dezzy", "text": "* What are you doing?"},
-		{"name": "Worker", "text": "* huh? dont worry about it."}
+		{"name": "Worker", "text": "* huh? dont worry about it.", "signal": [false, "leave_scene_right"], "wait_for_signal": true}
 	],
 	"4":[
-		{"name": "Dezzy", "Face": 1, "text": "* Why are you streching?", "pause at ending": false},
+		{"name": "Dezzy", "Face": 1, "text": "* Why are you streching?", "pause_at_ending": false},
 		{"name": "Worker", "text": "* Im just woking out"},
-		{"name": "Worker", "text": "* Soon ill be strong enough to threten\n	 my boss for a paycheak"},
+		{"name": "Worker", "text": "* Soon ill be strong enough to threten\n	my boss for a paycheak!", "signal": [false, "leave_scene_left"], "wait_for_signal":  true},
 		{"name": "Dezzy", "Face": 1, "text": "* ...ok"}
 	],
 	"5":[
-		{"name": "Dezzy", "text": "* Wait don't you mean higher paycheck?"},
+		{"name": "Dezzy", "text": "* Wait don't you mean higher\n	paycheck?"},
 		{"name": "Worker", "text": "* No I dont get paid!"}
 	]
 }

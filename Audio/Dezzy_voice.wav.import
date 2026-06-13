@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bq1g6emgruv85"
-path="res://.godot/imported/Dezzy_voice.wav-7d02625fdd07cd4a85e27fdecb7cc03a.sample"
+path="res://.godot/imported/dezzy_voice.wav-af854cd8518db38ac0d04b057ddd586a.sample"
 
 [deps]
 
-source_file="res://Audio/Dezzy_voice.wav"
-dest_files=["res://.godot/imported/Dezzy_voice.wav-7d02625fdd07cd4a85e27fdecb7cc03a.sample"]
+source_file="res://audio/dezzy_voice.wav"
+dest_files=["res://.godot/imported/dezzy_voice.wav-af854cd8518db38ac0d04b057ddd586a.sample"]
 
 [params]
 

@@ -7,7 +7,7 @@ class_name Cutscene_trigger
 
 @export var run_at_start:bool
  
-@export var json_path:String = "res://Resourses/MAIN.json"
+@export_file("*.json") var json_path = "res://resourses/main.json"
 
 @export var cutscene_animation:AnimationPlayer
 
@@ -15,15 +15,11 @@ enum MODES {dialogue, animation}
 
 @export var mode = MODES.dialogue
 
-@export var index:int = 1
-
 @export var conversation:int = 1
 
 
 # variables
 var cutscene_ran = false
-
-var config = ConfigFile.new()
 
 var saved_choices = Dialogue_System.save_data["choices"]
 
@@ -35,7 +31,7 @@ func _ready() -> void:
 	if not cutscene_is_available(choice):
 		queue_free()
 	
-	save_name = name + " ran_" + str(index)
+	save_name = name + " ran" 
 	
 	if mode == MODES.dialogue: 
 		Load_cutscene_state()
@@ -44,7 +40,7 @@ func _ready() -> void:
 			run_dialouge()
 	
 	elif mode == MODES.animation:
-		cutscene_animation.play("cutscene " + str(index))
+		cutscene_animation.play("cutscene")
 
 
 func run_dialouge():
@@ -52,12 +48,15 @@ func run_dialouge():
 	
 	await Dialogue_System.dialogue_finished
 	
-	cutscene_ran = true # run once in the same scene, you can change on variable in a save file without editing the rest which is what you can do in this instance with your save system in your own projects
+	cutscene_ran = true
 	
 	Save_cutscene_state()
 
 
 func _process(_delta: float) -> void:
+	if Dialogue_System.deactivated:
+		return
+	
 	for body in get_overlapping_bodies():
 		if body.has_method("player") and not cutscene_ran:
 			if mode == MODES.dialogue:
@@ -78,8 +77,8 @@ func cutscene_is_available(instance_choice: String):
 	if instance_choice == "":
 		return true
 	
-	for choice in saved_choices:
-		if instance_choice == choice:
+	for past_choice in saved_choices:
+		if instance_choice == past_choice:
 			return true
 	
 	return false
@@ -87,6 +86,9 @@ func cutscene_is_available(instance_choice: String):
 
 func Save_cutscene_state():
 	Dialogue_System.save_data["cutscene"][save_name] = cutscene_ran
+	
+	# for testing remove in your own project
+	Dialogue_System.permenently_save_data()
 
 
 func Load_cutscene_state():

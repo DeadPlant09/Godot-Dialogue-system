@@ -14,6 +14,10 @@ signal sure_the_earth_is_flat
 
 signal your_crazy
 
+signal leave_scene_right
+
+signal leave_scene_left
+
 # node variables
 @onready var dialogue_ui:Control = $"Dialogue UI"
 
@@ -56,9 +60,9 @@ const PERMENENT_PATH = "res://save_conv_per.cfg"
 # nesasary variables
 @export_file("*.json") var json_file
 
-@export var profile_path = "res://Sprites/Characters/"
+@export var profile_path = "res://aprites/characters/"
 
-@export_file("*.wav") var voice_path = "res://Audio/"
+@export_file("*.wav") var voice_path = "res://audio/"
 
 var detect_player:bool = false
 
@@ -102,8 +106,6 @@ var choice_responses:Variant
 
 var choice_aftermath:Variant
 
-var config:ConfigFile = ConfigFile.new()
-
 # optional variables
 var in_cutscene:bool = false
 
@@ -141,7 +143,7 @@ var hide_name:bool = false
 
 var hidden_names = ["", "Deadplant", "Narrarator"]
 
-var default_inputs:Variant
+var default_inputs:Dictionary
 
 var wait_for_signal:bool = false:
 	set(new_value):
@@ -199,6 +201,17 @@ func make_node_paths():
 	name_box_two = sprites_2.get_child(1)
 	character_name_two = sprites_2.get_child(2)
 	character_icon_two = sprites_2.get_child(3)
+	
+	character_name.resized.connect(update_name_box)
+	character_name_two.resized.connect(update_name_box_two)
+
+
+func update_name_box():
+	name_box.size.x = character_name.size.x + 24
+
+
+func update_name_box_two():
+	name_box_two.size.x = character_name_two.size.x + 24
 
 
 func load_json(filepath: String):
@@ -212,7 +225,13 @@ func load_json(filepath: String):
 
 
 func _input(event: InputEvent) -> void:
-	if not detect_player and not in_cutscene or is_dialogue_runing:
+	if not detect_player and not in_cutscene:
+		return
+	
+	if event.is_action_pressed("Skip_Text") and skipable and not auto_skip:
+		finish_text()
+	
+	if is_dialogue_runing:
 		return
 	
 	if event.is_action_pressed("Continue") and not wait_for_responses:
@@ -247,9 +266,9 @@ func next_dialogue():
 
 
 func stop_dialogue():
-	deactivated = false
-	
 	hide()
+	
+	deactivated = false
 	
 	if in_cutscene:
 		in_cutscene = false
@@ -261,9 +280,6 @@ func stop_dialogue():
 	current_npc = null
 	
 	dialogue_finished.emit()
-	
-	# for testing remove in your own project
-	Dialogue_System.permenently_save_data()
 
 
 func set_up_dialogue_options():
@@ -277,7 +293,7 @@ func set_up_dialogue_options():
 	hide_profile = return_dialogue_key('hide_profile', false)
 	hide_name = return_dialogue_key('hide_name', false)
 	emit_custom = return_dialogue_key('signal', [false])
-	wait_for_signal = return_dialogue_key('wait_signal', false)
+	wait_for_signal = return_dialogue_key('wait_for_signal', false)
 	text_two = return_dialogue_key('text_two', "")
 	name_two = return_dialogue_key('name_two', "")
 	
@@ -289,7 +305,7 @@ func set_up_dialogue_options():
 
 func set_profile(): 
 	# reset the postion and size to defaults 
-	character_voice.stream = load(voice_path + "Default_dialogue_voice.wav")
+	character_voice.stream = load(voice_path + "default_dialogue_voice.wav")
 	sprites.visible = not just_show_text
 	character_icon.visible = not hide_profile
 	character_icon_two.visible = not hide_profile
@@ -303,18 +319,17 @@ func set_profile():
 	name_box.visible = not hide_name
 	character_name.visible = not hide_name
 	
-	check_if_profile_exsist()
+	check_if_profile_exsist(dialogue_ui, "name", "face", 8)
 
 
-func check_if_profile_exsist(UI:Control = dialogue_ui, profile_name:String = "name", profile_face:String = "Face", aniplayer_index:int = 8):
-	var voice_name = str(return_dialogue_key(profile_name)) + "_voice.wav"
+func check_if_profile_exsist(UI:Control, profile_name:String, profile_face:String, aniplayer_index:int):
+	var voice_name = return_dialogue_key(profile_name).to_lower() + "_voice.wav"
 	var animation_name = return_dialogue_key(profile_name, "no animation") + str(int(return_dialogue_key(profile_face, 0)))
 	
 	if FileAccess.file_exists(voice_path + voice_name):
 		UI.get_child(2).stream = load(voice_path + voice_name)
 	
 	for animation in UI.get_child(aniplayer_index).get_animation_list():
-		
 		# if animation has a profile
 		if animation.contains(animation_name) and not hide_profile:
 			
@@ -347,13 +362,6 @@ func update_text_box():
 		
 		show()
 	
-	# wait 2x for the game for the game to register resize
-	await get_tree().process_frame 
-	await get_tree().process_frame
-	
-	# updating the size of the name box
-	name_box.size.x = character_name.size.x + 24
-	
 	# if that 'screen_position' doesnt exist it will return null
 	if return_dialogue_key('screen_position', []):
 		dialogue_ui.position.x = current_dialogue['screen_position'][0]
@@ -373,9 +381,6 @@ func update_text_box_two():
 	character_text_two.text = text_two
 	
 	dialogue_ui_2.show()
-	
-	# the ui neededs to be shown for the size to update
-	name_box_two.size.x = character_name_two.size.x + 24
 	
 	scrolling_text(character_text_two, return_dialogue_key('speed_two', 0.05))
 
@@ -419,22 +424,27 @@ func scrolling_text(text_node:RichTextLabel, speed = 0.05):
 		# wait every 0.05 seconds to repet the loop and add another character
 		await get_tree().create_timer(speed).timeout 
 		
-		# if the text is skiped or all the parse (visable) text it shown
-		if text_node.visible_characters >= parsed_text_length or Input.is_action_pressed("Skip_Text") and skipable and not auto_skip:
-			# make all the characters visable (to avoid any delay when all the text is clearly visable)
+		# to avoid any delay when all the text is clearly visable:
+		# if all the parse (visable) text it shown make add all the unprasied (hidden) text too
+		if text_node.visible_characters >= parsed_text_length:
 			text_node.visible_characters = text_node.text.length()
 			
-			# exit out of for loop
 			break
 	
 	stop_profile_animations()
 	
-	# if all the text is shown.
+	# if all the text is shown (including dialogue box 2).
 	if text_node.visible_characters == text_node.text.length():
+		
 		if prepare_dialogue_two and not dialogue_ui_2.get_child(1).visible_ratio == 1.0:
 			return
 		
 		when_dialogue_finishes()
+
+
+func finish_text():
+	character_text.visible_characters = character_text.text.length()
+	character_text_two.visible_characters = character_text_two.text.length()
 
 
 func play_profile_animations():
@@ -457,7 +467,7 @@ func stop_profile_animations():
 
 func when_dialogue_finishes():
 	# if responses doesnt exist it will return null
-	if not there_is_no_more_dialogue() and return_dialogue_key('choices'):
+	if return_dialogue_key('choices'):
 		
 		choices_exsist = true
 		
@@ -465,6 +475,7 @@ func when_dialogue_finishes():
 		show_choices()
 	
 	# if emit_signal_after_dialogue = true
+	# if your playing the signal at the end then your waitng for the signal to finish before hiding the dialogue
 	if emit_custom[0] == true:
 		emit_signal(emit_custom[1])
 	
@@ -563,7 +574,7 @@ func show_reactions():
 		if move_index_up_by >= current_dialogue['reactions'].size():
 			break
 		
-		var png_name = str(current_dialogue['reactions'][0 + move_index_up_by]) + " Profile.png"
+		var png_name = str(current_dialogue['reactions'][0 + move_index_up_by]).to_lower() + "_profile.png"
 		var reaction_image = reactions[react].get_child(0)
 		var reaction_text = reactions[react].get_child(1)
 		
@@ -608,11 +619,12 @@ func _on_overlap_detection_area_exited(_area: Area2D) -> void:
 
 
 func load_permanent_data():
+	var config:ConfigFile = ConfigFile.new()
+	
 	if config.load(PERMENENT_PATH) != OK:
 		return
 	
 	for section in save_data:
-		
 		# load if cutscene ran
 		if config.has_section(section):
 			for Key in config.get_section_keys(section): 
@@ -620,6 +632,8 @@ func load_permanent_data():
 
 
 func permenently_save_data():
+	var config:ConfigFile = ConfigFile.new()
+	
 	for section in save_data:
 		# save if cutscene ran
 		for key in save_data[section]:

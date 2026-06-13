@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ccohqyqkn7xu0"
-path="res://.godot/imported/Prisoner.png-7b9987e4fbc36bfa1fd7161c341ffd76.ctex"
+path="res://.godot/imported/prisoner.png-af2f6e1a0d78956a45433cdc9d4c4a84.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Characters/Prisoner.png"
-dest_files=["res://.godot/imported/Prisoner.png-7b9987e4fbc36bfa1fd7161c341ffd76.ctex"]
+source_file="res://sprites/characters/prisoner.png"
+dest_files=["res://.godot/imported/prisoner.png-af2f6e1a0d78956a45433cdc9d4c4a84.ctex"]
 
 [params]
 

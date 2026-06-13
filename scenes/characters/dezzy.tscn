@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://decx2ttkwyk6c"]
 
-[ext_resource type="Script" uid="uid://ck47cpvsooa05" path="res://scripts/Objects/Dezzy.gd" id="1_4o1qc"]
-[ext_resource type="Texture2D" uid="uid://rcdwvpax3syw" path="res://Sprites/Characters/Dezzy.svg" id="2_bu830"]
+[ext_resource type="Script" uid="uid://ck47cpvsooa05" path="res://scripts/objects/dezzy.gd" id="1_4o1qc"]
+[ext_resource type="Texture2D" uid="uid://rcdwvpax3syw" path="res://sprites/characters/dezzy.svg" id="2_bu830"]
 
 [sub_resource type="Animation" id="Animation_4fvbh"]
 resource_name = "Idle"

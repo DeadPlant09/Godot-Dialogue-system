@@ -12,6 +12,8 @@ class_name DialogueArea
 
 var save_data = Dialogue_System.save_data
 
+var saved_convos = save_data["conversations"]
+
 var detect_player:bool = false
 
 # default first convo instance (0)
@@ -57,26 +59,36 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.has_method("player"): 
-		# turn the player check to true
-		detect_player = true
-		Dialogue_System.current_npc = save_name
-		collision_layer = 3
-		
-		reset_dialogue()
-		set_current_dialogue()
+	if not body.has_method("player"):
+		return
+	 
+	# turn the player check to true
+	detect_player = true
+	Dialogue_System.current_npc = save_name
+	collision_layer = 3
+	
+	reset_dialogue()
+	set_current_dialogue()
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body.has_method("player"):
-		# turn the player check to false
-		detect_player = false
-		collision_layer = 0
-		
-		update_current_dialogue()
-		
-		if parent_is_npc:
-			save_convo()
+	if not body.has_method("player"):
+		return
+	
+	# if you trigger a cutscene (or animation) by talking to an npc:
+	# wait till its over to stop detcecting the player
+	if Dialogue_System.is_dialogue_runing:
+		await Dialogue_System.dialogue_finished
+	
+	# turn the player check to false
+	detect_player = false
+	Dialogue_System.detect_player = detect_player
+	collision_layer = 0
+	
+	update_current_dialogue()
+	
+	if parent_is_npc:
+		save_convo()
 
 
 func chose_current_npc_instance():
@@ -94,6 +106,8 @@ func chose_current_npc_instance():
 func set_instance_to_current_convo():
 	starting_convo = convo[convo_instance][0]
 	ending_convo = convo[convo_instance][1]
+	
+	load_convo()
 
 
 func set_ending_to_convo():
@@ -102,7 +116,38 @@ func set_ending_to_convo():
 
 
 func save_convo():
-	save_data["conversations"][save_name] = [starting_convo, ending_convo]
+	saved_convos[save_name] = [starting_convo, ending_convo]
+	
+	# for testing remove in your own project
+	Dialogue_System.permenently_save_data()
+
+
+func load_convo():
+	if not can_load_convo():
+		return
+	
+	starting_convo = saved_convos[save_name][0]
+	ending_convo = saved_convos[save_name][1]
+
+
+func can_load_convo():
+	if not saved_convos.has(save_name):
+		return false
+	
+	if not value_in_range(saved_convos[save_name][0], starting_convo, ending_convo):
+		return false
+	
+	if not value_in_range(saved_convos[save_name][1], starting_convo, ending_convo):
+		return false
+	
+	return true
+
+
+func value_in_range(value:int, minimum:int, maximum:int):
+	if not value < minimum and not value > maximum:
+		return true
+	
+	return false
 
 
 func update_current_dialogue():
