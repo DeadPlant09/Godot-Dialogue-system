@@ -46,7 +46,7 @@ signal leave_scene_left
 @onready var profile_animation_2:AnimationPlayer = $"Dialogue UI 2/Profile animations"
 
 # dictionary
-var save_data:Dictionary = {
+var save_data: Dictionary = {
 	"cutscene":{}, 
 	"conversations":{}, 
 	"npc_instance":{}, 
@@ -297,8 +297,13 @@ func set_up_dialogue_options():
 	text_two = return_dialogue_key('text_two', "")
 	name_two = return_dialogue_key('name_two', "")
 	
-	if return_dialogue_key('choice', ""):
+	if return_dialogue_key('choice', ""): # where you save choice
 		save_data["choices"][return_dialogue_key('choice', "")] = true
+	
+	if return_dialogue_key('remove_choice', ""): # where you remove choice
+		print(save_data["choices"])
+		save_data["choices"].erase(return_dialogue_key('remove_choice', ""))
+		print(save_data["choices"])
 	
 	prepare_dialogue_two = text_two != null and name_two != ""
 

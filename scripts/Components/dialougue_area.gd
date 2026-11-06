@@ -94,7 +94,10 @@ func _on_body_exited(body: Node2D) -> void:
 func chose_current_npc_instance():
 	# check every convo_instance
 	for instance in convo:
-		if not get_parent().instance_has_passed(instance):
+		
+		var instance_choice = get_parent().instances[instance]
+		
+		if not get_parent().instance_has_passed(instance) and get_parent().instance_is_available(instance_choice):
 			# if the instance has not set it to the main one
 			convo_instance = instance
 			

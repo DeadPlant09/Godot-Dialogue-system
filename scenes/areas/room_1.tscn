@@ -278,7 +278,7 @@ shape = SubResource("RectangleShape2D_upb33")
 position = Vector2(820, 489)
 instances = {
 0: "",
-2: ""
+2: "your_crazy"
 }
 dialogue_area = NodePath("dialougue_area")
 sprite_animation = NodePath("Streach")

@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://2ontfloavxgq" path="res://scenes/objects/dialougue_area.tscn" id="5_7ikf0"]
 [ext_resource type="Texture2D" uid="uid://bgeytjk6b511m" path="res://sprites/characters/worker.png" id="6_c8iu3"]
 [ext_resource type="Script" uid="uid://c4xrgqxfnmev3" path="res://scripts/components/cutscene_animations.gd" id="7_61frq"]
+[ext_resource type="Script" uid="uid://b4n7k762wnwxb" path="res://scripts/components/npc.gd" id="8_i1yxo"]
+[ext_resource type="Texture2D" uid="uid://cynttw88vcv0g" path="res://sprites/characters/Dino boy.svg" id="8_pxowk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7860w"]
 size = Vector2(69, 676)
@@ -278,6 +280,9 @@ _data = {
 &"leave_scene_right": SubResource("Animation_i3cpr")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c8iu3"]
+size = Vector2(112, 78)
+
 [node name="Room 2" type="Node2D" unique_id=412707369]
 
 [node name="Area2D" type="Area2D" parent="." unique_id=483541063]
@@ -360,5 +365,31 @@ libraries/ = SubResource("AnimationLibrary_70n1j")
 script = ExtResource("7_61frq")
 connect_signal = ["leave_scene_left", "leave_scene_right"]
 metadata/_custom_type_script = "uid://c4xrgqxfnmev3"
+
+[node name="Dino" type="Node2D" parent="." unique_id=1464725823 node_paths=PackedStringArray("dialogue_area")]
+position = Vector2(667, 432)
+script = ExtResource("8_i1yxo")
+instances = {
+0: "sure_the_earth_is_flat",
+1: "your_crazy"
+}
+turn_off_animations = true
+dialogue_area = NodePath("dialougue_area")
+metadata/_custom_type_script = "uid://b4n7k762wnwxb"
+
+[node name="images" type="Sprite2D" parent="Dino" unique_id=1893469323]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_pxowk")
+
+[node name="dialougue_area" parent="Dino" unique_id=1231587526 instance=ExtResource("5_7ikf0")]
+custom_json = "res://resourses/npc.json"
+convo = {
+0: [6, 0],
+1: [7, 0]
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dino/dialougue_area" unique_id=326053199]
+position = Vector2(1, 3)
+shape = SubResource("RectangleShape2D_c8iu3")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

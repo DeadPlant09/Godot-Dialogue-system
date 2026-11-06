@@ -23,5 +23,19 @@
 	"5":[
 		{"name": "Dezzy", "text": "* Wait don't you mean higher\n	paycheck?"},
 		{"name": "Worker", "text": "* No I dont get paid!"}
+	],
+	"6":[
+		{"name": "Dino", "text": "* Hello I'm Dino the magical\n	Dinosaur!"},
+		{"name": "Dezzy", "text": "* Yeah I could have guessed\n	from the name, what do you do?"},
+		{"name": "Dino", "text": "* I can see into the past~"},
+		{"name": "Dezzy", "text": "* Anyone could do that."},
+		{"name": "Dino", "text": "* In the past you said the world\n	was flat!", "remove_choice": "sure_the_earth_is_flat"}
+	],
+	"7":[
+		{"name": "Dino", "text": "* Hello I'm Dino the magical\n	Dinosaur!"},
+		{"name": "Dezzy", "text": "* Yeah I could have guessed\n	from the name, what do you do?"},
+		{"name": "Dino", "text": "* I can see into the past~"},
+		{"name": "Dezzy", "text": "* Anyone could do that."},
+		{"name": "Dino", "text": "* In the past you said the world\n	was round!", "remove_choice": "your_crazy"}
 	]
 }

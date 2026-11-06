@@ -67,7 +67,7 @@ func check_available_instances():
 		if not instance_has_passed(instance) and instance_is_available(instance_choice):
 			
 			# set to current instance
-			saved_instances[name] = instance 
+			saved_instances[name] = instance
 			
 			# stop checking for other instances
 			break
